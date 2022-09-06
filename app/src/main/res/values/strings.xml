@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Toyopoly</string>
+    <string name="lego">lego</string>
+    <string name="se_mer">se mer</string>
+    <string name="biler">biler</string>
+    <string name="dukker">dukker</string>
+    <string name="searchLabel">Søk</string>
 </resources>
