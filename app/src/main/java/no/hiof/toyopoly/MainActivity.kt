@@ -11,11 +11,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val legoActivityBtn = findViewById<Button>(R.id.legoBtn)
 
-        legoActivityBtn.setOnClickListener(View.OnClickListener {
-            val legoActivityIntent = Intent(this, LegoActivity::class.java)
-            startActivity(legoActivityIntent)
-        })
     }
 }
