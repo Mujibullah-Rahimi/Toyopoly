@@ -9,7 +9,7 @@ import android.widget.Button
 import androidx.navigation.findNavController
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), View.OnClickListener{
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -21,14 +21,39 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val legoButton  = view.findViewById<Button>(R.id.legoButton)
-        legoButton.setOnClickListener{
-            val navController = it.findNavController()
+        val legoButton = view.findViewById<Button>(R.id.legoButton)
+        legoButton.setOnClickListener(this)
 
-            val action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment()
-            action.category = legoButton.text.toString()
+        val dollsButton = view.findViewById<Button>(R.id.dollsButton)
+        dollsButton.setOnClickListener(this)
 
-            navController.navigate(action)
+        val carsButton = view.findViewById<Button>(R.id.carsButton)
+        carsButton.setOnClickListener(this)
+    }
+
+
+
+    override fun onClick(v: View?) {
+        val navController = v?.findNavController()
+        val legoButton = v?.findViewById<Button>(R.id.legoButton)
+        val dollsButton = v?.findViewById<Button>(R.id.dollsButton)
+        val carsButton = v?.findViewById<Button>(R.id.carsButton)
+
+        val action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment()
+
+        when (v?.id){
+            R.id.legoButton -> {
+                action.category = legoButton?.text.toString()
+                navController?.navigate(action)
+            }
+            R.id.dollsButton -> {
+                action.category = dollsButton?.text.toString()
+                navController?.navigate(action)
+            }
+            R.id.carsButton -> {
+                action.category = carsButton?.text.toString()
+                navController?.navigate(action)
+            }
         }
     }
 }
