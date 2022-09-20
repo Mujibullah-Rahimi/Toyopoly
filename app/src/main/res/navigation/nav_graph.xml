@@ -23,5 +23,19 @@
         <action
             android:id="@+id/action_homeFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_CreateAdsFragment"
+            app:destination="@id/createAdsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAdsFragment"
+        android:name="no.hiof.toyopoly.CreateAdsFragment"
+        android:label="fragment_createAds"
+        tools:layout="@layout/fragment_createads" >
+        <argument
+            android:name="createAds"
+            app:argType="string"
+            android:defaultValue="nocreateAds" />
     </fragment>
 </navigation>
