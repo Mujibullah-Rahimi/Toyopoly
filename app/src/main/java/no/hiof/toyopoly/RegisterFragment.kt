@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import android.content.Intent
 import android.text.TextUtils
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 
 class RegisterFragment : Fragment() {
@@ -40,6 +41,8 @@ class RegisterFragment : Fragment() {
         registerButton.setOnClickListener{
             val email: String = registerEmail.text.toString()
             val password: String = registerPassword.text.toString()
+            val navController = findNavController()
+            val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
 
             if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                 Toast.makeText(activity, "Please fill all the fields", Toast.LENGTH_LONG).show()
@@ -49,9 +52,7 @@ class RegisterFragment : Fragment() {
                         if (task.isSuccessful) {
                             Toast.makeText(activity, "Successfully Registered", Toast.LENGTH_LONG)
                                 .show()
-                            val intent = Intent(activity, MainActivity::class.java)
-                            startActivity(intent)
-                            activity?.finish()
+                            navController.navigate(action)
                         } else {
                             Toast.makeText(activity, "Registration Failed", Toast.LENGTH_LONG)
                                 .show()
