@@ -57,7 +57,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
                     if(task.isSuccessful) {
                         Toast.makeText(activity, "Successfully Logged In", Toast.LENGTH_LONG).show()
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-
                         navController?.navigate(action)
                     }else {
                         Toast.makeText(activity, "Login Failed", Toast.LENGTH_LONG).show()
