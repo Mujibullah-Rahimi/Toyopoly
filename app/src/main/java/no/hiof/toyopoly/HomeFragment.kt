@@ -14,9 +14,6 @@ import com.google.firebase.ktx.Firebase
 
 
 class HomeFragment : Fragment(), View.OnClickListener{
-    // Firebase Database-reference
-    val db = Firebase.firestore
-    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,11 +33,6 @@ class HomeFragment : Fragment(), View.OnClickListener{
 
         val carsButton = view.findViewById<Button>(R.id.carsButton)
         carsButton.setOnClickListener(this)
-
-        val saveButton = view?.findViewById<Button>(R.id.saveUserButton)
-        saveButton.setOnClickListener{
-            saveUser()
-        }
     }
 
     override fun onClick(v: View?) {
@@ -65,23 +57,5 @@ class HomeFragment : Fragment(), View.OnClickListener{
                 navController?.navigate(action)
             }
         }
-    }
-
-    val TAG = "FIREBASE"
-
-    // Testing FIREBASE
-    fun saveUser(){
-        var userName = view?.findViewById<EditText>(R.id.userNameText)
-        var userNameInput = userName?.text.toString()
-
-        val dataToSave = hashMapOf(
-            "name" to userNameInput
-        )
-
-        db.collection("Users").document("User")
-            .set(dataToSave)
-            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
-
     }
 }
