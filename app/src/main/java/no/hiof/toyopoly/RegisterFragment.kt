@@ -14,6 +14,9 @@ import android.content.Intent
 import android.text.TextUtils
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class RegisterFragment : Fragment() {
     private lateinit var auth:FirebaseAuth
@@ -33,10 +36,16 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
+        val db = Firebase.firestore
 
         registerEmail  = requireView().findViewById(R.id.emailAdressRegister)
         registerPassword  = requireView().findViewById(R.id.passwordRegister)
         registerButton = requireView().findViewById(R.id.UserRegisterButton)
+
+        val registerFirstName = requireView().findViewById<EditText>(R.id.firstName)
+        val registerLastName = requireView().findViewById<EditText>(R.id.lastName)
+        val registerBirthday = requireView().findViewById<EditText>(R.id.birthday)
+        val registerAddress = requireView().findViewById<EditText>(R.id.address)
 
         registerButton.setOnClickListener{
             val email: String = registerEmail.text.toString()
@@ -50,6 +59,15 @@ class RegisterFragment : Fragment() {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener((requireActivity()), OnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            val userToSave = hashMapOf(
+                                "firstName" to registerFirstName.text.toString(),
+                                "lastName" to registerLastName.text.toString(),
+                                "birthday" to registerBirthday.text.toString(),
+                                "address" to registerAddress.text.toString(),
+                                "email" to email
+                            )
+                            db.collection("Users").document(auth.currentUser!!.uid)
+                                .set(userToSave)
                             Toast.makeText(activity, "Successfully Registered", Toast.LENGTH_LONG)
                                 .show()
                             navController.navigate(action)
