@@ -10,7 +10,7 @@
     <!-- TODO: Update blank fragment layout -->
 
     <EditText
-        android:id="@+id/emailAdressLogin"
+        android:id="@+id/emailAddressLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -22,7 +22,8 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22" />
+        app:layout_constraintVertical_bias="0.22"
+        android:autofillHints="emailAddress" />
 
     <EditText
         android:id="@+id/passwordLogin"
@@ -33,10 +34,11 @@
         android:hint="@string/password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="@+id/emailAdressLogin"
+        app:layout_constraintEnd_toEndOf="@+id/emailAddressLogin"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/emailAdressLogin"
-        app:layout_constraintTop_toBottomOf="@+id/emailAdressLogin" />
+        app:layout_constraintStart_toStartOf="@+id/emailAddressLogin"
+        app:layout_constraintTop_toBottomOf="@+id/emailAddressLogin"
+        android:autofillHints="password" />
 
     <Button
         android:id="@+id/registerButton"
@@ -67,7 +69,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/emailAdressLogin"
+        app:layout_constraintBottom_toTopOf="@+id/emailAddressLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
