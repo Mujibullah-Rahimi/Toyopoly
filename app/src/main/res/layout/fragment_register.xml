@@ -8,11 +8,11 @@
     tools:context=".RegisterFragment">
 
     <EditText
-        android:id="@+id/emailAdressRegister"
+        android:id="@+id/emailAddressRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:autofillHints=""
+        android:autofillHints="emailAddress"
         android:ems="10"
         android:hint="@string/e_mail"
         android:inputType="textEmailAddress"
@@ -27,15 +27,16 @@
         android:id="@+id/passwordRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:autofillHints="password"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textVisiblePassword"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/firstName"
-        app:layout_constraintEnd_toEndOf="@+id/emailAdressRegister"
+        app:layout_constraintEnd_toEndOf="@+id/emailAddressRegister"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/emailAdressRegister"
-        app:layout_constraintTop_toBottomOf="@+id/emailAdressRegister" />
+        app:layout_constraintStart_toStartOf="@+id/emailAddressRegister"
+        app:layout_constraintTop_toBottomOf="@+id/emailAddressRegister" />
 
     <TextView
         android:id="@+id/registerTextView"
@@ -75,26 +76,14 @@
         app:layout_constraintTop_toBottomOf="@+id/birthday" />
 
     <EditText
-        android:id="@+id/birthday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date"
-        android:minHeight="48dp"
-        android:hint="@string/birthday"
-        app:layout_constraintBottom_toTopOf="@+id/address"
-        app:layout_constraintEnd_toEndOf="@+id/lastName"
-        app:layout_constraintStart_toStartOf="@+id/lastName"
-        app:layout_constraintTop_toBottomOf="@+id/lastName" />
-
-    <EditText
         android:id="@+id/firstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:autofillHints="name"
         android:ems="10"
+        android:hint="@string/first_name"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:hint="@string/first_name"
         app:layout_constraintBottom_toTopOf="@+id/lastName"
         app:layout_constraintEnd_toEndOf="@+id/passwordRegister"
         app:layout_constraintStart_toStartOf="@+id/passwordRegister"
@@ -104,13 +93,26 @@
         android:id="@+id/lastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:autofillHints="family-name"
         android:ems="10"
+        android:hint="@string/last_name"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:hint="@string/last_name"
         app:layout_constraintBottom_toTopOf="@+id/birthday"
         app:layout_constraintEnd_toEndOf="@+id/firstName"
         app:layout_constraintStart_toStartOf="@+id/firstName"
         app:layout_constraintTop_toBottomOf="@+id/firstName" />
+
+    <EditText
+        android:id="@+id/birthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/birthday"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@+id/address"
+        app:layout_constraintEnd_toEndOf="@+id/lastName"
+        app:layout_constraintStart_toStartOf="@+id/lastName"
+        app:layout_constraintTop_toBottomOf="@+id/lastName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
