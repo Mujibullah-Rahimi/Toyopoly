@@ -8,12 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.findNavController
-import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
 class HomeFragment : Fragment(), View.OnClickListener{
+    val user = Firebase.auth.currentUser
+    val TAG = "CURRENTUSER"
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,8 +31,18 @@ class HomeFragment : Fragment(), View.OnClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val legoButton = view.findViewById<Button>(R.id.legoButton)
-        legoButton.setOnClickListener(this)
+
+        val currentUserText = view.findViewById<TextView>(R.id.currentUserText)
+        currentUserText.text = user?.email.toString()
+
+        if (user != null){
+            Log.d(TAG, FirebaseAuth.getInstance().currentUser.toString())
+        }else{
+            Log.d(TAG,FirebaseAuth.getInstance().currentUser.toString())
+        }
+
+        val signOutBtn = view.findViewById<Button>(R.id.signOutBtn)
+        signOutBtn.setOnClickListener(this)
 
         val dollsButton = view.findViewById<Button>(R.id.dollsButton)
         dollsButton.setOnClickListener(this)
@@ -37,16 +53,17 @@ class HomeFragment : Fragment(), View.OnClickListener{
 
     override fun onClick(v: View?) {
         val navController = v?.findNavController()
-        val legoButton = v?.findViewById<Button>(R.id.legoButton)
+        val signOutBtn = v?.findViewById<Button>(R.id.signOutBtn)
         val dollsButton = v?.findViewById<Button>(R.id.dollsButton)
         val carsButton = v?.findViewById<Button>(R.id.carsButton)
 
         val action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment()
 
         when (v?.id){
-            R.id.legoButton -> {
-                action.category = legoButton?.text.toString()
-                navController?.navigate(action)
+            R.id.signOutBtn -> {
+                Firebase.auth.signOut()
+                navController?.navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
+                Toast.makeText(activity,"Logged out", Toast.LENGTH_LONG).show()
             }
             R.id.dollsButton -> {
                 action.category = dollsButton?.text.toString()

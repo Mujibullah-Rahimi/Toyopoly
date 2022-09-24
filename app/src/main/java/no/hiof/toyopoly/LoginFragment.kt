@@ -1,5 +1,6 @@
 package no.hiof.toyopoly
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,9 +12,6 @@ import android.widget.Toast
 import androidx.navigation.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.app
 
 class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
@@ -45,7 +43,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         auth = FirebaseAuth.getInstance()
         val navController = v?.findNavController()
-        val emailField = requireView().findViewById<EditText>(R.id.emailAdressLogin)
+        val emailField = requireView().findViewById<EditText>(R.id.emailAddressLogin)
         val passwordField = requireView().findViewById<EditText>(R.id.passwordLogin)
 
         val email: String= emailField?.text.toString()
@@ -59,7 +57,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         navController?.navigate(action)
                     }else {
-                        Toast.makeText(activity, "Login Failed", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "Login Failed ", Toast.LENGTH_LONG).show()
                     }
                 })
             }
