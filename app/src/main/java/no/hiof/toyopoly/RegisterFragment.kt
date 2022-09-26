@@ -1,7 +1,6 @@
 package no.hiof.toyopoly
 
 import android.os.Bundle
-import android.text.Editable
 import android.text.NoCopySpan
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import android.text.TextUtils
-import android.text.TextWatcher
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.ktx.firestore

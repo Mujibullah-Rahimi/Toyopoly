@@ -16,12 +16,6 @@ import com.google.firebase.auth.FirebaseAuth
 class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
 
-    // Initializing a FirebaseAuth instance
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
