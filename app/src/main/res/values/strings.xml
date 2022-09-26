@@ -5,8 +5,14 @@
     <string name="cars">Biler</string>
     <string name="dolls">Dukker</string>
     <string name="searchLabel">Søk</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="createAds">Create ads</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="toyCategory">
+        <item>Toy-car</item>
+        <item>Doll</item>
+        <item>Play kitchen</item>
+        <item>Lego</item>
+    </string-array>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
