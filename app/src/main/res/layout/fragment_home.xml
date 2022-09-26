@@ -76,4 +76,14 @@
         app:layout_constraintStart_toStartOf="@+id/signOutBtn"
         app:layout_constraintTop_toBottomOf="@+id/dollsButton" />
 
+    <Button
+        android:id="@+id/createAdButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/createAds"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/carsButton"
+        app:layout_constraintStart_toStartOf="@+id/signOutBtn"
+        app:layout_constraintTop_toBottomOf="@+id/currentUserText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

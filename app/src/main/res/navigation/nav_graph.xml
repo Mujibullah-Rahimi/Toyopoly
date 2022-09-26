@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_homeFragment_to_CreateAdsFragment"
             app:destination="@id/createAdsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment
@@ -37,11 +40,6 @@
             android:name="createAds"
             app:argType="string"
             android:defaultValue="nocreateAds" />
-        <action
-            android:id="@+id/action_homeFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@+id/homeFragment"
-            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
