@@ -87,4 +87,16 @@
         app:layout_constraintStart_toStartOf="@+id/userNameText"
         app:layout_constraintTop_toBottomOf="@+id/userNameText" />
 
+    <Button
+        android:id="@+id/createAdsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/createAds"
+        app:layout_constraintBottom_toTopOf="@+id/userNameText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dollsButton"
+        app:layout_constraintVertical_bias="0.491" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

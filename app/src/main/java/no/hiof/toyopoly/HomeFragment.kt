@@ -37,6 +37,9 @@ class HomeFragment : Fragment(), View.OnClickListener{
         val carsButton = view.findViewById<Button>(R.id.carsButton)
         carsButton.setOnClickListener(this)
 
+        val createAdsButton = view.findViewById<Button>(R.id.createAdsButton)
+        createAdsButton.setOnClickListener(this)
+
         val saveButton = view?.findViewById<Button>(R.id.saveUserButton)
         saveButton.setOnClickListener{
             saveUser()
@@ -48,8 +51,10 @@ class HomeFragment : Fragment(), View.OnClickListener{
         val legoButton = v?.findViewById<Button>(R.id.legoButton)
         val dollsButton = v?.findViewById<Button>(R.id.dollsButton)
         val carsButton = v?.findViewById<Button>(R.id.carsButton)
+        val createAdsButton = v?.findViewById<Button>(R.id.createAdsButton)
 
         val action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment()
+        val action1 = HomeFragmentDirections.actionHomeFragmentToCreateAdsFragment()
 
         when (v?.id){
             R.id.legoButton -> {
@@ -63,6 +68,10 @@ class HomeFragment : Fragment(), View.OnClickListener{
             R.id.carsButton -> {
                 action.category = carsButton?.text.toString()
                 navController?.navigate(action)
+            }
+            R.id.createAdsButton -> {
+                action1.createAds = createAdsButton?.text.toString()
+                navController?.navigate(action1)
             }
         }
     }
