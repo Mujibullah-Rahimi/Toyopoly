@@ -12,11 +12,13 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class CreateAdsFragment : Fragment() {
     val db = Firebase.firestore
+    val user = Firebase.auth.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,27 +44,24 @@ class CreateAdsFragment : Fragment() {
         }
     }
 
-
-
-
-
     fun saveAd(){
-        var title = view?.findViewById<EditText>(R.id.title_create_ad)
-        var titleFire = title?.text.toString()
-        var desc = view?.findViewById<EditText>(R.id.desc_createAd)
-        var descFire = desc?.text.toString()
-        var price = view?.findViewById<EditText>(R.id.price_createAd)
-        var priceFire = price?.text.toString()
-        var spinner = view?.findViewById<Spinner>(R.id.spinner_catergory)
-        var spinnerFire = spinner?.selectedItem.toString()
+        val title = view?.findViewById<EditText>(R.id.title_create_ad)
+        val titleFire = title?.text.toString()
+        val desc = view?.findViewById<EditText>(R.id.desc_createAd)
+        val descFire = desc?.text.toString()
+        val price = view?.findViewById<EditText>(R.id.price_createAd)
+        val priceFire = price?.text.toString()
+        val spinner = view?.findViewById<Spinner>(R.id.spinner_catergory)
+        val spinnerFire = spinner?.selectedItem.toString()
+        val userUID = user?.uid
 
         val ad = hashMapOf(
-            //persistenID til bruker
             "TimeStamp" to Timestamp.now(),
-            "Vare" to titleFire,
+            "vale" to titleFire,
             "Desc" to descFire,
             "Price" to priceFire,
-            "Category" to spinnerFire
+            "Category" to spinnerFire,
+            "UserID" to userUID
 
         )
 
