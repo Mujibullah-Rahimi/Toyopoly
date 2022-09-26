@@ -6,8 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
@@ -24,12 +26,23 @@ class CreateAdsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_createads, container, false)
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val saveButton = view?.findViewById<Button>(R.id.createAd)
+        val spinner : Spinner = view.findViewById(R.id.spinner_catergory)
+        this.activity?.let {
+            ArrayAdapter.createFromResource(it, R.array.toyCategory,android.R.layout.simple_spinner_item).also{
+                adapter -> adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner.adapter = adapter
+            }
+        }
+        val saveButton = view.findViewById<Button>(R.id.createAd)
         saveButton.setOnClickListener{
             saveAd()
         }
     }
+
+
 
 
 
@@ -40,12 +53,16 @@ class CreateAdsFragment : Fragment() {
         var descFire = desc?.text.toString()
         var price = view?.findViewById<EditText>(R.id.price_createAd)
         var priceFire = price?.text.toString()
+        var spinner = view?.findViewById<Spinner>(R.id.spinner_catergory)
+        var spinnerFire = spinner?.selectedItem.toString()
 
         val ad = hashMapOf(
+            //persistenID til bruker
             "TimeStamp" to Timestamp.now(),
-            "Title" to titleFire,
+            "Vare" to titleFire,
             "Desc" to descFire,
-            "price" to priceFire
+            "Price" to priceFire,
+            "Category" to spinnerFire
 
         )
 

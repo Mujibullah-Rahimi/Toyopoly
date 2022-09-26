@@ -6,6 +6,11 @@
     <string name="dolls">Dukker</string>
     <string name="searchLabel">Søk</string>
     <string name="createAds">Create ads</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="toyCategory">
+        <item>Toy-car</item>
+        <item>Doll</item>
+        <item>Play kitchen</item>
+        <item>Lego</item>
+    </string-array>
 </resources>
