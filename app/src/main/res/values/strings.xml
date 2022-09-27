@@ -37,5 +37,7 @@
     <string name="create_ad">Create Ad</string>
     <string name="price">Price</string>
     <string name="category">Category</string>
+    <string name="write_a_message">Write a message</string>
+    <string name="sendimage">sendImage</string>
 
 </resources>
