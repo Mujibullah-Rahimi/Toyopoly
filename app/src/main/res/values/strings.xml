@@ -32,4 +32,10 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="sign_out">Sign out</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="create_ad">Create Ad</string>
+    <string name="price">Price</string>
+    <string name="category">Category</string>
+
 </resources>
