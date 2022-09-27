@@ -16,7 +16,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class CreateAdsFragment : Fragment() {
+class CreateAdFragment : Fragment() {
     val db = Firebase.firestore
     val user = Firebase.auth.currentUser
 
@@ -25,7 +25,7 @@ class CreateAdsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_createads, container, false)
+        return inflater.inflate(R.layout.fragment_createad, container, false)
     }
 
 
