@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Vare"
+                android:id="@+id/VareAd"
                 android:text="test"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Desc"
+                android:id="@+id/DescAd"
                 android:text="test"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
@@ -72,7 +72,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Price"
+                android:id="@+id/PriceAd"
                 android:text="test"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
@@ -93,7 +93,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/TimeStamp"
+                android:id="@+id/TimeStampAd"
                 android:text="test"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
@@ -114,7 +114,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Cat"
+                android:id="@+id/CatAd"
                 android:text="test"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
