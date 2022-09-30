@@ -1,4 +1,4 @@
-package no.hiof.toyopoly
+package no.hiof.toyopoly.login
 
 import android.os.Bundle
 import android.text.NoCopySpan
@@ -15,7 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import no.hiof.toyopoly.userManagment.DateInputMask
+import no.hiof.toyopoly.R
+import no.hiof.toyopoly.util.DateInputMask
 
 class RegisterFragment : Fragment(), NoCopySpan{
     private lateinit var auth:FirebaseAuth
@@ -56,7 +57,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
             val firstName: String = registerFirstName.text.toString()
             val lastName: String = registerLastName.text.toString()
             val navController = findNavController()
-            val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+            val action = no.hiof.toyopoly.login.RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
 
             if(
                 TextUtils.isEmpty(email) ||
