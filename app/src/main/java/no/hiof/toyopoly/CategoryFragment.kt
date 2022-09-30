@@ -1,5 +1,6 @@
 package no.hiof.toyopoly
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,14 +35,15 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager (It)
+        recyclerView = view.findViewById(R.id.recyclerView)
 
-        layoutManager = LinearLayoutManager(activity)
+        recyclerView.layoutManager = LinearLayoutManager (this.activity)
 
         adsArrayList = arrayListOf()
 
         adapterAds = AdapterAds(adsArrayList)
+
+        recyclerView.adapter = adapterAds
 
         getAds()
     }
@@ -51,7 +53,7 @@ class CategoryFragment : Fragment() {
 
         db = FirebaseFirestore.getInstance()
         db.collection("ads")
-            .whereEqualTo("Category", "Toy-car")
+            .whereEqualTo("Category", args.category)
             .addSnapshotListener(object : EventListener<QuerySnapshot>{
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                     if(error != null){
