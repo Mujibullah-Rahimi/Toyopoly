@@ -31,51 +31,17 @@ class HomeFragment : Fragment(), View.OnClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (user != null){
-            Log.d(CurrentUser_TAG, FirebaseAuth.getInstance().currentUser.toString())
-        }else{
-            Log.d(CurrentUser_TAG,FirebaseAuth.getInstance().currentUser.toString())
-        }
-
         val signOutBtn = view.findViewById<Button>(R.id.signOutBtn)
         signOutBtn.setOnClickListener(this)
-
-        //val dollsButton = view.findViewById<Button>(R.id.dollsButton)
-        //dollsButton.setOnClickListener(this)
-        //val carsButton = view.findViewById<Button>(R.id.carsButton)
-        //carsButton.setOnClickListener(this)
-
-        val createAdsButton = view.findViewById<Button>(R.id.createAdButton)
-        createAdsButton.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         val navController = v?.findNavController()
-        val signOutBtn = v?.findViewById<Button>(R.id.signOutBtn)
-        //val dollsButton = v?.findViewById<Button>(R.id.dollsButton)
-        //val carsButton = v?.findViewById<Button>(R.id.carsButton)
-        val createAdsButton = v?.findViewById<Button>(R.id.createAdButton)
-
-        val CategoryAction = HomeFragmentDirections.actionHomeFragmentToCategoryFragment()
-        val CreateAdAction = HomeFragmentDirections.actionHomeFragmentToCreateAdsFragment()
-
         when (v?.id){
             R.id.signOutBtn -> {
                 Firebase.auth.signOut()
                 navController?.navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
                 Toast.makeText(activity,"Logged out", Toast.LENGTH_LONG).show()
-            }
-            //R.id.dollsButton -> {
-            //    CategoryAction.category = dollsButton?.text.toString()
-            //    navController?.navigate(CategoryAction)
-            //}
-            //R.id.carsButton -> {
-            //    CategoryAction.category = carsButton?.text.toString()
-            //    navController?.navigate(CategoryAction)
-            //}
-            R.id.createAdButton -> {
-                CreateAdAction.createAds = createAdsButton?.text.toString()
-                navController?.navigate(CreateAdAction)
             }
         }
     }
