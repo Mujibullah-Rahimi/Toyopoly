@@ -6,4 +6,4 @@ data class UserModel(
     val birthday:String,
     val address:String,
     val email:String,
-)
+){}

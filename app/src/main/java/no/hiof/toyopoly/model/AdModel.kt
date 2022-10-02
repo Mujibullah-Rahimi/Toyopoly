@@ -9,4 +9,4 @@ data class AdModel(
     val category: String,
     val userId: String,
     val timestamp: com.google.firebase.Timestamp
-                   )
+                   ){}
