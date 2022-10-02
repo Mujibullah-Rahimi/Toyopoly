@@ -6,15 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import no.hiof.toyopoly.model.AdModel
 
 class CreateAdFragment : Fragment() {
     val db = Firebase.firestore
@@ -53,23 +51,19 @@ class CreateAdFragment : Fragment() {
         val priceFire = price?.text.toString()
         val spinner = view?.findViewById<Spinner>(R.id.spinner_catergory)
         val spinnerFire = spinner?.selectedItem.toString()
-        val userUID = user?.uid
+        val userUID = user!!.uid
 
-        val ad = hashMapOf(
-            "TimeStamp" to Timestamp.now(),
-            "vale" to titleFire,
-            "Desc" to descFire,
-            "Price" to priceFire,
-            "Category" to spinnerFire,
-            "UserID" to userUID
+        val adToSave = AdModel(titleFire,descFire,priceFire,spinnerFire,userUID, Timestamp.now())
 
-        )
-
-        db.collection("ads").document()
-            .set(ad)
+        db.collection("Ads").document()
+            .set(adToSave)
              .addOnSuccessListener {
-                 Log.d(TAG, "DocumentSnapshot successfully updated!" )
+                 Toast.makeText(activity, "Ad was created successfully!", Toast.LENGTH_LONG)
+                     .show()
         }
-              .addOnFailureListener {e -> Log.w(TAG, "Error adding document", e)}
+              .addOnFailureListener {
+                  Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
+                      .show()
+              }
     }
 }

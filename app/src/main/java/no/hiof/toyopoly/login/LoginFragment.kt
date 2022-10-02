@@ -50,7 +50,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(requireActivity(), OnCompleteListener { task ->
                     if(task.isSuccessful) {
                         Toast.makeText(activity, "Successfully Logged In", Toast.LENGTH_LONG).show()
-                        val action = no.hiof.toyopoly.login.LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         navController?.navigate(action)
                     }else {
                         Toast.makeText(activity, "Login Failed ", Toast.LENGTH_LONG).show()
@@ -59,7 +59,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
             }
             R.id.registerButton ->{
                 val action =
-                    no.hiof.toyopoly.login.LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                    LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 navController?.navigate(action)
             }
         }

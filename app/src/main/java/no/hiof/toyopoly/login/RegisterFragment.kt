@@ -17,13 +17,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.R
+import no.hiof.toyopoly.model.UserModel
 import no.hiof.toyopoly.util.DateInputMask
 
 
 class RegisterFragment : Fragment(), NoCopySpan{
     private lateinit var auth:FirebaseAuth
-    private lateinit var registerEmail: EditText
-    private lateinit var registerPassword: EditText
     private lateinit var registerButton: Button
 
     override fun onCreateView(
@@ -40,9 +39,11 @@ class RegisterFragment : Fragment(), NoCopySpan{
         auth = FirebaseAuth.getInstance()
         val db = Firebase.firestore
 
-        registerEmail  = requireView().findViewById(R.id.emailAddressRegister)
-        registerPassword  = requireView().findViewById(R.id.passwordRegister)
         registerButton = requireView().findViewById(R.id.UserRegisterButton)
+
+        val registerEmail  = requireView().findViewById<EditText>(R.id.emailAddressRegister)
+        val registerPassword  = requireView().findViewById<EditText>(R.id.passwordRegister)
+
 
         val registerFirstName = requireView().findViewById<EditText>(R.id.firstName)
         val registerLastName = requireView().findViewById<EditText>(R.id.lastName)
@@ -59,7 +60,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
             val firstName: String = registerFirstName.text.toString()
             val lastName: String = registerLastName.text.toString()
             val navController = findNavController()
-            val action = no.hiof.toyopoly.login.RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+            val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
 
             if(
                 TextUtils.isEmpty(email) ||
@@ -78,13 +79,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener((requireActivity()), OnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val userToSave = hashMapOf(
-                                "firstName" to registerFirstName.text.toString(),
-                                "lastName" to registerLastName.text.toString(),
-                                "birthday" to registerBirthday.text.toString(),
-                                "address" to registerAddress.text.toString(),
-                                "email" to email
-                            )
+                            val userToSave = UserModel(firstName, lastName, birthday, address, email)
                             db.collection("Users").document(auth.currentUser!!.uid)
                                 .set(userToSave)
                             Toast.makeText(activity, "Successfully Registered", Toast.LENGTH_LONG)
