@@ -57,7 +57,7 @@ class CreateAdFragment : Fragment() {
 
         val ad = hashMapOf(
             "TimeStamp" to Timestamp.now(),
-            "vale" to titleFire,
+            "Vare" to titleFire,
             "Desc" to descFire,
             "Price" to priceFire,
             "Category" to spinnerFire,
