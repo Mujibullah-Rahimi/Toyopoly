@@ -14,7 +14,11 @@
             android:name="category"
             app:argType="string"
             android:defaultValue="nocategory" />
+        <action
+            android:id="@+id/action_categoryFragment_to_adDetailFragment"
+            app:destination="@id/adDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="no.hiof.toyopoly.HomeFragment"
@@ -31,9 +35,6 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@+id/homeFragment"
             app:popUpToInclusive="true"/>
-        <action
-            android:id="@+id/action_homeFragment_to_adDetailFragment"
-            app:destination="@id/adDetailFragment" />
     </fragment>
 
     <fragment
@@ -49,6 +50,7 @@
             android:id="@+id/action_createAdsFragment_to_adDetailFragment"
             app:destination="@id/adDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="no.hiof.toyopoly.login.LoginFragment"
@@ -69,6 +71,7 @@
             app:popUpTo="@+id/loginFragment"
             app:popUpToInclusive="true"/>
     </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="no.hiof.toyopoly.login.RegisterFragment"
@@ -83,11 +86,16 @@
             android:id="@+id/action_registerFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/adDetailFragment"
         android:name="no.hiof.toyopoly.AdDetailFragment"
         android:label="fragment_ad_detail"
         tools:layout="@layout/fragment_ad_detail" >
+        <argument
+            android:name="ad"
+            app:argType="string"
+            android:defaultValue="noad" />
         <action
             android:id="@+id/action_adDetailFragment_to_messageFragment"
             app:destination="@id/messageFragment" />
@@ -95,6 +103,7 @@
             android:name="AdId"
             app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/messageFragment"
         android:name="no.hiof.toyopoly.MessageFragment"

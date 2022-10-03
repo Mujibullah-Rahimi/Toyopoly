@@ -12,6 +12,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import no.hiof.toyopoly.model.AdModel
+import android.widget.TextView
+import androidx.navigation.fragment.navArgs
 
 class AdDetailFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
@@ -50,4 +52,10 @@ class AdDetailFragment : Fragment() {
 //        value.setText(ad?.value)
 //
 //    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val categoryName = view.findViewById<TextView>(R.id.adDetailTitle)
+        categoryName.text = args.ad
+    }
 }
