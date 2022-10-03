@@ -65,9 +65,9 @@ class MessageFragment : Fragment(), View.OnClickListener {
         sendButton?.setOnClickListener(this)
 
 
-        val messageRecyclerView = view.findViewById<RecyclerView>(R.id.chatRecyclerView)
-
-        messageRecyclerView.adapter = ChatListAdapter(messageList)
+//        val messageRecyclerView = view.findViewById<RecyclerView>(R.id.chatRecyclerView)
+//
+//        messageRecyclerView.adapter = ChatListAdapter(messageList)
     }
 
     fun saveMsg(){
