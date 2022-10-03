@@ -17,8 +17,8 @@ import androidx.navigation.fragment.navArgs
 
 class AdDetailFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
-    private val args : AdDetailFragmentArgs by navArgs()
     private lateinit var docSnap : DocumentSnapshot
+    private val args: AdDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
