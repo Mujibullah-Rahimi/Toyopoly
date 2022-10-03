@@ -39,5 +39,11 @@
     <string name="category">Category</string>
     <string name="write_a_message">Write a message</string>
     <string name="sendimage">sendImage</string>
+    <string name="messages">Messages</string>
+    <string name="new_ad">New ad</string>
+    <string name="home">Home</string>
+    <string name="profilepicture">profilePicture</string>
+    <string name="enter_message">Enter Message</string>
+    <string name="send_message">send message</string>
 
 </resources>

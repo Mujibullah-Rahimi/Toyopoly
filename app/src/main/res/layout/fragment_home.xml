@@ -36,54 +36,10 @@
         android:id="@+id/signOutBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_out"
-        app:layout_constraintBottom_toBottomOf="@+id/dollsButton"
-        app:layout_constraintEnd_toStartOf="@+id/dollsButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/searchBar"
-        app:layout_constraintTop_toTopOf="@+id/dollsButton" />
-
-    <Button
-        android:id="@+id/carsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cars"
-        app:layout_constraintBottom_toBottomOf="@+id/dollsButton"
-        app:layout_constraintEnd_toEndOf="@+id/searchButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/dollsButton"
-        app:layout_constraintTop_toTopOf="@+id/dollsButton" />
-
-    <Button
-        android:id="@+id/dollsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="@string/dolls"
-        app:layout_constraintEnd_toStartOf="@+id/carsButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/signOutBtn"
+        android:text="@string/sign_out"
+        app:layout_constraintEnd_toEndOf="@+id/searchButton"
+        app:layout_constraintStart_toStartOf="@+id/searchBar"
         app:layout_constraintTop_toBottomOf="@+id/searchBar" />
-
-    <TextView
-        android:id="@+id/currentUserText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="textview"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/carsButton"
-        app:layout_constraintStart_toStartOf="@+id/signOutBtn"
-        app:layout_constraintTop_toBottomOf="@+id/dollsButton" />
-
-    <Button
-        android:id="@+id/createAdButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/createAds"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/carsButton"
-        app:layout_constraintStart_toStartOf="@+id/signOutBtn"
-        app:layout_constraintTop_toBottomOf="@+id/currentUserText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

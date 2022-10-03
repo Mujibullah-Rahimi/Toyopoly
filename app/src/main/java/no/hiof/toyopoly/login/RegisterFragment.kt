@@ -1,26 +1,28 @@
-package no.hiof.toyopoly
+package no.hiof.toyopoly.login
 
 import android.os.Bundle
 import android.text.NoCopySpan
-import androidx.fragment.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import android.text.TextUtils
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import no.hiof.toyopoly.userManagment.DateInputMask
+import no.hiof.toyopoly.R
+import no.hiof.toyopoly.model.UserModel
+import no.hiof.toyopoly.util.DateInputMask
+
 
 class RegisterFragment : Fragment(), NoCopySpan{
     private lateinit var auth:FirebaseAuth
-    private lateinit var registerEmail: EditText
-    private lateinit var registerPassword: EditText
     private lateinit var registerButton: Button
 
     override fun onCreateView(
@@ -37,9 +39,11 @@ class RegisterFragment : Fragment(), NoCopySpan{
         auth = FirebaseAuth.getInstance()
         val db = Firebase.firestore
 
-        registerEmail  = requireView().findViewById(R.id.emailAddressRegister)
-        registerPassword  = requireView().findViewById(R.id.passwordRegister)
         registerButton = requireView().findViewById(R.id.UserRegisterButton)
+
+        val registerEmail  = requireView().findViewById<EditText>(R.id.emailAddressRegister)
+        val registerPassword  = requireView().findViewById<EditText>(R.id.passwordRegister)
+
 
         val registerFirstName = requireView().findViewById<EditText>(R.id.firstName)
         val registerLastName = requireView().findViewById<EditText>(R.id.lastName)
@@ -75,13 +79,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener((requireActivity()), OnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val userToSave = hashMapOf(
-                                "firstName" to registerFirstName.text.toString(),
-                                "lastName" to registerLastName.text.toString(),
-                                "birthday" to registerBirthday.text.toString(),
-                                "address" to registerAddress.text.toString(),
-                                "email" to email
-                            )
+                            val userToSave = UserModel(firstName, lastName, birthday, address, email)
                             db.collection("Users").document(auth.currentUser!!.uid)
                                 .set(userToSave)
                             Toast.makeText(activity, "Successfully Registered", Toast.LENGTH_LONG)
@@ -94,5 +92,15 @@ class RegisterFragment : Fragment(), NoCopySpan{
                     })
                 }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
 }

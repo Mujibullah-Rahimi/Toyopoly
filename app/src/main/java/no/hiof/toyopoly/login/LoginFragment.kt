@@ -1,17 +1,19 @@
-package no.hiof.toyopoly
+package no.hiof.toyopoly.login
 
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import no.hiof.toyopoly.R
+
 
 class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
@@ -56,9 +58,20 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 })
             }
             R.id.registerButton ->{
-                val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                val action =
+                    LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 navController?.navigate(action)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
 }

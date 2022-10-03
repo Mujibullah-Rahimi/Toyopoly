@@ -1,4 +1,4 @@
-package no.hiof.toyopoly.userManagment
+package no.hiof.toyopoly.util
 
 import android.text.Editable
 import android.text.NoCopySpan
