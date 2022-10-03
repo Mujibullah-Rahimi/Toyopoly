@@ -56,12 +56,13 @@ class CategoryFragment : Fragment(), View.OnClickListener {
         val navController = v?.findNavController()
         val adBtn = v?.findViewById<Button>(R.id.btnAd)
 
-        val AdAction = CategoryFragmentDirections.actionCategoryFragmentToAdDetailFragment()
+        //val AdAction = CategoryFragmentDirections.actionCategoryFragmentToAdDetailFragment()
 
         when (v?.id){
             R.id.btnAd -> {
-                AdAction.ad = adBtn?.text.toString()
-                navController?.navigate(AdAction)
+                //AdAction.ad = adBtn?.text.toString()
+                //navController?.navigate(AdAction)
+                Log.v("AD_CLICKED", R.id.btnAd.toString())
             }
         }
     }
