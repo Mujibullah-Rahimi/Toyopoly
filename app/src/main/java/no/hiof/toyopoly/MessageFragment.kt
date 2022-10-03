@@ -10,8 +10,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.adapter.ChatListAdapter
 import no.hiof.toyopoly.model.MessageModel
 
@@ -61,13 +63,19 @@ class MessageFragment : Fragment(), View.OnClickListener {
 
         val sendButton = view.findViewById<Button>(R.id.sendMessageButton)
         sendButton?.setOnClickListener(this)
+
+
+        val messageRecyclerView = view.findViewById<RecyclerView>(R.id.chatRecyclerView)
+
+        messageRecyclerView.adapter = ChatListAdapter(messageList)
     }
 
     fun saveMsg(){
         val messageInput = view?.findViewById<EditText>(R.id.editText_message)
         val sendMsgButton = view?.findViewById<Button>(R.id.sendMessageButton)
         val message = messageInput?.text.toString()
-        val messageToSave = MessageModel(message, auth.currentUser!!.uid)
+
+        val messageToSave = MessageModel(message, Timestamp.now(), auth.currentUser!!.uid)
 
         if (messageToSave.message.isNotEmpty()){
             db.collection("Messages").document()
