@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firestore.v1.Document
 import no.hiof.toyopoly.model.AdModel
 
 class CreateAdFragment : Fragment() {
@@ -26,7 +29,9 @@ class CreateAdFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_createad, container, false)
     }
 
-
+    private fun randomID(): String = List(16) {
+        (('a'..'z') + ('A'..'Z') + ('0'..'9')).random()
+    }.joinToString("")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val spinner : Spinner = view.findViewById(R.id.spinner_catergory)
@@ -52,15 +57,24 @@ class CreateAdFragment : Fragment() {
         val spinner = view?.findViewById<Spinner>(R.id.spinner_catergory)
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
+        var documentId = randomID()
+
 
         val adToSave = AdModel(titleFire,descFire,priceFire,spinnerFire,userUID, Timestamp.now())
-
-        db.collection("Ads").document()
+        db.collection("Ads").document(documentId)
             .set(adToSave)
              .addOnSuccessListener {
+                 title!!.text.clear()
+                 desc!!.text.clear()
+                 price!!.text.clear()
                  Toast.makeText(activity, "Ad was created successfully!", Toast.LENGTH_LONG)
                      .show()
-        }
+
+        }.addOnCompleteListener {
+                val action  = CreateAdFragmentDirections.actionCreateAdsFragmentToAdDetailFragment(documentId)
+                val navController = view?.findNavController()
+                navController?.navigate(action)
+            }
               .addOnFailureListener {
                   Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
                       .show()
