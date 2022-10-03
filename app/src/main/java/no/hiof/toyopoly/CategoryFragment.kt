@@ -1,12 +1,13 @@
 package no.hiof.toyopoly
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 
 
-class CategoryFragment : Fragment() {
+class CategoryFragment : Fragment(), View.OnClickListener {
     private val args: CategoryFragmentArgs by navArgs()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adsArrayList: ArrayList<Ads>
@@ -30,6 +31,8 @@ class CategoryFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category, container, false)
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,15 +48,30 @@ class CategoryFragment : Fragment() {
 
         recyclerView.adapter = adapterAds
 
+
         getAds()
+    }
+
+    override fun onClick(v: View?) {
+        val navController = v?.findNavController()
+        val adBtn = v?.findViewById<Button>(R.id.btnAd)
+
+        val AdAction = CategoryFragmentDirections.actionCategoryFragmentToAdDetailFragment()
+
+        when (v?.id){
+            R.id.btnAd -> {
+                AdAction.ad = adBtn?.text.toString()
+                navController?.navigate(AdAction)
+            }
+        }
     }
 
     fun getAds(){
 
 
         db = FirebaseFirestore.getInstance()
-        db.collection("ads")
-            .whereEqualTo("Category", args.category)
+        db.collection("Ads")
+            .whereEqualTo("category", args.category)
             .addSnapshotListener(object : EventListener<QuerySnapshot>{
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                     if(error != null){

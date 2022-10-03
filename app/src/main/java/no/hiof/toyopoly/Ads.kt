@@ -2,4 +2,4 @@ package no.hiof.toyopoly
 
 import java.security.Timestamp
 
-data class Ads(var Vare: String = "", var Desc: String = "", var Price: String = "", var Category: String = "")
+data class Ads(var value: String = "", var description: String = "", var price: String = "", var category: String = "", var Id: String ="")
