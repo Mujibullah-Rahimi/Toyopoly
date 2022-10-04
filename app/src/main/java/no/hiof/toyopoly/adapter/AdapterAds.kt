@@ -34,7 +34,7 @@ class AdapterAds(
 
         fun bindItems(ad : AdModel) = with(itemView){
             value.text = ad.value
-            price.text = ad.price
+            price.text = ad.price + " kr"
             setOnClickListener{ listener(ad) }
         }
     }
