@@ -13,6 +13,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.model.AdModel
 import no.hiof.toyopoly.util.RandomId
+import kotlin.random.Random
 
 class CreateAdFragment : Fragment() {
     val db = Firebase.firestore
@@ -36,11 +37,11 @@ class CreateAdFragment : Fragment() {
         }
         val saveButton = view.findViewById<Button>(R.id.createAd)
         saveButton.setOnClickListener{
-            saveAd()
+            saveAd(RandomId.randomID())
         }
     }
 
-    fun saveAd(){
+    fun saveAd(documentId:String){
         val title = view?.findViewById<EditText>(R.id.title_create_ad)
         val titleFire = title?.text.toString()
         val desc = view?.findViewById<EditText>(R.id.desc_createAd)
@@ -50,10 +51,17 @@ class CreateAdFragment : Fragment() {
         val spinner = view?.findViewById<Spinner>(R.id.spinner_catergory)
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
-        val documentId = RandomId.randomID()
 
 
-        val adToSave = AdModel(documentId,titleFire,descFire,priceFire,spinnerFire,userUID, Timestamp.now())
+        val adToSave = AdModel(
+            documentId,
+            titleFire,
+            descFire,
+            priceFire,
+            spinnerFire,
+            userUID,
+            Timestamp.now()
+        )
         db.collection("Ads").document(documentId)
             .set(adToSave)
              .addOnSuccessListener {
