@@ -61,7 +61,7 @@ class AdDetailFragment : Fragment() {
                 if (document != null) {
                     Log.d("isHere", "Snapshot: ${document.data}")
                     title_ad?.text = document.getString("value")
-                    price_ad?.text = document.getString("price")
+                    price_ad?.text = document.getString("price") + " kr"
                     desc_ad?.text = document.getString("description")
                 }
                 else{
