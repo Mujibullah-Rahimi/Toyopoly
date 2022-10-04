@@ -31,8 +31,7 @@ class AdDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val docRef = db.collection("Ads").document(args.adId)
-
+        val docRef = db.collection("Ads").document(args.adId!!)
         docRef.get().addOnCompleteListener { task->
             if (task.isSuccessful){
                 Log.v("AD_DETAIL", task.result.toString())
@@ -56,6 +55,6 @@ class AdDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val categoryName = view.findViewById<TextView>(R.id.adDetailTitle)
-        categoryName.text = args.ad
+        //categoryName.text = args.ad
     }
 }
