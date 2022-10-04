@@ -6,15 +6,12 @@ import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.model.AdModel
 
@@ -38,7 +35,7 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView = view.findViewById(R.id.recyclerViewForAllToys)
 
         recyclerView.layoutManager = LinearLayoutManager (this.activity)
 
@@ -52,7 +49,6 @@ class CategoryFragment : Fragment() {
         }
 
         recyclerView.adapter = adapterAds
-
 
         getAds()
     }
