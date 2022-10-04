@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.adapter.ChatListAdapter
+import no.hiof.toyopoly.model.AdModel
 import no.hiof.toyopoly.model.MessageModel
 
 class MessageFragment : Fragment(), View.OnClickListener {
@@ -88,6 +89,23 @@ class MessageFragment : Fragment(), View.OnClickListener {
                 }
         }
     }
+//    fun getMessages(){
+//
+//        db.collection("Messages").addSnapshotListener(object : EventListener<QuerySnapshot>{
+//            override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+//            if(error != null){
+//                Log.e("Firestore ERROR", error.message.toString())
+//                return
+//            }
+//            for ( dc : DocumentChange in value?.documentChanges!!) {
+//                if (dc.type == DocumentChange.Type.ADDED){
+//                    messageList.add(dc.document.toObject(MessageModel::class.java))
+//                }
+//            }
+//            ChatListAdapter.notifyDataSetChanged()
+//        }
+//        })
+//    }
     override fun onClick(view: View?) {
         saveMsg()
     }

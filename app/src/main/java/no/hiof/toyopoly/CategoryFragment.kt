@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,12 +15,14 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
+import no.hiof.toyopoly.adapter.AdapterAds
+import no.hiof.toyopoly.model.AdModel
 
 
-class CategoryFragment : Fragment(), View.OnClickListener {
+class CategoryFragment : Fragment() {
     private val args: CategoryFragmentArgs by navArgs()
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adsArrayList: ArrayList<Ads>
+    private lateinit var adsArrayList: ArrayList<AdModel>
     private lateinit var adapterAds: AdapterAds
     private lateinit var db: FirebaseFirestore
 
@@ -31,7 +32,6 @@ class CategoryFragment : Fragment(), View.OnClickListener {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category, container, false)
-
 
     }
 
@@ -44,7 +44,12 @@ class CategoryFragment : Fragment(), View.OnClickListener {
 
         adsArrayList = arrayListOf()
 
-        adapterAds = AdapterAds(adsArrayList)
+        adapterAds = AdapterAds(adsArrayList){ad ->
+            val action = AllToysFragmentDirections.actionAllToysFragmentToAdDetailFragment(ad.adId)
+            val navController = view.findNavController()
+
+            navController.navigate(action)
+        }
 
         recyclerView.adapter = adapterAds
 
@@ -52,24 +57,7 @@ class CategoryFragment : Fragment(), View.OnClickListener {
         getAds()
     }
 
-    override fun onClick(v: View?) {
-        val navController = v?.findNavController()
-        val adBtn = v?.findViewById<Button>(R.id.btnAd)
-
-        //val AdAction = CategoryFragmentDirections.actionCategoryFragmentToAdDetailFragment()
-
-        when (v?.id){
-            R.id.btnAd -> {
-                //AdAction.ad = adBtn?.text.toString()
-                //navController?.navigate(AdAction)
-                Log.v("AD_CLICKED", R.id.btnAd.toString())
-            }
-        }
-    }
-
     fun getAds(){
-
-
         db = FirebaseFirestore.getInstance()
         db.collection("Ads")
             .whereEqualTo("category", args.category)
@@ -81,13 +69,11 @@ class CategoryFragment : Fragment(), View.OnClickListener {
                     }
                     for ( dc : DocumentChange in value?.documentChanges!!) {
                         if (dc.type == DocumentChange.Type.ADDED){
-                            adsArrayList.add(dc.document.toObject(Ads::class.java))
+                            adsArrayList.add(dc.document.toObject(AdModel::class.java))
                         }
                     }
                     adapterAds.notifyDataSetChanged()
                 }
-
             })
     }
-
-    }
+}
