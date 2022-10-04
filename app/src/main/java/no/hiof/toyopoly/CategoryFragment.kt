@@ -42,13 +42,15 @@ class CategoryFragment : Fragment() {
         adsArrayList = arrayListOf()
 
         adapterAds = AdapterAds(adsArrayList){ad ->
-            val action = AllToysFragmentDirections.actionAllToysFragmentToAdDetailFragment(ad.adId)
+            val action = CategoryFragmentDirections.actionCategoryFragmentToAdDetailFragment(ad.adId)
             val navController = view.findNavController()
 
             navController.navigate(action)
         }
 
         recyclerView.adapter = adapterAds
+
+        println(args.category)
 
         getAds()
     }
