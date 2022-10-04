@@ -8,16 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import no.hiof.toyopoly.model.AdModel
 import android.widget.TextView
 import androidx.navigation.fragment.navArgs
+import com.google.firebase.firestore.*
 
 class AdDetailFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
-    private lateinit var docSnap : DocumentSnapshot
+    private lateinit var docSnap: DocumentSnapshot
     private val args: AdDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -31,17 +30,49 @@ class AdDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val docRef = db.collection("Ads").document(args.adId!!)
-        docRef.get().addOnCompleteListener { task->
-            if (task.isSuccessful){
-                Log.v("AD_DETAIL", task.result.toString())
-                docSnap = task.result
-            }
-            else{
-                Log.v("AD_DETAIL", task.exception.toString())
-            }
-        }
+
+        //.addOnCompleteListener { task->
+        //if (task.isSuccessful){
+        //  Log.v("AD_DETAIL", task.result.toString())
+        //docSnap = task.result
+        //}
+        //else{
+        //  Log.v("AD_DETAIL", task.exception.toString())
+        //}
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        getAds()
+        val categoryName = view.findViewById<TextView>(R.id.adDetailTitle)
+        //categoryName.text = args.ad
+    }
+
+    fun getAds(){
+        val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
+        val price_ad = view?.findViewById<TextView>(R.id.adDetailPrice)
+        val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
+
+        val docRef = db.collection("Ads").document(args.adId!!)
+        docRef
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d("isHere", "Snapshot: ${document.data}")
+                    title_ad?.text = document.getString("value")
+                    price_ad?.text = document.getString("price")
+                    desc_ad?.text = document.getString("description")
+                }
+                else{
+                    Log.d("isNotHere", "The document snapshot doesn't exist")
+                }
+            }
+            .addOnFailureListener{e -> Log.d("Error", "Fail at: ", e)}
+    }
+}
+
+
 
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 //        super.onViewCreated(view, savedInstanceState)
@@ -51,10 +82,3 @@ class AdDetailFragment : Fragment() {
 //        value.setText(ad?.value)
 //
 //    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val categoryName = view.findViewById<TextView>(R.id.adDetailTitle)
-        //categoryName.text = args.ad
-    }
-}
