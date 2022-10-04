@@ -13,14 +13,11 @@
         <argument
             android:name="category"
             app:argType="string"
-            android:defaultValue="nocategory" />
+            app:nullable="true" />
         <action
             android:id="@+id/action_categoryFragment_to_adDetailFragment"
             app:destination="@id/adDetailFragment" />
-        <argument
-            android:name="AdId"
-            app:argType="string"
-            app:nullable="true" />
+
     </fragment>
 
     <fragment
