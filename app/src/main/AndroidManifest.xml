@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="no.hiof.toyopoly">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Toyopoly"
         tools:targetApi="31">
-
+        <activity
+            android:name=".GoogleLogin"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"

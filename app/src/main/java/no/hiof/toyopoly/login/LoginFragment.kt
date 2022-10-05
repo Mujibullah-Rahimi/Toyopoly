@@ -34,10 +34,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
         val registerButton = view.findViewById<Button>(R.id.registerButton)
         registerButton.setOnClickListener(this)
+
     }
 
     override fun onClick(v: View?) {
-        auth = FirebaseAuth.getInstance()
         val navController = v?.findNavController()
         val emailField = requireView().findViewById<EditText>(R.id.emailAddressLogin)
         val passwordField = requireView().findViewById<EditText>(R.id.passwordLogin)
@@ -74,4 +74,5 @@ class LoginFragment : Fragment(), View.OnClickListener {
         super.onStop()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
+
 }
