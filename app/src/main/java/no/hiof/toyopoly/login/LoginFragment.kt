@@ -21,9 +21,12 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_login, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,10 +41,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = v?.findNavController()
         val emailField = requireView().findViewById<EditText>(R.id.emailAddressLogin)
         val passwordField = requireView().findViewById<EditText>(R.id.passwordLogin)
-
+        val navController = v?.findNavController()
         val email: String= emailField?.text.toString()
         val password: String = passwordField?.text.toString()
 
@@ -76,3 +78,4 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
 }
+

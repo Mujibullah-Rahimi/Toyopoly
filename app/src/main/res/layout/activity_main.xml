@@ -52,20 +52,19 @@
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/nav_drawer_menu" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/loginGoogleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loginGoogle"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.721"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.667" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="@string/loginGoogle" />
+    </LinearLayout>
+
+
+
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

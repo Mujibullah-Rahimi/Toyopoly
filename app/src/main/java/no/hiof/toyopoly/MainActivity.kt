@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,7 +23,6 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import no.hiof.toyopoly.databinding.ActivityMainBinding
-import no.hiof.toyopoly.login.LoginFragmentDirections
 
 class MainActivity : AppCompatActivity(){
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -32,9 +30,7 @@ class MainActivity : AppCompatActivity(){
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
 
-
-
-            override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -70,17 +66,14 @@ class MainActivity : AppCompatActivity(){
         binding.navView.setupWithNavController(navHostFragment.navController)
 
 
-       findViewById<Button>(R.id.loginGoogleButton).setOnClickListener {
+
+        findViewById<Button>(R.id.loginGoogleButton).setOnClickListener {
             signInGoogle()
-       }
-
+        }
     }
-
-
 
     private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
-
         launcher.launch(signInIntent)
     }
 
@@ -97,7 +90,6 @@ class MainActivity : AppCompatActivity(){
     private fun handleResult(task: Task<GoogleSignInAccount>) {
         if (task.isSuccessful) {
             val account : GoogleSignInAccount? = task.result
-
             if (account != null) {
                 updateUI(account)
             }
@@ -120,14 +112,10 @@ class MainActivity : AppCompatActivity(){
 
             } else {
                 Toast.makeText(this, it.exception.toString() , Toast.LENGTH_SHORT).show()
-                val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(action)
+
             }
         }
     }
-
-
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
