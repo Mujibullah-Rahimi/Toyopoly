@@ -52,4 +52,19 @@
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/nav_drawer_menu" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/loginGoogleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loginGoogle" />
+    </LinearLayout>
+
+
+
+
+
+
 </androidx.drawerlayout.widget.DrawerLayout>

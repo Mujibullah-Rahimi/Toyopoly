@@ -45,6 +45,11 @@
     <string name="profilepicture">profilePicture</string>
     <string name="enter_message">Enter Message</string>
     <string name="send_message">send message</string>
+<<<<<<< HEAD
     <string name="all_toys">All toys</string>
+=======
+    <string name="web_client_id">108228096973-aj8ki5ukd13hefadigjl53co5vpf3d59.apps.googleusercontent.com</string>
+    <string name="loginGoogle">login Google</string>
+>>>>>>> dev_Karlsen
 
 </resources>
