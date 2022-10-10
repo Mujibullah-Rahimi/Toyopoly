@@ -45,14 +45,13 @@ class AdDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getAds()
-        val categoryName = view.findViewById<TextView>(R.id.adDetailTitle)
-        //categoryName.text = args.ad
     }
 
     fun getAds(){
         val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
         val price_ad = view?.findViewById<TextView>(R.id.adDetailPrice)
         val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
+        //val time_ad = view?.findViewById<TextView>(R.id.adDetailTimeStamp)
 
         val docRef = db.collection("Ads").document(args.adId!!)
         docRef
@@ -63,6 +62,7 @@ class AdDetailFragment : Fragment() {
                     title_ad?.text = document.getString("value")
                     price_ad?.text = document.getString("price") + " kr"
                     desc_ad?.text = document.getString("description")
+                    //time_ad?.text = document.getDate("timestamp").toString()
                 }
                 else{
                     Log.d("isNotHere", "The document snapshot doesn't exist")
