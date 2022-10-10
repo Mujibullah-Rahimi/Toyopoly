@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import no.hiof.toyopoly.BaseApplication
 import no.hiof.toyopoly.R
+
 
 
 class LoginFragment : Fragment(), View.OnClickListener {
@@ -49,6 +51,12 @@ class LoginFragment : Fragment(), View.OnClickListener {
             R.id.loginButton -> {
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(requireActivity(), OnCompleteListener { task ->
                     if(task.isSuccessful) {
+                        var appCtx = (activity?.application as BaseApplication)
+                        appCtx.setUserId(auth.currentUser!!.uid)
+                        appCtx.setUserName(auth.currentUser!!.displayName.toString())
+
+                        //WaitingDialog.show
+
                         Toast.makeText(activity, "Successfully Logged In", Toast.LENGTH_LONG).show()
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         navController?.navigate(action)
