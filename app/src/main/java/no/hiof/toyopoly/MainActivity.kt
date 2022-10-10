@@ -1,13 +1,7 @@
 package no.hiof.toyopoly
 
-<<<<<<< HEAD
 // Sendbird
 
-import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-=======
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +9,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
->>>>>>> dev_Karlsen
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -29,13 +23,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.material.navigation.NavigationView
-<<<<<<< HEAD
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-=======
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
->>>>>>> dev_Karlsen
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(){
