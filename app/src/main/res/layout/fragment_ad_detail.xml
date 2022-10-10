@@ -91,6 +91,7 @@
         app:layout_constraintEnd_toEndOf="@+id/adDetailDescription"
         app:layout_constraintTop_toBottomOf="@+id/adDetailDescription" />
 
+
     <Button
         android:id="@+id/contactSellerButton"
         android:layout_width="wrap_content"

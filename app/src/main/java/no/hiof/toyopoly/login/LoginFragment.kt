@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import no.hiof.toyopoly.BaseApplication
 import no.hiof.toyopoly.R
+
 
 
 class LoginFragment : Fragment(), View.OnClickListener {
@@ -21,9 +23,12 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_login, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,6 +39,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
         val registerButton = view.findViewById<Button>(R.id.registerButton)
         registerButton.setOnClickListener(this)
+
     }
 
     override fun onClick(v: View?) {
@@ -49,6 +55,12 @@ class LoginFragment : Fragment(), View.OnClickListener {
             R.id.loginButton -> {
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(requireActivity(), OnCompleteListener { task ->
                     if(task.isSuccessful) {
+                        var appCtx = (activity?.application as BaseApplication)
+                        appCtx.setUserId(auth.currentUser!!.uid)
+                        appCtx.setUserName(auth.currentUser!!.displayName.toString())
+
+                        //WaitingDialog.show
+
                         Toast.makeText(activity, "Successfully Logged In", Toast.LENGTH_LONG).show()
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         navController?.navigate(action)
@@ -74,4 +86,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
         super.onStop()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
+
 }
+

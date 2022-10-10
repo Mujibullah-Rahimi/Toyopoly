@@ -17,4 +17,13 @@
         android:id="@+id/messageFragment"
         android:icon="@drawable/ic_baseline_message_24"
         android:title="@string/messages" />
+    <item
+        android:id="@+id/messageActivity"
+        android:icon="@drawable/ic_baseline_message_24"
+        android:title="messages (Sendbird)" />
+
+    <item
+        android:id="@+id/signOut"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        android:title="@string/sign_out" />
 </menu>

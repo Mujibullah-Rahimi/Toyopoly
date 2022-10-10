@@ -2,25 +2,21 @@ package no.hiof.toyopoly
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import com.google.firebase.ktx.Firebase
-import no.hiof.toyopoly.adapter.ChatListAdapter
-import no.hiof.toyopoly.model.AdModel
 import no.hiof.toyopoly.model.MessageModel
 
+
 class MessageFragment : Fragment(), View.OnClickListener {
-    private lateinit var messageList : ArrayList<MessageModel>
-    private lateinit var chatListAdapter : ChatListAdapter
+    private lateinit var messageList: ArrayList<MessageModel>
     private lateinit var auth:FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
@@ -29,30 +25,11 @@ class MessageFragment : Fragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//      EventChangeListener()
     }
 
-//    private fun EventChangeListener(){
-//        db.collection("Messages")
-//            .addSnapshotListener(object : EventListener<QuerySnapshot> {
-//                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
-//                    if (error != null){
-//                        Log.v("Firestore Error", error.message.toString())
-//                        return
-//                    }else{
-//                        for (doc : DocumentChange in value?.documentChanges!!){
-//                            if (doc.type == DocumentChange.Type.ADDED){
-//                                messageList.add(doc.document.toObject(MessageModel::class.java))
-//                            }
-//                        }
-//                        chatListAdapter.notifyDataSetChanged()
-//                    }
-//                }
-//            })
-//    }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_message, container, false)
@@ -65,10 +42,6 @@ class MessageFragment : Fragment(), View.OnClickListener {
         val sendButton = view.findViewById<Button>(R.id.sendMessageButton)
         sendButton?.setOnClickListener(this)
 
-
-//        val messageRecyclerView = view.findViewById<RecyclerView>(R.id.chatRecyclerView)
-//
-//        messageRecyclerView.adapter = ChatListAdapter(messageList)
     }
 
     fun saveMsg(){
@@ -89,23 +62,24 @@ class MessageFragment : Fragment(), View.OnClickListener {
                 }
         }
     }
-//    fun getMessages(){
-//
-//        db.collection("Messages").addSnapshotListener(object : EventListener<QuerySnapshot>{
-//            override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
-//            if(error != null){
-//                Log.e("Firestore ERROR", error.message.toString())
-//                return
-//            }
-//            for ( dc : DocumentChange in value?.documentChanges!!) {
-//                if (dc.type == DocumentChange.Type.ADDED){
-//                    messageList.add(dc.document.toObject(MessageModel::class.java))
-//                }
-//            }
-//            ChatListAdapter.notifyDataSetChanged()
-//        }
-//        })
-//    }
+    fun getMessages(){
+        db.collection("Messages")
+            .addSnapshotListener(object : EventListener<QuerySnapshot> {
+                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                    if(error != null){
+                        Log.e("Firestore ERROR", error.message.toString())
+                        return
+                    }
+                    for ( dc : DocumentChange in value?.documentChanges!!) {
+                        if (dc.type == DocumentChange.Type.ADDED){
+                            messageList.add(dc.document.toObject(MessageModel::class.java))
+                        }
+                    }
+                    //ChatListAdapter.notifyDataSetChanged()
+                }
+            })
+    }
+
     override fun onClick(view: View?) {
         saveMsg()
     }

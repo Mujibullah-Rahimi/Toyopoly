@@ -15,13 +15,11 @@ class AdapterAds(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
-
         return MyViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bindItems(adsList[position])
-        //val ad: AdModel = adsList[position]
     }
 
     override fun getItemCount(): Int {
