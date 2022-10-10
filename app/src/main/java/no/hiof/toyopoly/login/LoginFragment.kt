@@ -41,9 +41,11 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+        auth = FirebaseAuth.getInstance()
+        val navController = v?.findNavController()
         val emailField = requireView().findViewById<EditText>(R.id.emailAddressLogin)
         val passwordField = requireView().findViewById<EditText>(R.id.passwordLogin)
-        val navController = v?.findNavController()
+
         val email: String= emailField?.text.toString()
         val password: String = passwordField?.text.toString()
 

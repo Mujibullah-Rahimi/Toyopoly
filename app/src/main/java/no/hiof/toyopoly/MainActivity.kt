@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun handleResult(task: Task<GoogleSignInAccount>) {
+
         if (task.isSuccessful) {
             val account : GoogleSignInAccount? = task.result
             if (account != null) {
