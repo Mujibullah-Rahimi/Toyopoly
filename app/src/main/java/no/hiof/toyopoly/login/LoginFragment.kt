@@ -40,6 +40,8 @@ class LoginFragment : Fragment(), View.OnClickListener {
         val registerButton = view.findViewById<Button>(R.id.registerButton)
         registerButton.setOnClickListener(this)
 
+
+
     }
 
     override fun onClick(v: View?) {
