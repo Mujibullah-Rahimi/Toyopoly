@@ -136,6 +136,14 @@ class MainActivity : AppCompatActivity(){
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    public fun disableDrawer(){
+        val drawerLayout : DrawerLayout = binding.drawerLayout
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+    public fun enableDrawer(){
+        val drawerLayout : DrawerLayout = binding.drawerLayout
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+    }
 }
 
 

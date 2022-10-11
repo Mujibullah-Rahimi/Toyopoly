@@ -13,8 +13,8 @@ import androidx.navigation.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import no.hiof.toyopoly.BaseApplication
+import no.hiof.toyopoly.MainActivity
 import no.hiof.toyopoly.R
-
 
 
 class LoginFragment : Fragment(), View.OnClickListener {
@@ -82,11 +82,13 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+        (activity as MainActivity?)!!.disableDrawer()
         
     }
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        (activity as MainActivity?)!!.enableDrawer()
     }
 
 }

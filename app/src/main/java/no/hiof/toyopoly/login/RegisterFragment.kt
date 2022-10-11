@@ -11,11 +11,13 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import no.hiof.toyopoly.MainActivity
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.model.UserModel
 import no.hiof.toyopoly.util.DateInputMask
@@ -24,6 +26,8 @@ import no.hiof.toyopoly.util.DateInputMask
 class RegisterFragment : Fragment(), NoCopySpan{
     private lateinit var auth:FirebaseAuth
     private lateinit var registerButton: Button
+    private lateinit var cancelRegisterButton: Button
+    private lateinit var navController : NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +43,9 @@ class RegisterFragment : Fragment(), NoCopySpan{
         auth = FirebaseAuth.getInstance()
         val db = Firebase.firestore
 
+        navController = findNavController()
         registerButton = requireView().findViewById(R.id.UserRegisterButton)
+        cancelRegisterButton = requireView().findViewById(R.id.cancelRegistrationButton)
 
         val registerEmail  = requireView().findViewById<EditText>(R.id.emailAddressRegister)
         val registerPassword  = requireView().findViewById<EditText>(R.id.passwordRegister)
@@ -51,7 +57,10 @@ class RegisterFragment : Fragment(), NoCopySpan{
         val registerAddress = requireView().findViewById<EditText>(R.id.address)
 
         DateInputMask(registerBirthday).listen()
-
+        cancelRegisterButton.setOnClickListener{
+            val cancelAction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+            navController.navigate(cancelAction)
+        }
         registerButton.setOnClickListener{
             val email: String = registerEmail.text.toString()
             val password: String = registerPassword.text.toString()
@@ -59,7 +68,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
             val address: String = registerAddress.text.toString()
             val firstName: String = registerFirstName.text.toString()
             val lastName: String = registerLastName.text.toString()
-            val navController = findNavController()
+            //val navController = findNavController()
             val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
 
             if(
@@ -97,10 +106,12 @@ class RegisterFragment : Fragment(), NoCopySpan{
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+        (activity as MainActivity?)!!.disableDrawer()
     }
 
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        (activity as MainActivity?)!!.enableDrawer()
     }
 }
