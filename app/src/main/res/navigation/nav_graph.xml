@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/categoryFragment"
         android:name="no.hiof.toyopoly.CategoryFragment"
-        android:label="fragment_category"
+        android:label="Category"
         tools:layout="@layout/fragment_category" >
         <argument
             android:name="category"
@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="no.hiof.toyopoly.HomeFragment"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/createAdsFragment"
         android:name="no.hiof.toyopoly.CreateAdFragment"
-        android:label="fragment_createAds"
+        android:label="Create Ads"
         tools:layout="@layout/fragment_createad" >
         <action
             android:id="@+id/action_createAdsFragment_to_adDetailFragment"
@@ -45,7 +45,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="no.hiof.toyopoly.login.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
@@ -74,7 +74,7 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="no.hiof.toyopoly.login.RegisterFragment"
-        android:label="fragment_register"
+        android:label="Register"
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
@@ -89,7 +89,7 @@
     <fragment
         android:id="@+id/adDetailFragment"
         android:name="no.hiof.toyopoly.AdDetailFragment"
-        android:label="fragment_ad_detail"
+        android:label="Ad detail"
         tools:layout="@layout/fragment_ad_detail" >
         <action
             android:id="@+id/action_adDetailFragment_to_messageFragment"
@@ -102,7 +102,7 @@
     <fragment
         android:id="@+id/messageFragment"
         android:name="no.hiof.toyopoly.MessageFragment"
-        android:label="fragment_message"
+        android:label="Message"
         tools:layout="@layout/fragment_message" >
         <argument
             android:name="otherUserId"
@@ -111,7 +111,7 @@
     <fragment
         android:id="@+id/allToysFragment"
         android:name="no.hiof.toyopoly.AllToysFragment"
-        android:label="fragment_all_toys"
+        android:label="All toys"
         tools:layout="@layout/fragment_all_toys" >
         <action
             android:id="@+id/action_allToysFragment_to_categoryFragment"
