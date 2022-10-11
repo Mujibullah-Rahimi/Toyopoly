@@ -1,9 +1,6 @@
 package no.hiof.toyopoly
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,10 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
@@ -65,7 +60,7 @@ class MyPageFragment : Fragment(){
             }
 
             builder.setNegativeButton("Slett"){dialogInterface, which ->
-                delAd()
+                deleteAd(ad.adId)
                 Toast.makeText(this.activity,"clicked slett",Toast.LENGTH_LONG).show()
             }
             builder.show()
@@ -117,10 +112,9 @@ class MyPageFragment : Fragment(){
             .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
     }
 
-    fun delAd() {
-        val id = db.collection("Ads").whereEqualTo("adId", true).toString()
+    fun deleteAd(documentId: String) {
 
-        db.collection("Ads").document()
+        db.collection("Ads").document(documentId)
             .delete()
             .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
     }
