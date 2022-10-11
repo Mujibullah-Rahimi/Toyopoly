@@ -1,5 +1,6 @@
 package no.hiof.toyopoly.adapter
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import no.hiof.toyopoly.model.AdModel
 
 class AdapterAds(
     private val adsList: ArrayList<AdModel>,
-    private val listener: (AdModel) -> Unit
+    private val listener: (AdModel) -> Unit,
 ) : RecyclerView.Adapter<AdapterAds.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(){
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.homeFragment,R.id.allToysFragment, R.id.createAdsFragment, R.id.messageFragment,R.id.messageActivity, R.id.signOut
+                R.id.homeFragment,R.id.allToysFragment, R.id.createAdsFragment, R.id.messageFragment,R.id.messageActivity,R.id.myPageFragment, R.id.signOut
             ), drawerLayout
         )
 
