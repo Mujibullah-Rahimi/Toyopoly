@@ -13,7 +13,6 @@ import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment(), View.OnClickListener{
     val user = Firebase.auth.currentUser
-    val CurrentUser_TAG = "CURRENTUSER"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

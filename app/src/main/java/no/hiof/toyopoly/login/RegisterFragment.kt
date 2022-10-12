@@ -1,20 +1,30 @@
 package no.hiof.toyopoly.login
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.NoCopySpan
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.MainActivity
@@ -24,10 +34,13 @@ import no.hiof.toyopoly.util.DateInputMask
 
 
 class RegisterFragment : Fragment(), NoCopySpan{
+    private lateinit var db : FirebaseFirestore
     private lateinit var auth:FirebaseAuth
     private lateinit var registerButton: Button
     private lateinit var cancelRegisterButton: Button
+    private lateinit var googleLoginButton : Button
     private lateinit var navController : NavController
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +50,66 @@ class RegisterFragment : Fragment(), NoCopySpan{
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
-        val db = Firebase.firestore
+        db = Firebase.firestore
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(),gso)
+    }
+
+    private fun signInGoogle(){
+        val signInIntent = googleSignInClient.signInIntent
+        launcher.launch(signInIntent)
+    }
+
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result ->
+        if (result.resultCode == Activity.RESULT_OK){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            handleResult(task)
+        }
+    }
+    private fun handleResult(task: Task<GoogleSignInAccount>) {
+
+        if (task.isSuccessful) {
+            val account : GoogleSignInAccount? = task.result
+            if (account != null) {
+                updateUI(account)
+                val googleUserToSave = UserModel(account.givenName.toString(), account.familyName.toString(), account.email.toString())
+                Log.v("GOOGLE", googleUserToSave.toString())
+                db.collection("Users").document(auth.currentUser!!.uid)
+                    .set(googleUserToSave)
+            }
+
+        }else {
+            Toast.makeText(activity,task.exception.toString() , Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun updateUI(account: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+        auth.signInWithCredential(credential).addOnCompleteListener {
+            if (it.isSuccessful) {
+                val googleLoginSuccess = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
+                navController.navigate(googleLoginSuccess)
+                Toast.makeText(activity, "Successfully Logged In", Toast.LENGTH_LONG).show()
+
+            } else {
+                Toast.makeText(activity, it.exception.toString() , Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
         registerButton = requireView().findViewById(R.id.UserRegisterButton)
@@ -61,6 +129,11 @@ class RegisterFragment : Fragment(), NoCopySpan{
             val cancelAction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             navController.navigate(cancelAction)
         }
+        googleLoginButton = view.findViewById(R.id.googleLoginBtn)
+        googleLoginButton.setOnClickListener{
+            signInGoogle()
+        }
+
         registerButton.setOnClickListener{
             val email: String = registerEmail.text.toString()
             val password: String = registerPassword.text.toString()

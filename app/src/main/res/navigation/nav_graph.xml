@@ -120,4 +120,9 @@
             android:id="@+id/action_allToysFragment_to_adDetailFragment"
             app:destination="@id/adDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/googleLoginFragment"
+        android:name="no.hiof.toyopoly.login.GoogleLoginFragment"
+        android:label="fragment_google_login"
+        tools:layout="@layout/fragment_google_login" />
 </navigation>

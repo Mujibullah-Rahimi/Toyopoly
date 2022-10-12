@@ -128,4 +128,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.89" />
 
+    <Button
+        android:id="@+id/googleLoginBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="continue with google"
+        app:layout_constraintEnd_toEndOf="@+id/UserRegisterButton"
+        app:layout_constraintStart_toStartOf="@+id/cancelRegistrationButton"
+        app:layout_constraintTop_toBottomOf="@+id/UserRegisterButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
