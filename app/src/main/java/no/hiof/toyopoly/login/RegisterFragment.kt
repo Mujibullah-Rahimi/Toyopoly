@@ -82,10 +82,6 @@ class RegisterFragment : Fragment(), NoCopySpan{
             val account : GoogleSignInAccount? = task.result
             if (account != null) {
                 updateUI(account)
-                val googleUserToSave = UserModel(account.givenName.toString(), account.familyName.toString(), account.email.toString())
-                Log.v("GOOGLE", googleUserToSave.toString())
-                db.collection("Users").document(auth.currentUser!!.uid)
-                    .set(googleUserToSave)
             }
 
         }else {
@@ -98,6 +94,10 @@ class RegisterFragment : Fragment(), NoCopySpan{
 
         auth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
+                val googleUserToSave = UserModel(account.givenName.toString(), account.familyName.toString(), account.email.toString())
+                Log.v("GOOGLE", googleUserToSave.toString())
+                db.collection("Users").document(auth.currentUser!!.uid)
+                    .set(googleUserToSave)
                 val googleLoginSuccess = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
                 navController.navigate(googleLoginSuccess)
                 Toast.makeText(activity, "Successfully Logged In", Toast.LENGTH_LONG).show()
