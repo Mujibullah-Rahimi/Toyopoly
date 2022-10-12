@@ -59,6 +59,14 @@ dependencies {
     //implementation 'com.sendbird.sdk:sendbird-android-sdk:3.1.21'
     implementation 'com.sendbird.sdk:uikit:3.2.1'
 
+    def ev_version = "1.0.4"
+    //Easy validation
+    // Core
+    implementation "com.wajahatkarim:easyvalidation-core:$ev_version"
+
+    // Shows Toasts by default for every validation error
+    implementation "com.wajahatkarim:easyvalidation-toast:$ev_version"
+
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
     // test
     testImplementation 'junit:junit:4.13.2'

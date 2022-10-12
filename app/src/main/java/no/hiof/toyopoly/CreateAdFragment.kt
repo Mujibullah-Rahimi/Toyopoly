@@ -11,6 +11,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.wajahatkarim3.easyvalidation.core.view_ktx.*
 import no.hiof.toyopoly.model.AdModel
 import no.hiof.toyopoly.util.RandomId
 import kotlin.random.Random
@@ -41,7 +42,7 @@ class CreateAdFragment : Fragment() {
         }
     }
 
-    fun saveAd(documentId:String){
+    fun saveAd(documentId:String) {
         val title = view?.findViewById<EditText>(R.id.title_create_ad)
         val titleFire = title?.text.toString()
         val desc = view?.findViewById<EditText>(R.id.desc_createAd)
@@ -62,23 +63,60 @@ class CreateAdFragment : Fragment() {
             userUID,
             Timestamp.now()
         )
-        db.collection("Ads").document(documentId)
-            .set(adToSave)
-             .addOnSuccessListener {
-                 title!!.text.clear()
-                 desc!!.text.clear()
-                 price!!.text.clear()
-                 Toast.makeText(activity, "Ad was created successfully!", Toast.LENGTH_LONG)
-                     .show()
+        if(
+            !title!!.nonEmpty() ||
+            !desc!!.nonEmpty() ||
+            !price!!.nonEmpty()
+        ){
+            Toast.makeText(
+                activity,
+                "All fields needs to be filled",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else if (!title.maxLength(16) || !title.atleastOneUpperCase()) {
+            Toast.makeText(
+                activity,
+                "The title can only be 10 chars long and must have at least one uppercase char",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else if(!desc.minLength(16)){
+            Toast.makeText(
+                activity,
+                "The description must at least be 16 chars long",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else if(!price.onlyNumbers()){
+            Toast.makeText(
+                activity,
+                "The price can only consist of numbers",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else {
+            db.collection("Ads").document(documentId)
+                .set(adToSave)
+                .addOnSuccessListener {
+                    title.text.clear()
+                    desc.text.clear()
+                    price.text.clear()
+                    Toast.makeText(activity, "Ad was created successfully!", Toast.LENGTH_LONG)
+                        .show()
 
-        }.addOnCompleteListener {
-                val action  = CreateAdFragmentDirections.actionCreateAdsFragmentToAdDetailFragment(adToSave.adId)
-                val navController = view?.findNavController()
-                navController?.navigate(action)
-            }
-              .addOnFailureListener {
-                  Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
-                      .show()
-              }
+                }.addOnCompleteListener {
+                    val action =
+                        CreateAdFragmentDirections.actionCreateAdsFragmentToAdDetailFragment(
+                            adToSave.adId
+                        )
+                    val navController = view?.findNavController()
+                    navController?.navigate(action)
+                }
+                .addOnFailureListener {
+                    Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
+                        .show()
+                }
+        }
     }
 }

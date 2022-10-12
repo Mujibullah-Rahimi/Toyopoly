@@ -1,6 +1,7 @@
 package no.hiof.toyopoly
 
 import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +19,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.model.AdModel
+
 
 class MyPageFragment : Fragment(){
     private lateinit var recyclerView: RecyclerView
@@ -57,11 +60,17 @@ class MyPageFragment : Fragment(){
                 val navController = view.findNavController()
 
                 navController.navigate(action)
+
             }
 
             builder.setNegativeButton("Slett"){dialogInterface, which ->
                 deleteAd(ad.adId)
-                Toast.makeText(this.activity,"clicked slett",Toast.LENGTH_LONG).show()
+                val action = MyPageFragmentDirections.actionMyPageFragmentSelf()
+
+                val navController = view.findNavController()
+
+                navController.navigate(action)
+                Toast.makeText(this.activity,"Annonse slettet",Toast.LENGTH_LONG).show()
             }
             builder.show()
 
