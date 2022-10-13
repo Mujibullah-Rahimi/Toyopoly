@@ -10,10 +10,6 @@
         android:icon="@drawable/ic_baseline_category_24"
         android:title="@string/all_toys" />
     <item
-        android:id="@+id/createAdsFragment"
-        android:icon="@drawable/ic_baseline_add_24"
-        android:title="@string/new_ad" />
-    <item
         android:id="@+id/messageFragment"
         android:icon="@drawable/ic_baseline_message_24"
         android:title="@string/messages" />
@@ -23,11 +19,12 @@
         android:title="messages (Sendbird)" />
     <item
         android:id="@+id/myPageFragment"
-        android:icon="@drawable/ic_baseline_message_24"
-        android:title="myPage" />
+        android:icon="@drawable/ic_baseline_person_pin_24"
+        android:title="@string/my_page" />
 
     <item
         android:id="@+id/signOut"
         android:icon="@drawable/ic_baseline_exit_to_app_24"
         android:title="@string/sign_out" />
 </menu>
+

@@ -14,7 +14,6 @@ import com.google.firebase.ktx.Firebase
 import com.wajahatkarim3.easyvalidation.core.view_ktx.*
 import no.hiof.toyopoly.model.AdModel
 import no.hiof.toyopoly.util.RandomId
-import kotlin.random.Random
 
 class CreateAdFragment : Fragment() {
     val db = Firebase.firestore
