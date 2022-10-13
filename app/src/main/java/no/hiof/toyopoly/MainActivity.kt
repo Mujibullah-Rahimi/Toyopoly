@@ -2,6 +2,7 @@ package no.hiof.toyopoly
 
 // Sendbird
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -36,8 +37,10 @@ class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
-    private lateinit var createAdFragment: CreateAdFragment
+    private lateinit var homeFragment: HomeFragment
 
+
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -88,6 +91,7 @@ class MainActivity : AppCompatActivity(){
 
 
     }
+
 
     private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
@@ -141,11 +145,18 @@ class MainActivity : AppCompatActivity(){
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val currentFragment = supportFragmentManager.fragments.last()
         return when(item.itemId) {
-            R.id.createAdsFragment ->  true
-             else -> super.onOptionsItemSelected(item)
+            R.id.createAdsFragment -> {
+                NavHostFragment.findNavController(currentFragment).navigate(R.id.createAdsFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
+
     }
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -153,5 +164,6 @@ class MainActivity : AppCompatActivity(){
     }
 
 }
+
 
 
