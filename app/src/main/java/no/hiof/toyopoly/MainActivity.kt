@@ -60,9 +60,9 @@ class MainActivity : AppCompatActivity(){
 
         val drawerLayout : DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
+
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
