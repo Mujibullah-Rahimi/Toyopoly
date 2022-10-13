@@ -6,4 +6,6 @@ data class UserModel(
     val birthday:String,
     val address:String,
     val email:String,
-){}
+){
+    constructor(firstName: String, lastName: String, email: String) : this(firstName, lastName, "", "", email)
+}
