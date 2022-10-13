@@ -3,13 +3,10 @@ package no.hiof.toyopoly
 // Sendbird
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +29,7 @@ class MainActivity : AppCompatActivity(){
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var navView : NavigationView
     private val db = FirebaseFirestore.getInstance()
     val user = Firebase.auth.currentUser
     private lateinit var homeFragment: HomeFragment
@@ -47,7 +45,7 @@ class MainActivity : AppCompatActivity(){
         setSupportActionBar(binding.toolbar)
 
         val drawerLayout : DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
+        navView = binding.navView
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
@@ -65,6 +63,8 @@ class MainActivity : AppCompatActivity(){
             Toast.makeText(this,"Logged out", Toast.LENGTH_LONG).show()
             true
         }
+
+        getUser()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
@@ -94,12 +94,13 @@ class MainActivity : AppCompatActivity(){
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-        getUser()
     }
 
     fun getUser() {
-        val getName = findViewById<TextView>(R.id.userName)
-        val getEmail = findViewById<TextView>(R.id.emailAddress)
+        var header = navView.getHeaderView(0);
+        var headerUserName = header.findViewById<TextView>(R.id.drawerHeaderUserName)
+        var headerEmail = header.findViewById<TextView>(R.id.drawerHeaderUserEmail)
+
         val userUID = user!!.uid
 
         val docRef = db.collection("Users").document(userUID)
@@ -108,8 +109,8 @@ class MainActivity : AppCompatActivity(){
             .addOnSuccessListener { document ->
                 if (document != null) {
                     Log.d("isHere", "Snapshot: ${document.data}")
-                    getEmail?.text = document.getString("email")
-                    getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
+                    headerEmail?.text = document.getString("email")
+                    headerUserName?.text = document.getString("firstName")+ " " + document.getString("lastName")
                     //time_ad?.text = document.getDate("timestamp").toString()
                 } else {
                     Log.d("isNotHere", "The document snapshot doesn't exist")

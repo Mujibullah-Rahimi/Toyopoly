@@ -7,7 +7,7 @@
     android:layout_height="200dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/drawerHeaderImageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
@@ -18,25 +18,25 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/emailAddress"
+        android:id="@+id/drawerHeaderUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/e_mail"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/userName" />
+        app:layout_constraintEnd_toEndOf="@+id/drawerHeaderImageView"
+        app:layout_constraintStart_toStartOf="@+id/drawerHeaderImageView"
+        app:layout_constraintTop_toBottomOf="@+id/drawerHeaderUserName" />
 
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/drawerHeaderUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/first_name"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/drawerHeaderImageView"
         app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="@+id/drawerHeaderImageView"
+        app:layout_constraintTop_toBottomOf="@+id/drawerHeaderImageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
