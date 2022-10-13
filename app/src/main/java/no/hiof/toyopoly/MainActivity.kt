@@ -5,7 +5,9 @@ package no.hiof.toyopoly
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +28,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.databinding.ActivityMainBinding
 
@@ -34,6 +37,8 @@ class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
+    private val db = FirebaseFirestore.getInstance()
+    val user = Firebase.auth.currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,15 +60,18 @@ class MainActivity : AppCompatActivity(){
 
         val drawerLayout : DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
 
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.homeFragment,R.id.allToysFragment, R.id.createAdsFragment, R.id.messageFragment,R.id.messageActivity, R.id.signOut
+                R.id.homeFragment,R.id.allToysFragment, R.id.createAdsFragment, R.id.messageFragment,R.id.messageActivity,R.id.myPageFragment, R.id.signOut
             ), drawerLayout
+
         )
+
+
 
         navView.menu.findItem(R.id.signOut).setOnMenuItemClickListener {
             Firebase.auth.signOut()
@@ -73,17 +81,18 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
+
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         binding.navView.setupWithNavController(navHostFragment.navController)
 
-
-
         findViewById<Button>(R.id.loginGoogleButton).setOnClickListener {
             signInGoogle()
         }
     }
+
 
     private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
@@ -134,6 +143,28 @@ class MainActivity : AppCompatActivity(){
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        getUser()
+    }
+
+    fun getUser() {
+        val getName = findViewById<TextView>(R.id.userName)
+        val getEmail = findViewById<TextView>(R.id.emailAddress)
+        val userUID = user!!.uid
+
+        val docRef = db.collection("Users").document(userUID)
+        docRef
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d("isHere", "Snapshot: ${document.data}")
+                    getEmail?.text = document.getString("email")
+                    getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
+                    //time_ad?.text = document.getDate("timestamp").toString()
+                } else {
+                    Log.d("isNotHere", "The document snapshot doesn't exist")
+                }
+            }
+            .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
     }
 
 }

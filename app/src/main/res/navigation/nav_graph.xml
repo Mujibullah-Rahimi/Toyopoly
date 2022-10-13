@@ -30,6 +30,9 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@+id/homeFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_homeFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
     </fragment>
 
     <fragment
@@ -119,5 +122,17 @@
         <action
             android:id="@+id/action_allToysFragment_to_adDetailFragment"
             app:destination="@id/adDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageFragment"
+        android:name="no.hiof.toyopoly.MyPageFragment"
+        android:label="MyPageFragment"
+        tools:layout="@layout/fragment_my_page">
+        <action
+            android:id="@+id/action_myPageFragment_to_adDetailFragment"
+            app:destination="@id/adDetailFragment" />
+        <action
+            android:id="@+id/action_myPageFragment_self"
+            app:destination="@id/myPageFragment" />
     </fragment>
 </navigation>

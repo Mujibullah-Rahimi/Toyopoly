@@ -63,13 +63,16 @@ class AllToysFragment : Fragment() {
 
             navController.navigate(action)
         }
-
         recyclerView2.adapter = adapterCat
+
+        db = FirebaseFirestore.getInstance()
+
+        getCategories()
+
         getAds()
     }
 
     fun getAds(){
-        db = FirebaseFirestore.getInstance()
         db.collection("Ads")
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
@@ -85,7 +88,8 @@ class AllToysFragment : Fragment() {
                     adapterAds.notifyDataSetChanged()
                 }
             })
-
+    }
+    fun getCategories(){
         db.collection("Category")
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
