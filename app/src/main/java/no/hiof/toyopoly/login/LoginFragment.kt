@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 import no.hiof.toyopoly.BaseApplication
 import no.hiof.toyopoly.MainActivity
 import no.hiof.toyopoly.R
