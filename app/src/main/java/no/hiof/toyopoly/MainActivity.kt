@@ -2,10 +2,13 @@ package no.hiof.toyopoly
 
 // Sendbird
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -39,7 +42,10 @@ class MainActivity : AppCompatActivity(){
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
     val user = Firebase.auth.currentUser
+    private lateinit var homeFragment: HomeFragment
 
+
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -60,13 +66,14 @@ class MainActivity : AppCompatActivity(){
 
         val drawerLayout : DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
 
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.homeFragment,R.id.allToysFragment, R.id.createAdsFragment, R.id.messageFragment,R.id.messageActivity,R.id.myPageFragment, R.id.signOut
+                R.id.homeFragment,R.id.allToysFragment, R.id.messageFragment,R.id.messageActivity, R.id.signOut
             ), drawerLayout
 
         )
@@ -91,7 +98,10 @@ class MainActivity : AppCompatActivity(){
         findViewById<Button>(R.id.loginGoogleButton).setOnClickListener {
             signInGoogle()
         }
+
+
     }
+
 
 
     private fun signInGoogle() {
@@ -140,6 +150,25 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.ad_action, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val currentFragment = supportFragmentManager.fragments.last()
+        return when(item.itemId) {
+            R.id.createAdsFragment -> {
+                NavHostFragment.findNavController(currentFragment).navigate(R.id.createAdsFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    }
+
+
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
@@ -168,5 +197,6 @@ class MainActivity : AppCompatActivity(){
     }
 
 }
+
 
 
