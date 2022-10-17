@@ -19,8 +19,8 @@
         android:title="messages (Sendbird)" />
     <item
         android:id="@+id/myPageFragment"
-        android:icon="@drawable/ic_baseline_message_24"
-        android:title="myPage" />
+        android:icon="@drawable/ic_baseline_person_pin_24"
+        android:title="@string/my_page" />
 
     <item
         android:id="@+id/signOut"

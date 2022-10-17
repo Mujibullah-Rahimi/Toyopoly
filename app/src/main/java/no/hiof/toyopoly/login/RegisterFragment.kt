@@ -27,9 +27,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.wajahatkarim3.easyvalidation.core.view_ktx.atleastOneNumber
+import com.wajahatkarim3.easyvalidation.core.view_ktx.atleastOneUpperCase
+import com.wajahatkarim3.easyvalidation.core.view_ktx.minLength
 import no.hiof.toyopoly.MainActivity
-import com.wajahatkarim3.easyvalidation.core.collection_ktx.atleastOneUpperCaseList
-import com.wajahatkarim3.easyvalidation.core.view_ktx.*
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.model.UserModel
 import no.hiof.toyopoly.util.DateInputMask
@@ -153,26 +154,26 @@ class RegisterFragment : Fragment(), NoCopySpan{
                 TextUtils.isEmpty(address) ||
                 TextUtils.isEmpty(firstName) ||
                 TextUtils.isEmpty(lastName)) {
-                Toast.makeText(activity, "Please fill all the fields", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Please fill out all the fields", Toast.LENGTH_LONG).show()
             //Check if birthday is not less then 10 ints
             }else if (birthday.length != 10){
                 Toast.makeText(activity, "Date of birth is not valid", Toast.LENGTH_LONG).show()
             }
-            //Check if the password contains atleast one Uppercase char and is a minimum of 8 chars
+            //Check if the password contains at least one Uppercase char and is a minimum of 8 chars
             else if (!password.minLength(8) || !password.atleastOneUpperCase()){
-                Toast.makeText(activity, "Your password need at least one Uppercase and min 8 chars", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Your password need at least one Uppercase and min 8 letters", Toast.LENGTH_LONG).show()
             }
             //Check if the address has a minimum of 16 chars and contains at least one number(int)
             else if(!address.minLength(16) || !address.atleastOneNumber()){
-                Toast.makeText(activity, "Your address need at least one number and min 16 chars", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Address must consist of at least 16 letters and 1 digit", Toast.LENGTH_LONG).show()
             }
             //Check if firstname contains at least one uppercase char
             else if(!firstName.atleastOneUpperCase()) {
-                Toast.makeText(activity, "Your firstname need at least one uppercase char", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Your firstname need at least one uppercase letter", Toast.LENGTH_LONG).show()
             }
             //Check if lastname contains at least one uppercase char
             else if(!lastName.atleastOneUpperCase()) {
-                Toast.makeText(activity, "Your lastname need at least one uppercase char", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Your lastname need at least one uppercase letter", Toast.LENGTH_LONG).show()
             }
             else {
                 auth.createUserWithEmailAndPassword(email, password)

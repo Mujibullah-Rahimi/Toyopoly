@@ -52,5 +52,6 @@
     <string name="Delete">Slett</string>
     <string name="dialogTitle">"Velg "</string>
     <string name="dialogMessage">Gå til eller slett</string>
+    <string name="my_page">My Page</string>
 
 </resources>
