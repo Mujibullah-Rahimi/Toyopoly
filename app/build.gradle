@@ -47,6 +47,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.2'
     // navigation
     def nav_version = "2.5.1"
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
@@ -57,7 +58,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
     // Sendbird
     //implementation 'com.sendbird.sdk:sendbird-android-sdk:3.1.21'
-    implementation 'com.sendbird.sdk:uikit:3.2.1'
+    //implementation 'com.sendbird.sdk:uikit:3.2.1'
 
     def ev_version = "1.0.4"
     //Easy validation

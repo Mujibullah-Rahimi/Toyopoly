@@ -6,12 +6,12 @@ import java.sql.Timestamp
 
 @Keep
 data class AdModel(
-    val adId: String = "",
-    val value:String = "",
-    val description:String = "",
-    val price: String = "",
-    val category: String ="",
-    val userId: String= "",
-    val timestamp: com.google.firebase.Timestamp? = null,
+    var adId: String = "",
+    var value:String = "",
+    var description:String = "",
+    var price: String = "",
+    var category: String ="",
+    var userId: String= "",
+    var timestamp: com.google.firebase.Timestamp? = null,
     //val img_ref : ReferenceSet? = null
                    ){}

@@ -4,6 +4,9 @@
     package="no.hiof.toyopoly">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".BaseApplication"
@@ -15,10 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Toyopoly"
-        tools:targetApi="31">
-        <activity
-            android:name=".MessageActivity"
-            android:exported="false" />
+        tools:targetApi="32">
+        <!---<activity
+            android:name=".MessageActivity
+            android:exported="false" />-->
         <activity
             android:name=".GoogleLogin"
             android:exported="false">
@@ -36,6 +39,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="${applicationId}.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            >
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+               android:resource="@xml/file_path"
+              />
+        </provider>
     </application>
 
 </manifest>

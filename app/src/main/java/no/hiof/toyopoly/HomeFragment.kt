@@ -31,11 +31,11 @@ class HomeFragment : Fragment(), View.OnClickListener{
     }
 
     override fun onClick(v: View?) {
-        when (v?.id){
-            R.id.messageActivityBtn -> {
-                val intent = Intent(activity, MessageActivity::class.java)
-                startActivity(intent)
-            }
-        }
+//        when (v?.id){
+//            R.id.messageActivityBtn -> {
+//                val intent = Intent(activity, MessageActivity::class.java)
+//                startActivity(intent)
+//            }
+//        }
     }
 }
