@@ -11,6 +11,7 @@ data class AdModel(
     var description:String = "",
     var price: String = "",
     var category: String ="",
+    var remoteUri: String = "",
     var userId: String= "",
     var timestamp: com.google.firebase.Timestamp? = null,
     //val img_ref : ReferenceSet? = null

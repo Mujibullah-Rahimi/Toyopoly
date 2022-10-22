@@ -11,7 +11,7 @@
         android:id="@+id/createAd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="88dp"
         android:layout_marginEnd="8dp"
         android:text="@string/create_ad"
         app:layout_constraintEnd_toEndOf="@+id/spinner_catergory"
@@ -97,16 +97,6 @@
         app:layout_constraintBottom_toTopOf="@+id/createAd"
         app:layout_constraintEnd_toEndOf="@+id/spinner_catergory"
         app:layout_constraintTop_toBottomOf="@+id/spinner_catergory"
-        app:layout_constraintVertical_bias="0.138" />
-
-    <ImageView
-        android:id="@+id/adPic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/createAd"
-        app:layout_constraintEnd_toEndOf="@+id/photoBtn"
-        app:layout_constraintStart_toStartOf="@+id/photoBtn"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintVertical_bias="0.6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
