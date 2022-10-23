@@ -15,7 +15,7 @@ class ChatListAdapter(
     : RecyclerView.Adapter<ChatListAdapter.ChatViewHolder>() {
 
     inner class ChatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val message : TextView = view.findViewById(R.id.chatRecyclerView)
+        private val message : TextView = view.findViewById(R.id.chatChannelsRecyclerView)
 
         fun bind(item: MessageModel) = with(itemView){
             message.text = item.message

@@ -100,6 +100,9 @@
         <argument
             android:name="AdId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_adDetailFragment_to_messageDetailFragment"
+            app:destination="@id/messageDetailFragment" />
     </fragment>
 
     <fragment
@@ -110,6 +113,9 @@
         <argument
             android:name="otherUserId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_messageFragment_to_messageDetailFragment"
+            app:destination="@id/messageDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/allToysFragment"
@@ -134,5 +140,12 @@
         <action
             android:id="@+id/action_myPageFragment_self"
             app:destination="@id/myPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageDetailFragment"
+        android:name="no.hiof.toyopoly.MessageDetailFragment"
+        android:label="MessageDetailFragment" >
+        <argument android:name="userIds"
+            app:argType="string[]" />
     </fragment>
 </navigation>
