@@ -5,31 +5,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.firebase.Timestamp
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import no.hiof.toyopoly.model.MessageModel
+import no.hiof.toyopoly.adapter.ChatChannelAdapter
+import no.hiof.toyopoly.model.ChatChannelModel
 
 
 class MessageFragment : Fragment(), View.OnClickListener {
-    private lateinit var messageList: ArrayList<MessageModel>
+    private lateinit var chatChannelsRecyclerView: RecyclerView
+    private lateinit var chatChannelsArrayList : ArrayList<ChatChannelModel>
+    private lateinit var chatChannelAdapter : ChatChannelAdapter
     private lateinit var auth:FirebaseAuth
-    private val db = FirebaseFirestore.getInstance()
+    private lateinit var db: FirebaseFirestore
 
     val TAG = "MESSAGE"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_message, container, false)
@@ -39,31 +36,27 @@ class MessageFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         auth = FirebaseAuth.getInstance()
 
-        val sendButton = view.findViewById<Button>(R.id.sendMessageButton)
-        sendButton?.setOnClickListener(this)
+        chatChannelsRecyclerView = view.findViewById(R.id.chatChannelsRecyclerView)
+        chatChannelsRecyclerView.layoutManager = LinearLayoutManager(this.activity)
+        chatChannelsArrayList = arrayListOf()
 
-    }
+        chatChannelAdapter = ChatChannelAdapter(chatChannelsArrayList){chatChannel ->
+            val action = MessageFragmentDirections.actionMessageFragmentToMessageDetailFragment(
+                arrayOf(chatChannel.userIds.toString())
+            )
+            val navController = view.findNavController()
 
-    fun saveMsg(){
-        val messageInput = view?.findViewById<EditText>(R.id.editText_message)
-        val sendMsgButton = view?.findViewById<Button>(R.id.sendMessageButton)
-        val message = messageInput?.text.toString()
-
-        val messageToSave = MessageModel(message, Timestamp.now(), auth.currentUser!!.uid)
-
-        if (messageToSave.message.isNotEmpty()){
-            db.collection("Messages").document()
-                .set(messageToSave)
-                .addOnCompleteListener { Log.v(TAG, "Messaged saved")
-                messageInput!!.text.clear()}
-                .addOnFailureListener{
-                    Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
-                        .show()
-                }
+            navController.navigate(action)
         }
+        chatChannelsRecyclerView.adapter = chatChannelAdapter
+        db = FirebaseFirestore.getInstance()
+        getMyChatChannels()
     }
-    fun getMessages(){
-        db.collection("Messages")
+
+    fun getMyChatChannels(){
+//        TODO("Put a list in user with engaged chat channels and get them here")
+        db.collection("Users").document(auth.currentUser!!.uid).collection("engagedChats")
+//        whereArrayContains(auth.currentUser!!.uid)
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                     if(error != null){
@@ -72,15 +65,15 @@ class MessageFragment : Fragment(), View.OnClickListener {
                     }
                     for ( dc : DocumentChange in value?.documentChanges!!) {
                         if (dc.type == DocumentChange.Type.ADDED){
-                            messageList.add(dc.document.toObject(MessageModel::class.java))
+                            chatChannelsArrayList.add(dc.document.toObject(ChatChannelModel::class.java))
                         }
                     }
-                    //ChatListAdapter.notifyDataSetChanged()
+                    chatChannelAdapter.notifyDataSetChanged()
                 }
             })
     }
 
     override fun onClick(view: View?) {
-        saveMsg()
+
     }
 }
