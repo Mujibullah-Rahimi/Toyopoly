@@ -77,6 +77,8 @@ class RegisterFragment : Fragment(), NoCopySpan{
         if (result.resultCode == Activity.RESULT_OK){
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleResult(task)
+        }else{
+            Log.v("GOOGLE", result.toString())
         }
     }
     private fun handleResult(task: Task<GoogleSignInAccount>) {
