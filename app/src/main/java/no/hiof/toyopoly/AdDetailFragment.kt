@@ -2,22 +2,30 @@ package no.hiof.toyopoly
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.navigation.fragment.navArgs
-import com.google.firebase.firestore.ktx.toObject
-import no.hiof.toyopoly.model.AdModel
+import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.firestore.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import no.hiof.toyopoly.model.ChatChannelModel
+import no.hiof.toyopoly.util.RandomId
 
 class AdDetailFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
     private lateinit var docSnap: DocumentSnapshot
     private val args: AdDetailFragmentArgs by navArgs()
+    private lateinit var navController : NavController
+
+    private val currentUser = auth.currentUser!!.uid
+    private lateinit var otherUser : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,24 +35,21 @@ class AdDetailFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_ad_detail, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-        //.addOnCompleteListener { task->
-        //if (task.isSuccessful){
-        //  Log.v("AD_DETAIL", task.result.toString())
-        //docSnap = task.result
-        //}
-        //else{
-        //  Log.v("AD_DETAIL", task.exception.toString())
-        //}
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
+        val contactSellerButton = view.findViewById<Button>(R.id.contactSellerButton)
 
         getAds()
+        getOtherUserId()
+
+        contactSellerButton.setOnClickListener{
+
+            Log.v("OtherUserInClick", otherUser)
+//            FirestoreUtil.getOrCreateChatChannel(otherUser)
+            createChatChannel(otherUser, RandomId.randomID())
+        }
+
     }
 
     fun getAds(){
@@ -70,15 +75,56 @@ class AdDetailFragment : Fragment() {
             }
             .addOnFailureListener{e -> Log.d("Error", "Fail at: ", e)}
     }
+
+    private fun createChatChannel(otherUser : String, randomId : String) {
+        val userIds : MutableList<String> = mutableListOf(currentUser,otherUser)
+        val chatChannelToSave = ChatChannelModel(userIds)
+
+        // Creating a collection in currentUsers document called engagedChats
+        // engagedChats contains a document for each chat user is engaged in
+        // the name/id of each document is the uid of the other user in the chat
+        db.collection("Users").document(currentUser)
+            .collection("engagedChats")
+            .document(otherUser)
+            .set(mapOf("channelId" to chatChannelToSave))
+
+        db.collection("Users").document(otherUser)
+            .collection("engagedChats")
+            .document(currentUser)
+            .set(mapOf("channelId" to chatChannelToSave))
+
+        db.collection("ChatChannels").whereArrayContains("UserIds",chatChannelToSave)
+            .get()
+            .addOnSuccessListener {
+                Log.v("CHATCHANNEL", it.size().toString()) }
+
+        db.collection("ChatChannels").document(randomId)
+            .set(chatChannelToSave)
+            .addOnSuccessListener {
+                Log.v("userIds", userIds.toString() )
+            }.addOnCompleteListener{
+                navController.navigate(AdDetailFragmentDirections.actionAdDetailFragmentToMessageDetailFragment(
+                    arrayOf(otherUser,currentUser)))
+            }.addOnFailureListener{
+                Log.v("userIds", userIds.toString())
+//                Toast.makeText(activity, it.message , Toast.LENGTH_LONG)
+//                    .show()
+            }
+        db.collection("ChatChannels").document(randomId)
+            .collection("Messages").document().set(HashMap<String, Any>())
+    }
+
+
+
+    private fun getOtherUserId() {
+        db.collection("Ads")
+            .document(args.adId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null){
+                    this.otherUser = document.getString("userId").toString()
+                    Log.v("otherUser",otherUser)
+                }
+            }
+    }
 }
-
-
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        val ad = docSnap.toObject(AdModel::class.java)
-//        val value = view.findViewById<EditText>(R.id.adDetailTitle)
-//        value.setText(ad?.value)
-//
-//    }
