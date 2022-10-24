@@ -107,9 +107,9 @@
 
     <fragment
         android:id="@+id/messageFragment"
-        android:name="no.hiof.toyopoly.MessageFragment"
+        android:name="no.hiof.toyopoly.ChatChannelFragment"
         android:label="Message"
-        tools:layout="@layout/fragment_message" >
+        tools:layout="@layout/fragment_chat_channel" >
         <argument
             android:name="otherUserId"
             app:argType="string" />
@@ -145,7 +145,7 @@
         android:id="@+id/messageDetailFragment"
         android:name="no.hiof.toyopoly.MessageDetailFragment"
         android:label="MessageDetailFragment" >
-        <argument android:name="userIds"
-            app:argType="string[]" />
+        <argument android:name="otherUser"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import no.hiof.toyopoly.model.ChatChannelModel
 
 object FirestoreUtil {
-    private val firestoreInstance : FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    private val db : FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
     val currentUserDocRef : DocumentReference
         get() = FirebaseFirestore.getInstance().document("Users/${FirebaseAuth.getInstance().currentUser?.uid
@@ -31,7 +31,7 @@ object FirestoreUtil {
                 .document(otherUserId)
                 .set(mapOf("channelId" to newChannel.id))
 
-            firestoreInstance.collection("Users").document(otherUserId)
+            db.collection("Users").document(otherUserId)
                 .collection("engagedChats")
                 .document(currentUserId)
                 .set(mapOf("channelId" to newChannel.id))

@@ -86,12 +86,12 @@ class AdDetailFragment : Fragment() {
         db.collection("Users").document(currentUser)
             .collection("engagedChats")
             .document(otherUser)
-            .set(mapOf("channelId" to chatChannelToSave))
+            .set(chatChannelToSave)
 
         db.collection("Users").document(otherUser)
             .collection("engagedChats")
             .document(currentUser)
-            .set(mapOf("channelId" to chatChannelToSave))
+            .set(chatChannelToSave)
 
         db.collection("ChatChannels").whereArrayContains("UserIds",chatChannelToSave)
             .get()
@@ -103,8 +103,7 @@ class AdDetailFragment : Fragment() {
             .addOnSuccessListener {
                 Log.v("userIds", userIds.toString() )
             }.addOnCompleteListener{
-                navController.navigate(AdDetailFragmentDirections.actionAdDetailFragmentToMessageDetailFragment(
-                    arrayOf(otherUser,currentUser)))
+                navController.navigate(AdDetailFragmentDirections.actionAdDetailFragmentToMessageDetailFragment(otherUser))
             }.addOnFailureListener{
                 Log.v("userIds", userIds.toString())
 //                Toast.makeText(activity, it.message , Toast.LENGTH_LONG)

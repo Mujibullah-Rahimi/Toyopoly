@@ -5,64 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/layout_group_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"/>
+<!--    <EditText-->
+<!--        android:id="@+id/editText_message"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:hint="@string/enter_message"-->
+<!--        android:inputType="text"-->
+<!--        android:maxLines="6"-->
+<!--        android:minHeight="48dp"-->
+<!--        android:textColorHint="#757575"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        tools:ignore="Autofill" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/sendMessageButton"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:background="?attr/selectableItemBackground"-->
+<!--        android:contentDescription="@string/send_message"-->
+<!--        android:drawableTop="@drawable/ic_send_black_24dp"-->
+<!--        android:textColor="@color/design_default_color_primary"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/editText_message" />-->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatChannelsRecyclerView"
+        android:id="@+id/messagesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_group_chat" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#e0e0e0"
-        app:layout_constraintBottom_toTopOf="@+id/layout_chatbox" />
-
-    <RelativeLayout
-        android:id="@+id/layout_chatbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-
-        <EditText
-            android:id="@+id/editText_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:layout_toStartOf="@+id/sendMessageButton"
-            android:background="@android:color/transparent"
-            android:hint="@string/enter_message"
-            android:inputType="text"
-            android:maxLines="6"
-            android:minHeight="48dp"
-            android:textColorHint="#757575"
-            tools:ignore="Autofill" />
-
-        <Button
-            android:id="@+id/sendMessageButton"
-            android:layout_width="78dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/send_message"
-            android:drawableTop="@drawable/ic_send_black_24dp"
-            android:textColor="@color/design_default_color_primary" />
-
-    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

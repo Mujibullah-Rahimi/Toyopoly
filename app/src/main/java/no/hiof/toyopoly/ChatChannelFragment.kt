@@ -15,7 +15,7 @@ import no.hiof.toyopoly.adapter.ChatChannelAdapter
 import no.hiof.toyopoly.model.ChatChannelModel
 
 
-class MessageFragment : Fragment(), View.OnClickListener {
+class ChatChannelFragment : Fragment(), View.OnClickListener {
     private lateinit var chatChannelsRecyclerView: RecyclerView
     private lateinit var chatChannelsArrayList : ArrayList<ChatChannelModel>
     private lateinit var chatChannelAdapter : ChatChannelAdapter
@@ -29,21 +29,22 @@ class MessageFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_message, container, false)
+        return inflater.inflate(R.layout.fragment_chat_channel, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         auth = FirebaseAuth.getInstance()
 
-        chatChannelsRecyclerView = view.findViewById(R.id.chatChannelsRecyclerView)
+        chatChannelsRecyclerView = view.findViewById(R.id.chatChannelsRecylcerView)
         chatChannelsRecyclerView.layoutManager = LinearLayoutManager(this.activity)
         chatChannelsArrayList = arrayListOf()
 
         chatChannelAdapter = ChatChannelAdapter(chatChannelsArrayList){chatChannel ->
-            val action = MessageFragmentDirections.actionMessageFragmentToMessageDetailFragment(
-                arrayOf(chatChannel.userIds.toString())
-            )
+            Log.v("userIds", chatChannel.userIds.toString())
+            val otherUser = chatChannel.userIds[0]
+
+            val action = ChatChannelFragmentDirections.actionMessageFragmentToMessageDetailFragment(otherUser)
             val navController = view.findNavController()
 
             navController.navigate(action)
