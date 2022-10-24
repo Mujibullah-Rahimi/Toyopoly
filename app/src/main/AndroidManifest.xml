@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
-        android:name=".BaseApplication"
+
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,10 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Toyopoly"
-        tools:targetApi="32">
-        <!---<activity
-            android:name=".MessageActivity
-            android:exported="false" />-->
+        tools:targetApi="31">
+
         <activity
             android:name=".GoogleLogin"
             android:exported="false">

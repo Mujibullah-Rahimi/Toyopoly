@@ -13,7 +13,7 @@ class MessageItem : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_message_item, container, false)
+        return inflater.inflate(R.layout.message_item, container, false)
     }
 
 }
