@@ -3,6 +3,7 @@ package no.hiof.toyopoly
 // Sendbird
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -18,6 +19,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -64,12 +70,13 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-        getUser()
+        //getUser()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         binding.navView.setupWithNavController(navHostFragment.navController)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -117,6 +124,8 @@ class MainActivity : AppCompatActivity(){
                 }
             }
             .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
+
+
     }
 
     public fun disableDrawer(){
