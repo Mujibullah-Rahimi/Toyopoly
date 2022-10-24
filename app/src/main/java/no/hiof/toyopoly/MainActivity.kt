@@ -64,11 +64,13 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
+        //getUser()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         binding.navView.setupWithNavController(navHostFragment.navController)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -115,6 +117,8 @@ class MainActivity : AppCompatActivity(){
                 }
             }
             .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
+
+
     }
 
     public fun disableDrawer(){

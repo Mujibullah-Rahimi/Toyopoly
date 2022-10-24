@@ -1,6 +1,9 @@
 package no.hiof.toyopoly.login
 
 import android.app.Activity
+import android.content.ContentValues
+import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.text.NoCopySpan
 import android.text.TextUtils
@@ -14,14 +17,31 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -44,13 +64,16 @@ class RegisterFragment : Fragment(), NoCopySpan{
     private lateinit var googleLoginButton : Button
     private lateinit var navController : NavController
     private lateinit var googleSignInClient: GoogleSignInClient
-
+    private val AUTOCOMPLETE_REQUEST_CODE = 1
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register, container, false)
+
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +88,9 @@ class RegisterFragment : Fragment(), NoCopySpan{
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(),gso)
+
+        Places.initialize(context, "AIzaSyCk4yNxdlQogDiA0PAKgZw4ye79frYDZUM")
+
     }
 
     private fun signInGoogle(){
@@ -118,8 +144,8 @@ class RegisterFragment : Fragment(), NoCopySpan{
         registerButton = requireView().findViewById(R.id.UserRegisterButton)
         cancelRegisterButton = requireView().findViewById(R.id.cancelRegistrationButton)
 
-        val registerEmail  = requireView().findViewById<EditText>(R.id.emailAddressRegister)
-        val registerPassword  = requireView().findViewById<EditText>(R.id.passwordRegister)
+        val registerEmail = requireView().findViewById<EditText>(R.id.emailAddressRegister)
+        val registerPassword = requireView().findViewById<EditText>(R.id.passwordRegister)
 
 
         val registerFirstName = requireView().findViewById<EditText>(R.id.firstName)
@@ -128,16 +154,16 @@ class RegisterFragment : Fragment(), NoCopySpan{
         val registerAddress = requireView().findViewById<EditText>(R.id.address)
 
         DateInputMask(registerBirthday).listen()
-        cancelRegisterButton.setOnClickListener{
+        cancelRegisterButton.setOnClickListener {
             val cancelAction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             navController.navigate(cancelAction)
         }
         googleLoginButton = view.findViewById(R.id.googleLoginBtn)
-        googleLoginButton.setOnClickListener{
+        googleLoginButton.setOnClickListener {
             signInGoogle()
         }
 
-        registerButton.setOnClickListener{
+        registerButton.setOnClickListener {
             val email: String = registerEmail.text.toString()
             val password: String = registerPassword.text.toString()
             val birthday: String = registerBirthday.text.toString()
@@ -147,39 +173,52 @@ class RegisterFragment : Fragment(), NoCopySpan{
             //val navController = findNavController()
             val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             //Check if any empty fields
-            if(
+            if (
                 TextUtils.isEmpty(email) ||
                 TextUtils.isEmpty(password) ||
                 TextUtils.isEmpty(birthday) ||
                 TextUtils.isEmpty(address) ||
                 TextUtils.isEmpty(firstName) ||
-                TextUtils.isEmpty(lastName)) {
+                TextUtils.isEmpty(lastName)
+            ) {
                 Toast.makeText(activity, "Please fill out all the fields", Toast.LENGTH_LONG).show()
-            //Check if birthday is not less then 10 ints
-            }else if (birthday.length != 10){
+                //Check if birthday is not less then 10 ints
+            } else if (birthday.length != 10) {
                 Toast.makeText(activity, "Date of birth is not valid", Toast.LENGTH_LONG).show()
             }
             //Check if the password contains at least one Uppercase char and is a minimum of 8 chars
-            else if (!password.minLength(8) || !password.atleastOneUpperCase()){
-                Toast.makeText(activity, "Your password need at least one Uppercase and min 8 letters", Toast.LENGTH_LONG).show()
+            else if (!password.minLength(8) || !password.atleastOneUpperCase()) {
+                Toast.makeText(
+                    activity,
+                    "Your password need at least one Uppercase and min 8 letters",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             //Check if the address has a minimum of 16 chars and contains at least one number(int)
-            else if(!address.minLength(16) || !address.atleastOneNumber()){
+            /*else if(!address.minLength(16) || !address.atleastOneNumber()){
                 Toast.makeText(activity, "Address must consist of at least 16 letters and 1 digit", Toast.LENGTH_LONG).show()
-            }
+            }*/
             //Check if firstname contains at least one uppercase char
-            else if(!firstName.atleastOneUpperCase()) {
-                Toast.makeText(activity, "Your firstname need at least one uppercase letter", Toast.LENGTH_LONG).show()
+            else if (!firstName.atleastOneUpperCase()) {
+                Toast.makeText(
+                    activity,
+                    "Your firstname need at least one uppercase letter",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             //Check if lastname contains at least one uppercase char
-            else if(!lastName.atleastOneUpperCase()) {
-                Toast.makeText(activity, "Your lastname need at least one uppercase letter", Toast.LENGTH_LONG).show()
-            }
-            else {
+            else if (!lastName.atleastOneUpperCase()) {
+                Toast.makeText(
+                    activity,
+                    "Your lastname need at least one uppercase letter",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener((requireActivity()), OnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val userToSave = UserModel(firstName, lastName, birthday, address, email)
+                            val userToSave =
+                                UserModel(firstName, lastName, birthday, address, email)
                             db.collection("Users").document(auth.currentUser!!.uid)
                                 .set(userToSave)
                             Toast.makeText(activity, "Successfully Registered", Toast.LENGTH_LONG)
@@ -190,8 +229,43 @@ class RegisterFragment : Fragment(), NoCopySpan{
                                 .show()
                         }
                     })
-                }
+            }
+
+
         }
+
+        val fields = listOf(Place.Field.ADDRESS)
+
+        // Start the autocomplete intent.
+        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+            .build(context)
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+                        Log.i(TAG, "Place: ${place.address}")
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    // TODO: Handle the error.
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+                        Log.i(TAG, status.statusMessage ?: "")
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
+            }
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onResume() {
