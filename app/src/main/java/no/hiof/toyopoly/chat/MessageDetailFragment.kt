@@ -1,4 +1,4 @@
-package no.hiof.toyopoly
+package no.hiof.toyopoly.chat
 
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import no.hiof.toyopoly.R
 import no.hiof.toyopoly.adapter.MessageAdapter
-import no.hiof.toyopoly.model.MessageModel
+import no.hiof.toyopoly.models.MessageModel
 
 
 class MessageDetailFragment : Fragment(), View.OnClickListener  {

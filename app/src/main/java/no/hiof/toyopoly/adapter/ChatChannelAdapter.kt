@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import no.hiof.toyopoly.R
-import no.hiof.toyopoly.model.ChatChannelModel
+import no.hiof.toyopoly.models.ChatChannelModel
 
 class ChatChannelAdapter(
     private val chatChannelList:ArrayList<ChatChannelModel>,

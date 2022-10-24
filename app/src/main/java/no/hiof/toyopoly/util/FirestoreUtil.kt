@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import no.hiof.toyopoly.model.ChatChannelModel
+import no.hiof.toyopoly.models.ChatChannelModel
 
 object FirestoreUtil {
     private val db : FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }

@@ -37,7 +37,8 @@
             android:id="@+id/layout_container_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/quantum_teal500">
 
             <TextView
                 android:id="@+id/text_message_me"

@@ -25,6 +25,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.databinding.ActivityMainBinding
+import no.hiof.toyopoly.login.LoginFragment
+import no.hiof.toyopoly.login.LoginFragmentDirections
 
 class MainActivity : AppCompatActivity(){
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -59,7 +61,9 @@ class MainActivity : AppCompatActivity(){
 
         navView.menu.findItem(R.id.signOut).setOnMenuItemClickListener {
             Firebase.auth.signOut()
-            navController.navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
+            val currentFragment = supportFragmentManager.fragments.last()
+            NavHostFragment.findNavController(currentFragment).navigate(R.id.loginFragment)
+            //navController.navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
             drawerLayout.closeDrawer(GravityCompat.START)
             Toast.makeText(this,"Logged out", Toast.LENGTH_LONG).show()
             true
@@ -68,6 +72,7 @@ class MainActivity : AppCompatActivity(){
         if(enableDrawer() != null) {
             //getUser()
         }
+        //getUser()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)

@@ -1,7 +1,6 @@
-package no.hiof.toyopoly
+package no.hiof.toyopoly.ad
 
 import android.Manifest
-import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -21,12 +20,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.wajahatkarim3.easyvalidation.core.view_ktx.*
-import no.hiof.toyopoly.model.AdModel
-import no.hiof.toyopoly.model.PhotoModel
+import no.hiof.toyopoly.R
+import no.hiof.toyopoly.models.AdModel
+import no.hiof.toyopoly.models.PhotoModel
 import no.hiof.toyopoly.util.RandomId
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class CreateAdFragment : Fragment() {
     private var uri: Uri? = null

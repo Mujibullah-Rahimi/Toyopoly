@@ -1,4 +1,4 @@
-package no.hiof.toyopoly
+package no.hiof.toyopoly.chat
 
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import no.hiof.toyopoly.R
 import no.hiof.toyopoly.adapter.ChatChannelAdapter
-import no.hiof.toyopoly.model.ChatChannelModel
+import no.hiof.toyopoly.models.ChatChannelModel
 
 
 class ChatChannelFragment : Fragment(), View.OnClickListener {
@@ -44,7 +45,10 @@ class ChatChannelFragment : Fragment(), View.OnClickListener {
             Log.v("userIds", chatChannel.userIds.toString())
             val otherUser = chatChannel.userIds[0]
 
-            val action = ChatChannelFragmentDirections.actionMessageFragmentToMessageDetailFragment(otherUser)
+            val action =
+                ChatChannelFragmentDirections.actionMessageFragmentToMessageDetailFragment(
+                    otherUser
+                )
             val navController = view.findNavController()
 
             navController.navigate(action)

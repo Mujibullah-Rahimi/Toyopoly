@@ -1,4 +1,4 @@
-package no.hiof.toyopoly.model
+package no.hiof.toyopoly.models
 
 import androidx.annotation.Keep
 

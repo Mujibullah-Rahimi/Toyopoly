@@ -1,8 +1,6 @@
-package no.hiof.toyopoly.model
+package no.hiof.toyopoly.models
 
 import androidx.annotation.Keep
-import com.google.firebase.firestore.local.ReferenceSet
-import java.sql.Timestamp
 
 @Keep
 data class AdModel(
