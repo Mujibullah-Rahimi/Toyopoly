@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity(){
         if(enableDrawer() != null) {
             //getUser()
         }
+        //getUser()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
