@@ -1,7 +1,6 @@
 package no.hiof.toyopoly
 
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -110,7 +108,7 @@ class MyPageFragment : Fragment(){
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    Log.d("isHere", "Snapshot: ${document.data}")
+                    Log.d("currentUser", "Snapshot: ${document.data}")
                     getEmail?.text = document.getString("email")
                     getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
                     //time_ad?.text = document.getDate("timestamp").toString()
