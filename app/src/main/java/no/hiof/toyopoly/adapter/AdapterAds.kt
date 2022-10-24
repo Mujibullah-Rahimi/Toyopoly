@@ -1,13 +1,12 @@
 package no.hiof.toyopoly.adapter
 
-import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import no.hiof.toyopoly.R
-import no.hiof.toyopoly.model.AdModel
+import no.hiof.toyopoly.models.AdModel
 
 class AdapterAds(
     private val adsList: ArrayList<AdModel>,
@@ -15,7 +14,7 @@ class AdapterAds(
 ) : RecyclerView.Adapter<AdapterAds.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.ad_item, parent, false)
         return MyViewHolder(itemView)
     }
 

@@ -5,7 +5,7 @@
     android:id="@+id/allToysFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AllToysFragment">
+    tools:context=".ad.AllToysFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewForAllToys"

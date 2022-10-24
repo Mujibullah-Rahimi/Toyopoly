@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="no.hiof.toyopoly.CategoryFragment"
+        android:name="no.hiof.toyopoly.ad.CategoryFragment"
         android:label="Category"
         tools:layout="@layout/fragment_category" >
         <argument
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/createAdsFragment"
-        android:name="no.hiof.toyopoly.CreateAdFragment"
+        android:name="no.hiof.toyopoly.ad.CreateAdFragment"
         android:label="Create Ads"
         tools:layout="@layout/fragment_createad" >
         <action
@@ -91,7 +91,7 @@
 
     <fragment
         android:id="@+id/adDetailFragment"
-        android:name="no.hiof.toyopoly.AdDetailFragment"
+        android:name="no.hiof.toyopoly.ad.AdDetailFragment"
         android:label="Ad detail"
         tools:layout="@layout/fragment_ad_detail" >
         <action
@@ -107,7 +107,7 @@
 
     <fragment
         android:id="@+id/messageFragment"
-        android:name="no.hiof.toyopoly.ChatChannelFragment"
+        android:name="no.hiof.toyopoly.chat.ChatChannelFragment"
         android:label="Message"
         tools:layout="@layout/fragment_chat_channel" >
         <argument
@@ -119,7 +119,7 @@
     </fragment>
     <fragment
         android:id="@+id/allToysFragment"
-        android:name="no.hiof.toyopoly.AllToysFragment"
+        android:name="no.hiof.toyopoly.ad.AllToysFragment"
         android:label="All toys"
         tools:layout="@layout/fragment_all_toys" >
         <action
@@ -143,7 +143,7 @@
     </fragment>
     <fragment
         android:id="@+id/messageDetailFragment"
-        android:name="no.hiof.toyopoly.MessageDetailFragment"
+        android:name="no.hiof.toyopoly.chat.MessageDetailFragment"
         android:label="MessageDetailFragment" >
         <argument android:name="otherUser"
             app:argType="string" />

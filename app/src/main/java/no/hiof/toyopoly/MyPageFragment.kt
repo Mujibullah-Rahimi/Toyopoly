@@ -16,7 +16,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.adapter.AdapterAds
-import no.hiof.toyopoly.model.AdModel
+import no.hiof.toyopoly.models.AdModel
 
 
 class MyPageFragment : Fragment(){

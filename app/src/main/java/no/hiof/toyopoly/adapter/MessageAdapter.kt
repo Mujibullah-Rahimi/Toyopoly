@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import no.hiof.toyopoly.R
-import no.hiof.toyopoly.model.MessageModel
+import no.hiof.toyopoly.models.MessageModel
 
 
 class MessageAdapter(

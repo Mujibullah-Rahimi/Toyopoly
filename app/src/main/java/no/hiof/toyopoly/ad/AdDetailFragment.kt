@@ -1,4 +1,4 @@
-package no.hiof.toyopoly
+package no.hiof.toyopoly.ad
 
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +14,8 @@ import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import no.hiof.toyopoly.model.ChatChannelModel
+import no.hiof.toyopoly.R
+import no.hiof.toyopoly.models.ChatChannelModel
 import no.hiof.toyopoly.util.RandomId
 
 class AdDetailFragment : Fragment() {
@@ -103,7 +104,11 @@ class AdDetailFragment : Fragment() {
             .addOnSuccessListener {
                 Log.v("userIds", userIds.toString() )
             }.addOnCompleteListener{
-                navController.navigate(AdDetailFragmentDirections.actionAdDetailFragmentToMessageDetailFragment(otherUser))
+                navController.navigate(
+                    AdDetailFragmentDirections.actionAdDetailFragmentToMessageDetailFragment(
+                        otherUser
+                    )
+                )
             }.addOnFailureListener{
                 Log.v("userIds", userIds.toString())
 //                Toast.makeText(activity, it.message , Toast.LENGTH_LONG)
