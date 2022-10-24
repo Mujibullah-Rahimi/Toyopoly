@@ -4,6 +4,7 @@ package no.hiof.toyopoly
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -64,7 +65,9 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-        //getUser()
+        if(enableDrawer() != null) {
+            //getUser()
+        }
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
@@ -117,8 +120,6 @@ class MainActivity : AppCompatActivity(){
                 }
             }
             .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
-
-
     }
 
     public fun disableDrawer(){
