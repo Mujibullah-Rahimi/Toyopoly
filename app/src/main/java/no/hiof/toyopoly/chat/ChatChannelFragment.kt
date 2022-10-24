@@ -44,13 +44,14 @@ class ChatChannelFragment : Fragment(), View.OnClickListener {
         chatChannelAdapter = ChatChannelAdapter(chatChannelsArrayList){chatChannel ->
             Log.v("userIds", chatChannel.userIds.toString())
             val otherUser = chatChannel.userIds[0]
+            val chatChannelId = chatChannel.chatChannelId
 
             val action =
                 ChatChannelFragmentDirections.actionMessageFragmentToMessageDetailFragment(
-                    otherUser
+                    otherUser,chatChannelId
                 )
             val navController = view.findNavController()
-
+            Log.v("OtherUser", otherUser)
             navController.navigate(action)
         }
         chatChannelsRecyclerView.adapter = chatChannelAdapter
@@ -59,7 +60,6 @@ class ChatChannelFragment : Fragment(), View.OnClickListener {
     }
 
     fun getMyChatChannels(){
-//        TODO("Put a list in user with engaged chat channels and get them here")
         db.collection("Users").document(auth.currentUser!!.uid).collection("engagedChats")
 //        whereArrayContains(auth.currentUser!!.uid)
             .addSnapshotListener(object : EventListener<QuerySnapshot> {

@@ -147,5 +147,8 @@
         android:label="MessageDetailFragment" >
         <argument android:name="otherUser"
             app:argType="string" />
+        <argument
+            android:name="chatChannelId"
+            app:argType="string" />
     </fragment>
 </navigation>

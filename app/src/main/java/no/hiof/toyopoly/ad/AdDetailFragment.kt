@@ -79,7 +79,7 @@ class AdDetailFragment : Fragment() {
 
     private fun createChatChannel(otherUser : String, randomId : String) {
         val userIds : MutableList<String> = mutableListOf(currentUser,otherUser)
-        val chatChannelToSave = ChatChannelModel(userIds)
+        val chatChannelToSave = ChatChannelModel(randomId,userIds)
 
         // Creating a collection in currentUsers document called engagedChats
         // engagedChats contains a document for each chat user is engaged in
@@ -99,14 +99,14 @@ class AdDetailFragment : Fragment() {
             .addOnSuccessListener {
                 Log.v("CHATCHANNEL", it.size().toString()) }
 
-        db.collection("ChatChannels").document(randomId)
+        db.collection("ChatChannels").document(chatChannelToSave.chatChannelId)
             .set(chatChannelToSave)
             .addOnSuccessListener {
                 Log.v("userIds", userIds.toString() )
             }.addOnCompleteListener{
                 navController.navigate(
                     AdDetailFragmentDirections.actionAdDetailFragmentToMessageDetailFragment(
-                        otherUser
+                        otherUser, randomId
                     )
                 )
             }.addOnFailureListener{
@@ -114,8 +114,8 @@ class AdDetailFragment : Fragment() {
 //                Toast.makeText(activity, it.message , Toast.LENGTH_LONG)
 //                    .show()
             }
-        db.collection("ChatChannels").document(randomId)
-            .collection("Messages").document().set(HashMap<String, Any>())
+//        db.collection("ChatChannels").document(randomId)
+//            .collection("Messages").document().set(HashMap<String, Any>())
     }
 
 
