@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(){
     private lateinit var auth: FirebaseAuth
     private lateinit var navView : NavigationView
     private val db = FirebaseFirestore.getInstance()
-    val user = Firebase.auth.currentUser
+    private var user = Firebase.auth.currentUser
     private lateinit var homeFragment: HomeFragment
 
 
@@ -89,7 +89,6 @@ class MainActivity : AppCompatActivity(){
         }
 
     }
-
 
 
     override fun onSupportNavigateUp(): Boolean {
