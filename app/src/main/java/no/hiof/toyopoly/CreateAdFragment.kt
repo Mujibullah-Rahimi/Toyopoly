@@ -113,15 +113,19 @@ class CreateAdFragment : Fragment() {
 
 
     private fun openGallery() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_PICK
-        getResult.launch(intent)
+        val intent : Intent = Intent().apply {
+            type = "image/*"
+            action = Intent.ACTION_PICK
+            putExtra(Intent.EXTRA_STREAM, uri)
+        }
+
+        getResult.launch((Intent.createChooser(intent, null)))
     }
 
     private val getResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
+            if (uri != null) {
+                Log.d(TAG, "Her var det en URI ja")
                 photo.localUri = it.data?.data!!.toString()
                 getCameraImage.launch(uri)
             }else{
@@ -138,7 +142,7 @@ class CreateAdFragment : Fragment() {
    }
 
     private fun uploadImg() {
-        var uri = Uri.parse(photo?.localUri)
+        var uri = Uri.parse(photo.localUri)
         var imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
         val uploadTask = imageRef.putFile(uri)
         uploadTask.addOnSuccessListener {
