@@ -112,7 +112,7 @@ class CreateAdFragment : Fragment() {
     private fun openGallery() {
         val intent : Intent = Intent().apply {
             type = "image/*"
-            action = Intent.ACTION_PICK
+            action = Intent.ACTION_GET_CONTENT
             putExtra(Intent.EXTRA_STREAM, uri)
         }
 
@@ -123,7 +123,7 @@ class CreateAdFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (uri != null) {
                 Log.d(TAG, "Her var det en URI ja")
-                photo.localUri = it.data?.data!!.toString()
+                photo.localUri = uri.toString()
                 getCameraImage.launch(uri)
             }else{
                 Log.e(TAG, "Wrong with the URI")
@@ -139,19 +139,21 @@ class CreateAdFragment : Fragment() {
    }
 
     private fun uploadImg() {
-        var uri = Uri.parse(photo.localUri)
-        var imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
-        val uploadTask = imageRef.putFile(uri)
-        uploadTask.addOnSuccessListener {
-            Log.i(TAG, "Image uploaded $imageRef")
-            val downloadUrl = imageRef.downloadUrl
-            downloadUrl.addOnSuccessListener { remoteUri ->
-                photo.remoteUri = remoteUri.toString()
-                updatePhotoDatabase(photo)
+        PhotoModel().apply {
+            var uri = Uri.parse(photo.localUri)
+            var imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
+            val uploadTask = imageRef.putFile(uri)
+            uploadTask.addOnSuccessListener {
+                Log.i(TAG, "Image uploaded $imageRef")
+                val downloadUrl = imageRef.downloadUrl
+                downloadUrl.addOnSuccessListener { remoteUri ->
+                    photo.remoteUri = remoteUri.toString()
+                    updatePhotoDatabase(photo)
+                }
             }
-        }
-        uploadTask.addOnFailureListener {
-            Log.e(TAG, it.message ?: "no message")
+            uploadTask.addOnFailureListener {
+                Log.e(TAG, it.message ?: "no message")
+            }
         }
     }
 
