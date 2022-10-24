@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.MessageModel
+import java.text.DateFormat
 
 
 class MessageAdapter(
@@ -29,10 +30,15 @@ class MessageAdapter(
     }
 
     inner class ChatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val message : TextView = view.findViewById(R.id.messagesRecyclerView)
+        private val message : TextView = view.findViewById(R.id.message_message)
+        private val date : TextView = view.findViewById(R.id.message_date)
+        private val time : TextView = view.findViewById(R.id.message_timestamp)
 
         fun bind(item: MessageModel) = with(itemView){
             message.text = item.message
+            date.text = DateFormat.getDateInstance().format(item.timestamp.toDate())
+            time.text =  DateFormat.getTimeInstance().format(item.timestamp.toDate())
+
             setOnClickListener{listener(item)}
         }
     }
