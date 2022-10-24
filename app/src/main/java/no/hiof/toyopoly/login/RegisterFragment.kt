@@ -26,11 +26,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Status
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
@@ -82,6 +88,8 @@ class RegisterFragment : Fragment(), NoCopySpan{
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(),gso)
+
+        Places.initialize(context, "AIzaSyCk4yNxdlQogDiA0PAKgZw4ye79frYDZUM")
 
     }
 
@@ -229,7 +237,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
         val fields = listOf(Place.Field.ADDRESS)
 
         // Start the autocomplete intent.
-        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
             .build(context)
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
 
