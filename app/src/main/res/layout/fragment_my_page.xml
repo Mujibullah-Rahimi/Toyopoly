@@ -11,8 +11,10 @@
         android:id="@+id/my_ads_recycler"
         android:layout_width="411dp"
         android:layout_height="500dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -44,6 +46,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/tokensBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/token"
+        app:layout_constraintBottom_toTopOf="@+id/my_ads_recycler"
+        app:layout_constraintEnd_toEndOf="@+id/emailUserPage"
+        app:layout_constraintHorizontal_bias="0.426"
+        app:layout_constraintStart_toStartOf="@+id/emailUserPage"
+        app:layout_constraintTop_toBottomOf="@+id/emailUserPage"
+        app:layout_constraintVertical_bias="0.275" />
+
+    <TextView
+        android:id="@+id/userTokens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:text="@string/test"
+        app:layout_constraintBottom_toTopOf="@+id/my_ads_recycler"
+        app:layout_constraintEnd_toEndOf="@+id/tokensBtn"
+        app:layout_constraintStart_toStartOf="@+id/tokensBtn"
+        app:layout_constraintTop_toBottomOf="@+id/tokensBtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

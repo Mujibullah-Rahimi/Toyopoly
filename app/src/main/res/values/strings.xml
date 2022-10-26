@@ -54,5 +54,6 @@
     <string name="dialogMessage">Gå til eller slett</string>
     <string name="my_page">My Page</string>
     <string name="test">test</string>
+    <string name="token">Token</string>
 
 </resources>

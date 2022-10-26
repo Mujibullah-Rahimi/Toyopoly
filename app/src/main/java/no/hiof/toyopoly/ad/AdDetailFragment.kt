@@ -57,6 +57,7 @@ class AdDetailFragment : Fragment() {
         val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
         val price_ad = view?.findViewById<TextView>(R.id.adDetailPrice)
         val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
+        val token_ad = view?.findViewById<TextView>(R.id.tokenPrice)
         //val time_ad = view?.findViewById<TextView>(R.id.adDetailTimeStamp)
 
         val docRef = db.collection("Ads").document(args.adId!!)
@@ -66,8 +67,9 @@ class AdDetailFragment : Fragment() {
                 if (document != null) {
                     Log.d("isHere", "Snapshot: ${document.data}")
                     title_ad?.text = document.getString("value")
-                    price_ad?.text = document.getString("price") + " kr"
+                    price_ad?.text = "Adjusted Money price: " + document.getString("price") + " kr"
                     desc_ad?.text = document.getString("description")
+                    token_ad?.text = "Token price: " + document.getLong("token").toString() + " Tokens"
                     //time_ad?.text = document.getDate("timestamp").toString()
                 }
                 else{

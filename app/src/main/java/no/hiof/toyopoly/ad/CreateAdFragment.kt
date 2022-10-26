@@ -1,9 +1,6 @@
 package no.hiof.toyopoly.ad
 
-import android.Manifest
 import android.content.ContentValues.TAG
-import android.content.Intent
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.firebase.auth.ktx.auth
@@ -33,7 +28,7 @@ class CreateAdFragment : Fragment() {
     val user = Firebase.auth.currentUser
     private var photos: ArrayList<PhotoModel> = ArrayList<PhotoModel>()
     private var storageReference = FirebaseStorage.getInstance().getReference()
-    private lateinit var photo: PhotoModel
+    //private lateinit var photo: PhotoModel
 
     //private lateinit var viewModel : AdsViewModel
     private lateinit var ads: AdModel
@@ -64,130 +59,165 @@ class CreateAdFragment : Fragment() {
         }
         val saveButton = view.findViewById<Button>(R.id.createAd)
         saveButton.setOnClickListener {
+            setTokens()
             saveAd(RandomId.randomID())
         }
 
         val photoBtn = view.findViewById<Button>(R.id.photoBtn)
         photoBtn.setOnClickListener {
-            takePhoto()
+
         }
+
+
     }
 
-    private fun takePhoto() {
-        if (hasCameraPermission() == PERMISSION_GRANTED && hasExternalWriteStoragePermission() == PERMISSION_GRANTED && hasExternalReadStoragePermission() == PERMISSION_GRANTED) {
-            //invokeCamera()
-            openGallery()
-        } else {
-            requestMultiplePermissionsLauncher.launch(
-                arrayOf(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            )
+//    private fun takePhoto() {
+//        if (hasCameraPermission() == PERMISSION_GRANTED && hasExternalWriteStoragePermission() == PERMISSION_GRANTED && hasExternalReadStoragePermission() == PERMISSION_GRANTED) {
+//            //invokeCamera()
+//            openGallery()
+//        } else {
+//            requestMultiplePermissionsLauncher.launch(
+//                arrayOf(
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                    Manifest.permission.CAMERA,
+//                    Manifest.permission.READ_EXTERNAL_STORAGE
+//                )
+//            )
+//        }
+//    }
+//
+//    private val requestMultiplePermissionsLauncher =
+//        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
+//            var permissionGranted = false
+//            resultsMap.forEach {
+//                if (it.value == true) {
+//                    permissionGranted = it.value
+//                } else {
+//                    permissionGranted = false
+//                    return@forEach
+//                }
+//            }
+//            if (permissionGranted) {
+//                //invokeCamera()
+//                openGallery()
+//            } else {
+//                Toast.makeText(this.activity, "No camera without permission", Toast.LENGTH_LONG)
+//                    .show()
+//            }
+//        }
+//
+//
+//    private fun openGallery() {
+//        val intent : Intent = Intent().apply {
+//            type = "image/*"
+//            action = Intent.ACTION_GET_CONTENT
+//            putExtra(Intent.EXTRA_STREAM, uri)
+//        }
+//
+//        getResult.launch((Intent.createChooser(intent, null)))
+//    }
+//
+//    private val getResult =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//            if (uri != null) {
+//                Log.d(TAG, "Her var det en URI ja")
+//                photo.localUri = uri.toString()
+//                getCameraImage.launch(uri)
+//            }else{
+//                Log.e(TAG, "Wrong with the URI")
+//            }
+//        }
+//    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()){
+//        success ->
+//      if(success){
+//          Log.i(TAG, "Img loc: ${uri}")
+//      }else{
+//         Log.e(TAG,"img no bueno. ${uri}")
+//     }
+//   }
+//
+//    private fun uploadImg() {
+//        PhotoModel().apply {
+//            var uri = Uri.parse(photo.localUri)
+//            var imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
+//            val uploadTask = imageRef.putFile(uri)
+//            uploadTask.addOnSuccessListener {
+//                Log.i(TAG, "Image uploaded $imageRef")
+//                val downloadUrl = imageRef.downloadUrl
+//                downloadUrl.addOnSuccessListener { remoteUri ->
+//                    photo.remoteUri = remoteUri.toString()
+//                    updatePhotoDatabase(photo)
+//                }
+//            }
+//            uploadTask.addOnFailureListener {
+//                Log.e(TAG, it.message ?: "no message")
+//            }
+//        }
+//    }
+//
+//    private fun updatePhotoDatabase(photo: PhotoModel) {
+//        var photoCollection = db.collection("Ads").document(ads.adId).collection("Images")
+//        var handle = photoCollection.add(photo)
+//        handle.addOnSuccessListener {
+//            Log.i(TAG, "Successfully updated photo metadata")
+//            photo.id = it.id
+//            db.collection("Ads").document(ads.adId).collection("Images").document(photo.id)
+//                .set(photo)
+//        }
+//        handle.addOnFailureListener {
+//            Log.e(TAG, "Error updating photo data: ${it.message}")
+//        }
+//    }
+//
+//    fun hasCameraPermission() =
+//        this.activity?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.CAMERA) }
+//
+//    fun hasExternalWriteStoragePermission() = this.activity?.let {
+//        ContextCompat.checkSelfPermission(
+//            it,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//        )
+//    }
+//
+//    fun hasExternalReadStoragePermission() = this.activity?.let {
+//        ContextCompat.checkSelfPermission(
+//            it,
+//            Manifest.permission.READ_EXTERNAL_STORAGE
+//        )
+//    }
+
+    fun setTokens(){
+        val price = view?.findViewById<EditText>(R.id.price_createAd)
+        val price1 = price?.text.toString()
+        val price2 = Integer.parseInt(price1)
+        var token = 0
+
+        if(price2 <= 100){
+            tokenValue = 1
+        } else if(price2 <= 200){
+            tokenValue = 2
+        }else if(price2 <= 500){
+            tokenValue = 5
+        }else if(price2 <= 800){
+            tokenValue = 8
+        }else if(price2 <= 1000){
+            tokenValue = 1000
+        }else if(price2 <= 1500){
+            tokenValue = 15
+        }else if(price2 <= 2000){
+            tokenValue = 20
+        }else if(price2 <= 2500){
+            tokenValue = 25
         }
+        else if(price2 <= 10000){
+            tokenValue = 100
+        }else if(price2 <= 99999){
+            tokenValue = 999
+        }
+
+        Log.d(TAG, "${token}")
     }
-
-    private val requestMultiplePermissionsLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
-            var permissionGranted = false
-            resultsMap.forEach {
-                if (it.value == true) {
-                    permissionGranted = it.value
-                } else {
-                    permissionGranted = false
-                    return@forEach
-                }
-            }
-            if (permissionGranted) {
-                //invokeCamera()
-                openGallery()
-            } else {
-                Toast.makeText(this.activity, "No camera without permission", Toast.LENGTH_LONG)
-                    .show()
-            }
-        }
-
-
-    private fun openGallery() {
-        val intent : Intent = Intent().apply {
-            type = "image/*"
-            action = Intent.ACTION_GET_CONTENT
-            putExtra(Intent.EXTRA_STREAM, uri)
-        }
-
-        getResult.launch((Intent.createChooser(intent, null)))
-    }
-
-    private val getResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (uri != null) {
-                Log.d(TAG, "Her var det en URI ja")
-                photo.localUri = uri.toString()
-                getCameraImage.launch(uri)
-            }else{
-                Log.e(TAG, "Wrong with the URI")
-            }
-        }
-    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()){
-        success ->
-      if(success){
-          Log.i(TAG, "Img loc: ${uri}")
-      }else{
-         Log.e(TAG,"img no bueno. ${uri}")
-     }
-   }
-
-    private fun uploadImg() {
-        PhotoModel().apply {
-            var uri = Uri.parse(photo.localUri)
-            var imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
-            val uploadTask = imageRef.putFile(uri)
-            uploadTask.addOnSuccessListener {
-                Log.i(TAG, "Image uploaded $imageRef")
-                val downloadUrl = imageRef.downloadUrl
-                downloadUrl.addOnSuccessListener { remoteUri ->
-                    photo.remoteUri = remoteUri.toString()
-                    updatePhotoDatabase(photo)
-                }
-            }
-            uploadTask.addOnFailureListener {
-                Log.e(TAG, it.message ?: "no message")
-            }
-        }
-    }
-
-    private fun updatePhotoDatabase(photo: PhotoModel) {
-        var photoCollection = db.collection("Ads").document(ads.adId).collection("Images")
-        var handle = photoCollection.add(photo)
-        handle.addOnSuccessListener {
-            Log.i(TAG, "Successfully updated photo metadata")
-            photo.id = it.id
-            db.collection("Ads").document(ads.adId).collection("Images").document(photo.id)
-                .set(photo)
-        }
-        handle.addOnFailureListener {
-            Log.e(TAG, "Error updating photo data: ${it.message}")
-        }
-    }
-
-    fun hasCameraPermission() =
-        this.activity?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.CAMERA) }
-
-    fun hasExternalWriteStoragePermission() = this.activity?.let {
-        ContextCompat.checkSelfPermission(
-            it,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-    }
-
-    fun hasExternalReadStoragePermission() = this.activity?.let {
-        ContextCompat.checkSelfPermission(
-            it,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-    }
-
+    var tokenValue = 0
 
     fun saveAd(documentId: String) {
         val title = view?.findViewById<EditText>(R.id.title_create_ad)
@@ -196,18 +226,45 @@ class CreateAdFragment : Fragment() {
         val descFire = desc?.text.toString()
         val prices = view?.findViewById<EditText>(R.id.price_createAd)
         val priceFire = prices?.text.toString()
+        val price1 = Integer.parseInt(priceFire)
+        var price2 = price1.toString()
         val spinner = view?.findViewById<Spinner>(R.id.spinner_catergory)
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
+
+        if(price1 <= 100){
+            price2 = "100"
+        }else if(price1 <= 200){
+            price2 = "200"
+        }else if(price1 <= 500){
+            price2 = "500"
+        }else if(price1 <= 800){
+            price2 = "800"
+        }else if(price1 <= 1000){
+            price2 = "1000"
+        }else if(price1 <= 1500){
+            price2 = "1500"
+        }else if(price1 <= 2000){
+            price2 = "2000"
+        }else if(price1 <= 2500){
+            price2 = "2500"
+        }
+        else if(price1 <= 10000){
+            price2 = "10000"
+        }else if(price1 <= 99999){
+            tokenValue = 99999
+        }
+
 
         var adModel = AdModel().apply {
             adId = documentId
             value = title?.text.toString()
             description = desc?.text.toString()
-            price = prices?.text.toString()
+            price = price2
             category = spinner?.selectedItem.toString()
-            remoteUri = photo!!.remoteUri
+            //remoteUri = photo!!.remoteUri
             userId = user!!.uid
+            token = tokenValue
         }
 
         if (
@@ -232,10 +289,10 @@ class CreateAdFragment : Fragment() {
                 "The description must at least be 16 chars long",
                 Toast.LENGTH_LONG
             ).show()
-        } else if (!prices.onlyNumbers()) {
+        } else if (!prices.onlyNumbers() || !prices.maxLength(5)) {
             Toast.makeText(
                 activity,
-                "The price can only consist of numbers",
+                "The price can only consist of numbers and can only be 999999",
                 Toast.LENGTH_LONG
             ).show()
         } else {
@@ -255,7 +312,7 @@ class CreateAdFragment : Fragment() {
                         )
                     val navController = view?.findNavController()
                     navController?.navigate(action)
-                    uploadImg()
+                    //uploadImg()
                 }
                 .addOnFailureListener {
                     Toast.makeText(activity, it.message, Toast.LENGTH_LONG)

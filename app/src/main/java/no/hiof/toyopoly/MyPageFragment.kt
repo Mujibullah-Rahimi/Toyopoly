@@ -1,13 +1,16 @@
 package no.hiof.toyopoly
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +20,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.models.AdModel
+import androidx.fragment.app.FragmentManager
 
 
 class MyPageFragment : Fragment(){
@@ -73,8 +77,13 @@ class MyPageFragment : Fragment(){
             builder.show()
 
         }
-
         recyclerView.adapter = adapterAds
+
+        val tokenBtn = view.findViewById<Button>(R.id.tokensBtn)
+        tokenBtn.setOnClickListener{
+            TokenDialog().show(childFragmentManager, "TokenDialog")
+        }
+
         getAds()
     }
 
@@ -102,6 +111,7 @@ class MyPageFragment : Fragment(){
     fun getUser() {
         val getName = view?.findViewById<TextView>(R.id.nameUserPage)
         val getEmail = view?.findViewById<TextView>(R.id.emailUserPage)
+        val getTokens = view?.findViewById<TextView>(R.id.userTokens)
 
         val docRef = db.collection("Users").document(userUID)
         docRef
@@ -111,6 +121,7 @@ class MyPageFragment : Fragment(){
                     Log.d("currentUser", "Snapshot: ${document.data}")
                     getEmail?.text = document.getString("email")
                     getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
+                    getTokens?.text = "Amount of tokens: " + document.getLong("token").toString()
                     //time_ad?.text = document.getDate("timestamp").toString()
                 } else {
                     Log.d("isNotHere", "The document snapshot doesn't exist")
