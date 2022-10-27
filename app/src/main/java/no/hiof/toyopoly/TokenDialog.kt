@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.adapter.AdapterToken
+import no.hiof.toyopoly.models.AdModel
 import no.hiof.toyopoly.models.TokenModel
 
 class TokenDialog : DialogFragment() {
@@ -45,7 +47,7 @@ class TokenDialog : DialogFragment() {
              builder.setTitle(R.string.dialogTitle)
              builder.setMessage(R.string.dialogMessage)
              builder.setIcon(android.R.drawable.ic_dialog_alert)
-             //getTokenAmount()
+             getTokenAmount()
 
 
              builder.setPositiveButton("Buy Token"){dialogInterface, which ->
@@ -64,18 +66,21 @@ class TokenDialog : DialogFragment() {
         recyclerView.adapter = adapterToken
         getTokens()
     }
-    var token : Long = 1
+    var tokenValue : Long = 0
 
 
-    // TODO: dynamisk hent mengde tokens
-//    private fun getTokenAmount() {
-//        val id: String = db.collection("Tokens").document().id
-//        Log.d(TAG, id)
-////            db.collection("Tokens").document(id).get().addOnSuccessListener { document ->
-////                Log.d("currentToken", "Snapshot: ${document.data}")
-////                token = document.getLong("Amount")!!
-////            }
-//    }
+
+    private fun getTokenAmount() {
+            val test = view?.findViewById<TextView>(R.id.token_ref)
+            val test1 = test?.text.toString()
+            Log.d(TAG, test1)
+            db.collection("Tokens").document(test1)
+                .get()
+                .addOnSuccessListener { document ->
+                    Log.d("currentToken", "Snapshot: ${document.data}")
+                    tokenValue = document.getLong("Amount")!!
+                }
+    }
 
     private fun getTokens() {
             db.collection("Tokens")
@@ -98,7 +103,7 @@ class TokenDialog : DialogFragment() {
     val userUID = user!!.uid
 
     private fun UpdateToken() {
-       db.collection("Users").document(userUID).update("token",FieldValue.increment(token) )
+       db.collection("Users").document(userUID).update("token",FieldValue.increment(tokenValue) )
     }
 
     override fun onStart() {
