@@ -39,4 +39,5 @@ object FirestoreUtil {
             onComplete(newChannel.id)
         }
     }
+
 }

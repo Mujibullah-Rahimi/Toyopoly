@@ -9,6 +9,7 @@ data class AdModel(
     var adId: String = "",
     var value:String = "",
     var description:String = "",
+    var address:String = "",
     var price: String = "",
     var category: String ="",
     var remoteUri: String = "",

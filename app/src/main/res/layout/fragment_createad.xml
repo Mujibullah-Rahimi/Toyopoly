@@ -7,47 +7,23 @@
     android:layout_height="match_parent"
     tools:context=".CreateAdFragment">
 
-    <Button
-        android:id="@+id/createAd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/create_ad"
-        app:layout_constraintEnd_toEndOf="@+id/spinner_catergory"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_catergory" />
-
     <TextView
         android:id="@+id/createAdTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:text="@string/create_ad"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/title_create_ad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/title"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:textColorHint="#757575"
-        app:layout_constraintEnd_toEndOf="@+id/createAdTitle"
-        app:layout_constraintStart_toStartOf="@+id/createAdTitle"
-        app:layout_constraintTop_toBottomOf="@+id/createAdTitle" />
 
     <EditText
         android:id="@+id/desc_createAd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="44dp"
         android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
@@ -64,29 +40,44 @@
         android:id="@+id/price_createAd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="44dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/price"
         android:inputType="number"
         android:minHeight="48dp"
         android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="@+id/address_createAd"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/address_createAd"
+        app:layout_constraintTop_toBottomOf="@+id/address_createAd" />
+
+    <Button
+        android:id="@+id/createAd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/create_ad"
+        app:layout_constraintEnd_toEndOf="@+id/spinner_catergory"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_catergory" />
+
+    <EditText
+        android:id="@+id/address_createAd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="@string/address"
+        android:inputType="textMultiLine"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="@+id/desc_createAd"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/desc_createAd"
         app:layout_constraintTop_toBottomOf="@+id/desc_createAd" />
-
-    <Spinner
-        android:id="@+id/spinner_catergory"
-        android:layout_width="213dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="50dp"
-        android:contentDescription="@string/category"
-        android:spinnerMode="dialog"
-        app:layout_constraintEnd_toEndOf="@+id/price_createAd"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="@+id/price_createAd"
-        app:layout_constraintTop_toBottomOf="@+id/price_createAd" />
 
     <Button
         android:id="@+id/photoBtn"
@@ -97,6 +88,34 @@
         app:layout_constraintBottom_toTopOf="@+id/createAd"
         app:layout_constraintEnd_toEndOf="@+id/spinner_catergory"
         app:layout_constraintTop_toBottomOf="@+id/spinner_catergory"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.525" />
+
+    <Spinner
+        android:id="@+id/spinner_catergory"
+        android:layout_width="213dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="44dp"
+        android:contentDescription="@string/category"
+        android:spinnerMode="dialog"
+        app:layout_constraintEnd_toEndOf="@+id/price_createAd"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/price_createAd"
+        app:layout_constraintTop_toBottomOf="@+id/price_createAd" />
+
+    <EditText
+        android:id="@+id/title_create_ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/title"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="@+id/createAdTitle"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="@+id/createAdTitle"
+        app:layout_constraintTop_toBottomOf="@+id/createAdTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

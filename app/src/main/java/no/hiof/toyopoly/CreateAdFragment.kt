@@ -19,7 +19,7 @@ import androidx.navigation.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
+//import com.google.firebase.storage.FirebaseStorage
 import com.wajahatkarim3.easyvalidation.core.view_ktx.*
 import no.hiof.toyopoly.model.AdModel
 import no.hiof.toyopoly.model.PhotoModel
@@ -35,7 +35,7 @@ class CreateAdFragment : Fragment() {
     val db = Firebase.firestore
     val user = Firebase.auth.currentUser
     private var photos: ArrayList<PhotoModel> = ArrayList<PhotoModel>()
-    private var storageReference = FirebaseStorage.getInstance().getReference()
+    //private var storageReference = FirebaseStorage.getInstance().getReference()
     private lateinit var photo: PhotoModel
 
     //private lateinit var viewModel : AdsViewModel
@@ -67,7 +67,7 @@ class CreateAdFragment : Fragment() {
         }
         val saveButton = view.findViewById<Button>(R.id.createAd)
         saveButton.setOnClickListener {
-            saveAd(RandomId.randomID())
+          saveAd(RandomId.randomID())
         }
 
         val photoBtn = view.findViewById<Button>(R.id.photoBtn)
@@ -141,7 +141,7 @@ class CreateAdFragment : Fragment() {
      }
    }
 
-    private fun uploadImg() {
+    /*private fun uploadImg() {
         var uri = Uri.parse(photo.localUri)
         var imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
         val uploadTask = imageRef.putFile(uri)
@@ -156,7 +156,7 @@ class CreateAdFragment : Fragment() {
         uploadTask.addOnFailureListener {
             Log.e(TAG, it.message ?: "no message")
         }
-    }
+    }*/
 
     private fun updatePhotoDatabase(photo: PhotoModel) {
         var photoCollection = db.collection("Ads").document(ads.adId).collection("Images")
@@ -195,6 +195,8 @@ class CreateAdFragment : Fragment() {
         val titleFire = title?.text.toString()
         val desc = view?.findViewById<EditText>(R.id.desc_createAd)
         val descFire = desc?.text.toString()
+        val addr = view?.findViewById<EditText>(R.id.address_createAd)
+        val addrFire = addr?.text.toString()
         val prices = view?.findViewById<EditText>(R.id.price_createAd)
         val priceFire = prices?.text.toString()
         val spinner = view?.findViewById<Spinner>(R.id.spinner_catergory)
@@ -205,15 +207,17 @@ class CreateAdFragment : Fragment() {
             adId = documentId
             value = title?.text.toString()
             description = desc?.text.toString()
+            address = addr?.text.toString()
             price = prices?.text.toString()
             category = spinner?.selectedItem.toString()
-            remoteUri = photo!!.remoteUri
+       //     remoteUri = photo!!.remoteUri
             userId = user!!.uid
         }
 
         if (
             !title!!.nonEmpty() ||
             !desc!!.nonEmpty() ||
+            !addr!!.nonEmpty() ||
             !prices!!.nonEmpty()
         ) {
             Toast.makeText(
@@ -239,12 +243,19 @@ class CreateAdFragment : Fragment() {
                 "The price can only consist of numbers",
                 Toast.LENGTH_LONG
             ).show()
+        }else if (!addr.minLength(8)) {
+            Toast.makeText(
+                activity,
+                "address must be at least 8 chars long",
+                Toast.LENGTH_LONG
+            ).show()
         } else {
             db.collection("Ads").document(documentId)
                 .set(adModel)
                 .addOnSuccessListener {
                     title.text.clear()
                     desc.text.clear()
+                    addr.text.clear()
                     prices.text.clear()
                     Toast.makeText(activity, "Ad was created successfully!", Toast.LENGTH_LONG)
                         .show()
@@ -256,7 +267,7 @@ class CreateAdFragment : Fragment() {
                         )
                     val navController = view?.findNavController()
                     navController?.navigate(action)
-                    uploadImg()
+                    //uploadImg()
                 }
                 .addOnFailureListener {
                     Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
