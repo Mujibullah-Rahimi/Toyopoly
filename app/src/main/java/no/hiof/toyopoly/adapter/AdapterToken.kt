@@ -27,7 +27,7 @@ class AdapterToken (
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val value: TextView = itemView.findViewById(R.id.NameToken)
+        val value: TextView = itemView.findViewById(R.id.valueAd)
         val price: TextView = itemView.findViewById(R.id.PriceToken)
 
         fun bindItems(token : TokenModel) = with(itemView){

@@ -27,12 +27,14 @@ class AdapterAds(
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val value: TextView = itemView.findViewById(R.id.NameToken)
-        val price: TextView = itemView.findViewById(R.id.PriceToken)
+        val value: TextView = itemView.findViewById(R.id.ValueAds)
+        val price: TextView = itemView.findViewById(R.id.PriceAds)
+        val adId: TextView = itemView.findViewById(R.id.adId_Ads)
 
         fun bindItems(ad : AdModel) = with(itemView){
             value.text = ad.value
             price.text = ad.price + " kr"
+            adId.text = "Ref number: " + ad.adId
             setOnClickListener{ listener(ad) }
         }
     }

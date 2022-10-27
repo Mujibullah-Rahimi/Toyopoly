@@ -33,6 +33,12 @@
         <action
             android:id="@+id/action_homeFragment_to_myPageFragment"
             app:destination="@id/myPageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_self"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_adDetailFragment"
+            app:destination="@id/adDetailFragment" />
     </fragment>
 
     <fragment
