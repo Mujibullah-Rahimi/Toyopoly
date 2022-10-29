@@ -1,20 +1,29 @@
 package no.hiof.toyopoly
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.models.AdModel
 
@@ -24,7 +33,11 @@ class MyPageFragment : Fragment(){
     private lateinit var adsArrayList: ArrayList<AdModel>
     private lateinit var adapterAds: AdapterAds
     private val db = FirebaseFirestore.getInstance()
-    val user = Firebase.auth.currentUser
+    private val user = Firebase.auth.currentUser
+    private val TAG = "UserPhoto"
+    private lateinit var userImage : ImageView
+    private var userImageURI: Uri? = null
+    private var storageRef = FirebaseStorage.getInstance().reference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +51,17 @@ class MyPageFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        userImage = view.findViewById(R.id.profilePicImageView)
         getUser()
-
+        val changePic = view.findViewById<Button>(R.id.changePicBtn)
+        changePic.setOnClickListener{
+            ImagePicker.with(requireActivity())
+                .galleryOnly()
+                .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
+                .createIntent { intent ->
+                    getImageFromGallery.launch(intent)
+                }
+        }
         recyclerView = view.findViewById(R.id.my_ads_recycler)
         recyclerView.layoutManager = LinearLayoutManager (this.activity)
 
@@ -78,6 +100,29 @@ class MyPageFragment : Fragment(){
         getAds()
     }
 
+    private val getImageFromGallery = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result: ActivityResult ->
+        val resultCode = result.resultCode
+        val data = result.data
+
+        if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            val fileUri = data?.data!!
+            userImageURI = fileUri
+            Log.v(TAG, "$fileUri")
+            userImage.setImageURI(fileUri)
+            storageRef.child("images/users/${user!!.uid}").putFile(userImageURI!!).addOnSuccessListener {
+                getUser()
+            }
+
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(activity, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            Log.v(TAG, ImagePicker.getError(data))
+        } else {
+            Toast.makeText(activity, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            Log.v(TAG, ImagePicker.getError(data))
+        }
+    }
+
     val userUID = user!!.uid
 
     fun getAds(){
@@ -103,6 +148,9 @@ class MyPageFragment : Fragment(){
         val getName = view?.findViewById<TextView>(R.id.nameUserPage)
         val getEmail = view?.findViewById<TextView>(R.id.emailUserPage)
 
+        userImage.setImageURI(null)
+        getName?.text =""
+        getEmail?.text =""
         val docRef = db.collection("Users").document(userUID)
         docRef
             .get()
@@ -117,8 +165,17 @@ class MyPageFragment : Fragment(){
                 }
             }
             .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
+
+        val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
+
+        Glide.with(requireView())
+            .load(pictureReference)
+            .into(userImage)
     }
 
+    fun updateImage(){
+
+    }
     fun deleteAd(documentId: String) {
 
         db.collection("Ads").document(documentId)
