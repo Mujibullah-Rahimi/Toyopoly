@@ -103,6 +103,9 @@
         <action
             android:id="@+id/action_adDetailFragment_to_messageDetailFragment"
             app:destination="@id/messageDetailFragment" />
+        <action
+            android:id="@+id/action_adDetailFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
     </fragment>
 
     <fragment
