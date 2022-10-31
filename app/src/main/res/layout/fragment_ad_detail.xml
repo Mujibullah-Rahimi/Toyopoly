@@ -88,27 +88,25 @@
         android:layout_marginTop="16dp"
         android:text="Address"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/adDetailPrice"
-        app:layout_constraintHorizontal_bias="0.452"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/adDetailDescription"
         app:layout_constraintTop_toBottomOf="@+id/adDetailDescription" />
+
 
     <TextView
         android:id="@+id/adDetailPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="Price"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/adDetailDescription"
-        app:layout_constraintTop_toBottomOf="@+id/adDetailDescription" />
-
+        app:layout_constraintTop_toBottomOf="@+id/adDetailAddress" />
 
     <Button
         android:id="@+id/contactSellerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="100dp"
         android:text="Contact seller"
         app:layout_constraintEnd_toEndOf="@+id/adDetailPrice"
         app:layout_constraintTop_toBottomOf="@+id/adDetailPrice" />
