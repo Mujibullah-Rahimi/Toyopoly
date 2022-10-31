@@ -8,5 +8,5 @@ data class UserModel(
     val email:String
 ){
     constructor(firstName: String, lastName: String, email: String)
-            : this(firstName, lastName, "", "", email)
+            : this(firstName, lastName, "", "" , email)
 }

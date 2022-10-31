@@ -82,6 +82,18 @@
         app:layout_constraintTop_toBottomOf="@+id/adDetailTitle" />
 
     <TextView
+        android:id="@+id/adDetailAddress"
+        android:layout_width="146dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="16dp"
+        android:text="Address"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/adDetailPrice"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adDetailDescription" />
+
+    <TextView
         android:id="@+id/adDetailPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,7 +108,7 @@
         android:id="@+id/contactSellerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="128dp"
         android:text="Contact seller"
         app:layout_constraintEnd_toEndOf="@+id/adDetailPrice"
         app:layout_constraintTop_toBottomOf="@+id/adDetailPrice" />

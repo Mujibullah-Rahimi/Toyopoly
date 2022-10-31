@@ -13,7 +13,7 @@ import androidx.navigation.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
+//import com.google.firebase.storage.FirebaseStorage
 import com.wajahatkarim3.easyvalidation.core.view_ktx.*
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.AdModel
@@ -29,6 +29,8 @@ class CreateAdFragment : Fragment() {
     private var photos: ArrayList<PhotoModel> = ArrayList<PhotoModel>()
     private var storageReference = FirebaseStorage.getInstance().getReference()
     //private lateinit var photo: PhotoModel
+    //private var storageReference = FirebaseStorage.getInstance().getReference()
+    private lateinit var photo: PhotoModel
 
     //private lateinit var viewModel : AdsViewModel
     private lateinit var ads: AdModel
@@ -61,6 +63,7 @@ class CreateAdFragment : Fragment() {
         saveButton.setOnClickListener {
             setTokens()
             saveAd(RandomId.randomID())
+          saveAd(RandomId.randomID())
         }
 
         val photoBtn = view.findViewById<Button>(R.id.photoBtn)
@@ -76,6 +79,22 @@ class CreateAdFragment : Fragment() {
         val price1 = price?.text.toString()
         val price2 = Integer.parseInt(price1)
         var token = 0
+    /*private fun uploadImg() {
+        var uri = Uri.parse(photo.localUri)
+        var imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
+        val uploadTask = imageRef.putFile(uri)
+        uploadTask.addOnSuccessListener {
+            Log.i(TAG, "Image uploaded $imageRef")
+            val downloadUrl = imageRef.downloadUrl
+            downloadUrl.addOnSuccessListener { remoteUri ->
+                photo.remoteUri = remoteUri.toString()
+                updatePhotoDatabase(photo)
+            }
+        }
+        uploadTask.addOnFailureListener {
+            Log.e(TAG, it.message ?: "no message")
+        }
+    }*/
 
         if(price2 <= 100){
             tokenValue = 1
@@ -109,6 +128,8 @@ class CreateAdFragment : Fragment() {
         val titleFire = title?.text.toString()
         val desc = view?.findViewById<EditText>(R.id.desc_createAd)
         val descFire = desc?.text.toString()
+        val addr = view?.findViewById<EditText>(R.id.address_createAd)
+        val addrFire = addr?.text.toString()
         val prices = view?.findViewById<EditText>(R.id.price_createAd)
         val priceFire = prices?.text.toString()
         val price1 = Integer.parseInt(priceFire)
@@ -146,8 +167,11 @@ class CreateAdFragment : Fragment() {
             adId = documentId
             value = title?.text.toString()
             description = desc?.text.toString()
+            address = addr?.text.toString()
+            price = prices?.text.toString()
             price = price2
             category = spinner?.selectedItem.toString()
+       //     remoteUri = photo!!.remoteUri
             //remoteUri = photo!!.remoteUri
             userId = user!!.uid
             token = tokenValue
@@ -156,6 +180,7 @@ class CreateAdFragment : Fragment() {
         if (
             !title!!.nonEmpty() ||
             !desc!!.nonEmpty() ||
+            !addr!!.nonEmpty() ||
             !prices!!.nonEmpty()
         ) {
             Toast.makeText(
@@ -179,6 +204,13 @@ class CreateAdFragment : Fragment() {
             Toast.makeText(
                 activity,
                 "The price can only consist of numbers and can only be 999999",
+                "The price can only consist of numbers",
+                Toast.LENGTH_LONG
+            ).show()
+        }else if (!addr.minLength(8)) {
+            Toast.makeText(
+                activity,
+                "address must be at least 8 chars long",
                 Toast.LENGTH_LONG
             ).show()
         } else {
@@ -187,6 +219,7 @@ class CreateAdFragment : Fragment() {
                 .addOnSuccessListener {
                     title.text.clear()
                     desc.text.clear()
+                    addr.text.clear()
                     prices.text.clear()
                     Toast.makeText(activity, "Ad was created successfully!", Toast.LENGTH_LONG)
                         .show()

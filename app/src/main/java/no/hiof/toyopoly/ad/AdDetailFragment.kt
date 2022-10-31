@@ -1,5 +1,7 @@
 package no.hiof.toyopoly.ad
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,9 +13,16 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.common.io.Files.map
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import no.hiof.toyopoly.model.ChatChannelModel
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.ChatChannelModel
 import no.hiof.toyopoly.util.RandomId
@@ -24,6 +33,10 @@ class AdDetailFragment : Fragment() {
     private lateinit var docSnap: DocumentSnapshot
     private val args: AdDetailFragmentArgs by navArgs()
     private lateinit var navController : NavController
+    val user = Firebase.auth.currentUser
+    private lateinit var binding: AdDetailFragment
+    private lateinit var supportMapFragment: SupportMapFragment
+
 
     private val currentUser = auth.currentUser!!.uid
     private lateinit var otherUser : String
@@ -34,6 +47,7 @@ class AdDetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_ad_detail, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,6 +55,7 @@ class AdDetailFragment : Fragment() {
         navController = findNavController()
         val contactSellerButton = view.findViewById<Button>(R.id.contactSellerButton)
 
+        getUser()
         getAds()
         getOtherUserId()
 
@@ -57,6 +72,7 @@ class AdDetailFragment : Fragment() {
         val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
         val price_ad = view?.findViewById<TextView>(R.id.adDetailPrice)
         val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
+        val addr_ad = view?.findViewById<TextView>(R.id.adDetailAddress)
         val token_ad = view?.findViewById<TextView>(R.id.tokenPrice)
         //val time_ad = view?.findViewById<TextView>(R.id.adDetailTimeStamp)
 
@@ -69,6 +85,7 @@ class AdDetailFragment : Fragment() {
                     title_ad?.text = document.getString("value")
                     price_ad?.text = "Adjusted Money price: " + document.getString("price") + " kr"
                     desc_ad?.text = document.getString("description")
+                    addr_ad?.text = document.getString("address")
                     token_ad?.text = "Token price: " + document.getLong("token").toString() + " Tokens"
                     //time_ad?.text = document.getDate("timestamp").toString()
                 }
@@ -76,7 +93,16 @@ class AdDetailFragment : Fragment() {
                     Log.d("isNotHere", "The document snapshot doesn't exist")
                 }
             }
-            .addOnFailureListener{e -> Log.d("Error", "Fail at: ", e)}
+            .addOnFailureListener{e -> Log.d("Error", "Fail at: ", e) }
+
+        addr_ad?.setOnClickListener {
+            val gmmIntentUri =
+                Uri.parse("geo:0,0?q=" + addr_ad.text)
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+
+        }
     }
 
     private fun createChatChannel(otherUser : String, randomId : String) {
@@ -118,6 +144,22 @@ class AdDetailFragment : Fragment() {
             }
 //        db.collection("ChatChannels").document(randomId)
 //            .collection("Messages").document().set(HashMap<String, Any>())
+    }
+
+    val userUID = user!!.uid
+
+    private fun getUser() {
+        val docRef = db.collection("Users").document(userUID)
+        docRef
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d("currentUser", "Snapshot: ${document.data}")
+                } else {
+                    Log.d("isNotHere", "The document snapshot doesn't exist")
+                }
+            }
+            .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
     }
 
 

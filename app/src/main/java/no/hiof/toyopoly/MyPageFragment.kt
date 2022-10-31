@@ -112,6 +112,7 @@ class MyPageFragment : Fragment(){
         val getName = view?.findViewById<TextView>(R.id.nameUserPage)
         val getEmail = view?.findViewById<TextView>(R.id.emailUserPage)
         val getTokens = view?.findViewById<TextView>(R.id.userTokens)
+        val getAddress = view?.findViewById<TextView>(R.id.addressUserPage)
 
         val docRef = db.collection("Users").document(userUID)
         docRef
@@ -122,6 +123,7 @@ class MyPageFragment : Fragment(){
                     getEmail?.text = document.getString("email")
                     getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
                     getTokens?.text = "Amount of tokens: " + document.getLong("token").toString()
+                    getAddress?.text = document.getString("address")
                     //time_ad?.text = document.getDate("timestamp").toString()
                 } else {
                     Log.d("isNotHere", "The document snapshot doesn't exist")

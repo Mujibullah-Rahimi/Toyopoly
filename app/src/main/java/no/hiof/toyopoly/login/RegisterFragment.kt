@@ -22,6 +22,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
@@ -75,7 +77,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(),gso)
 
-        Places.initialize(context, "AIzaSyCk4yNxdlQogDiA0PAKgZw4ye79frYDZUM")
+        //Places.initialize(context, "AIzaSyCk4yNxdlQogDiA0PAKgZw4ye79frYDZUM")
 
     }
 
@@ -219,41 +221,8 @@ class RegisterFragment : Fragment(), NoCopySpan{
                     })
             }
 
-
         }
 
-        val fields = listOf(Place.Field.ADDRESS)
-
-        // Start the autocomplete intent.
-        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-            .build(context)
-        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
-                        Log.i(TAG, "Place: ${place.address}")
-                    }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    // TODO: Handle the error.
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        Log.i(TAG, status.statusMessage ?: "")
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
-                }
-            }
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onResume() {
@@ -267,4 +236,5 @@ class RegisterFragment : Fragment(), NoCopySpan{
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         (activity as MainActivity?)!!.enableDrawer()
     }
+
 }
