@@ -99,6 +99,7 @@ class HomeFragment : Fragment(), View.OnClickListener{
                             Log.e("Firestore ERROR", error.message.toString())
                             return
                         }
+
                         for (dc: DocumentChange in value?.documentChanges!!) {
                             if (dc.type == DocumentChange.Type.ADDED) {
                                 adsArrayList.add(dc.document.toObject(AdModel::class.java))

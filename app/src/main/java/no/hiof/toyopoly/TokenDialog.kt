@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,6 @@ class TokenDialog : DialogFragment() {
     private lateinit var adapterToken: AdapterToken
     private val db = FirebaseFirestore.getInstance()
     val user = Firebase.auth.currentUser
-    private val args: TokenDialogArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +44,8 @@ class TokenDialog : DialogFragment() {
 
          adapterToken = AdapterToken(tokenArrayList){ token ->
              val builder = AlertDialog.Builder(this.activity)
-             builder.setTitle(R.string.dialogTitle)
-             builder.setMessage(R.string.dialogMessage)
+             builder.setTitle(R.string.dialogTitleToken)
+             builder.setMessage(R.string.dialogMessageToken)
              builder.setIcon(android.R.drawable.ic_dialog_alert)
              getTokenAmount()
 
@@ -59,6 +59,7 @@ class TokenDialog : DialogFragment() {
              }
 
              builder.setNegativeButton("Cancel"){dialogInterface, which ->
+
 
              }
              builder.show()
