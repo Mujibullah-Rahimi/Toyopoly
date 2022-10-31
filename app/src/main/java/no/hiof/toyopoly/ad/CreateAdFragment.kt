@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 //import com.google.firebase.storage.FirebaseStorage
 import com.wajahatkarim3.easyvalidation.core.view_ktx.*
 import no.hiof.toyopoly.R
@@ -79,22 +80,7 @@ class CreateAdFragment : Fragment() {
         val price1 = price?.text.toString()
         val price2 = Integer.parseInt(price1)
         var token = 0
-    /*private fun uploadImg() {
-        var uri = Uri.parse(photo.localUri)
-        var imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
-        val uploadTask = imageRef.putFile(uri)
-        uploadTask.addOnSuccessListener {
-            Log.i(TAG, "Image uploaded $imageRef")
-            val downloadUrl = imageRef.downloadUrl
-            downloadUrl.addOnSuccessListener { remoteUri ->
-                photo.remoteUri = remoteUri.toString()
-                updatePhotoDatabase(photo)
-            }
-        }
-        uploadTask.addOnFailureListener {
-            Log.e(TAG, it.message ?: "no message")
-        }
-    }*/
+
 
         if(price2 <= 100){
             tokenValue = 1
@@ -203,7 +189,7 @@ class CreateAdFragment : Fragment() {
         } else if (!prices.onlyNumbers() || !prices.maxLength(5)) {
             Toast.makeText(
                 activity,
-                "The price can only consist of numbers and can only be 999999",
+                "The price can only consist of numbers and can only be 999999"+
                 "The price can only consist of numbers",
                 Toast.LENGTH_LONG
             ).show()
