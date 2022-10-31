@@ -108,9 +108,19 @@
         android:id="@+id/contactSellerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="128dp"
         android:text="Contact seller"
         app:layout_constraintEnd_toEndOf="@+id/adDetailPrice"
         app:layout_constraintTop_toBottomOf="@+id/adDetailPrice" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="315dp"
+        android:layout_height="106dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/adDetailPrice"
+        app:layout_constraintStart_toStartOf="@+id/adDetailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/adDetailAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

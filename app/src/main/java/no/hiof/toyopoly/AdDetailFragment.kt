@@ -13,6 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.common.io.Files.map
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -29,11 +33,11 @@ class AdDetailFragment : Fragment() {
     private lateinit var navController : NavController
     val user = Firebase.auth.currentUser
     private lateinit var binding: AdDetailFragment
+    private lateinit var supportMapFragment: SupportMapFragment
 
 
     private val currentUser = auth.currentUser!!.uid
     private lateinit var otherUser : String
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +45,6 @@ class AdDetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_ad_detail, container, false)
-
 
     }
 
@@ -97,9 +100,6 @@ class AdDetailFragment : Fragment() {
 
         }
     }
-
-
-
 
     private fun createChatChannel(otherUser : String, randomId : String) {
         val userIds : MutableList<String> = mutableListOf(currentUser,otherUser)
