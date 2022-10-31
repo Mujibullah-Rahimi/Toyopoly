@@ -42,6 +42,7 @@ import no.hiof.toyopoly.MainActivity
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.UserModel
 import no.hiof.toyopoly.util.DateInputMask
+import java.util.*
 
 
 class RegisterFragment : Fragment(), NoCopySpan{
@@ -160,6 +161,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
             val address: String = registerAddress.text.toString()
             val firstName: String = registerFirstName.text.toString()
             val lastName: String = registerLastName.text.toString()
+
             //val navController = findNavController()
             val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             //Check if any empty fields
@@ -177,10 +179,10 @@ class RegisterFragment : Fragment(), NoCopySpan{
                 Toast.makeText(activity, "Date of birth is not valid", Toast.LENGTH_LONG).show()
             }
             //Check if the password contains at least one Uppercase char and is a minimum of 8 chars
-            else if (!password.minLength(8) || !password.atleastOneUpperCase()) {
+            else if (!password.minLength(8)) {
                 Toast.makeText(
                     activity,
-                    "Your password need at least one Uppercase and min 8 letters",
+                    "Password is too short",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -189,26 +191,25 @@ class RegisterFragment : Fragment(), NoCopySpan{
                 Toast.makeText(activity, "Address must consist of at least 16 letters and 1 digit", Toast.LENGTH_LONG).show()
             }*/
             //Check if firstname contains at least one uppercase char
-            else if (!firstName.atleastOneUpperCase()) {
+            else if (!password.atleastOneUpperCase()) {
                 Toast.makeText(
                     activity,
-                    "Your firstname need at least one uppercase letter",
+                    "Password need at least one uppercase letter",
                     Toast.LENGTH_LONG
                 ).show()
             }
-            //Check if lastname contains at least one uppercase char
-            else if (!lastName.atleastOneUpperCase()) {
-                Toast.makeText(
-                    activity,
-                    "Your lastname need at least one uppercase letter",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
+            else {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener((requireActivity()), OnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val userToSave =
-                                UserModel(firstName, lastName, birthday, address, email)
+
+                            val userToSave = UserModel(
+                                firstName.replaceFirstChar {if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()},
+                                lastName.replaceFirstChar {if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()},
+                                birthday,
+                                address,
+                                email)
+
                             db.collection("Users").document(auth.currentUser!!.uid)
                                 .set(userToSave)
                             Toast.makeText(activity, "Successfully Registered", Toast.LENGTH_LONG)

@@ -3,11 +3,12 @@ package no.hiof.toyopoly
 // Sendbird
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,14 +20,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import no.hiof.toyopoly.databinding.ActivityMainBinding
-import no.hiof.toyopoly.login.LoginFragment
-import no.hiof.toyopoly.login.LoginFragmentDirections
+import java.io.File
 
 class MainActivity : AppCompatActivity(){
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -36,6 +39,8 @@ class MainActivity : AppCompatActivity(){
     private val db = FirebaseFirestore.getInstance()
     private var user = Firebase.auth.currentUser
     private lateinit var homeFragment: HomeFragment
+    private var currentUser : FirebaseUser? = null
+    private var storageRef = FirebaseStorage.getInstance().reference
 
 
     @SuppressLint("RestrictedApi")
@@ -61,6 +66,8 @@ class MainActivity : AppCompatActivity(){
 
         navView.menu.findItem(R.id.signOut).setOnMenuItemClickListener {
             Firebase.auth.signOut()
+            currentUser = null
+            deleteCache(this)
             val currentFragment = supportFragmentManager.fragments.last()
             NavHostFragment.findNavController(currentFragment).navigate(R.id.loginFragment)
             //navController.navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
@@ -69,9 +76,9 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-        if(enableDrawer() != null) {
-            //getUser()
-        }
+//        if(enableDrawer() != null && FirebaseAuth.getInstance().currentUser != null) {
+//            getUser()
+//        }
         //getUser()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -105,11 +112,16 @@ class MainActivity : AppCompatActivity(){
     }
 
     fun getUser() {
-        var header = navView.getHeaderView(0);
-        var headerUserName = header.findViewById<TextView>(R.id.drawerHeaderUserName)
-        var headerEmail = header.findViewById<TextView>(R.id.drawerHeaderUserEmail)
-
+        val header = navView.getHeaderView(0)
+        val headerUserImage = header.findViewById<ImageView>(R.id.drawerHeaderImageView)
+        val headerUserName = header.findViewById<TextView>(R.id.drawerHeaderUserName)
+        val headerEmail = header.findViewById<TextView>(R.id.drawerHeaderUserEmail)
         val userUID = user!!.uid
+
+        // reset
+        headerUserImage.setImageURI(null)
+        headerUserName.text = ""
+        headerEmail.text = ""
 
         val docRef = db.collection("Users").document(userUID)
         docRef
@@ -125,15 +137,48 @@ class MainActivity : AppCompatActivity(){
                 }
             }
             .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
+
+        val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
+        if (pictureReference != null){
+            Glide.with(this)
+                .load(pictureReference)
+                .into(headerUserImage)
+        }
+
     }
 
-    public fun disableDrawer(){
+    fun disableDrawer(){
         val drawerLayout : DrawerLayout = binding.drawerLayout
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
-    public fun enableDrawer(){
+    fun enableDrawer(){
         val drawerLayout : DrawerLayout = binding.drawerLayout
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+    }
+
+    fun deleteCache(context: Context) {
+        try {
+            val dir: File = context.cacheDir
+            deleteDir(dir)
+        } catch (e: Exception) {
+        }
+    }
+
+    private fun deleteDir(dir: File?): Boolean {
+        return if (dir != null && dir.isDirectory) {
+            val children: Array<String> = dir.list()
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+            dir.delete()
+        } else if (dir != null && dir.isFile) {
+            dir.delete()
+        } else {
+            false
+        }
     }
 }
 

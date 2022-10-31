@@ -1,6 +1,7 @@
 package no.hiof.toyopoly.ad
 
 import android.content.ContentValues.TAG
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -8,34 +9,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 //import com.google.firebase.storage.FirebaseStorage
 import com.wajahatkarim3.easyvalidation.core.view_ktx.*
+import com.wajahatkarim3.easyvalidation.core.view_ktx.maxLength
+import com.wajahatkarim3.easyvalidation.core.view_ktx.minLength
+import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
+import com.wajahatkarim3.easyvalidation.core.view_ktx.onlyNumbers
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.AdModel
-import no.hiof.toyopoly.models.PhotoModel
 import no.hiof.toyopoly.util.RandomId
+import java.util.*
 
 class CreateAdFragment : Fragment() {
-    private var uri: Uri? = null
 
-    //private lateinit var currentImagePath: String
-    val db = Firebase.firestore
-    val user = Firebase.auth.currentUser
-    private var photos: ArrayList<PhotoModel> = ArrayList<PhotoModel>()
-    private var storageReference = FirebaseStorage.getInstance().getReference()
-    //private lateinit var photo: PhotoModel
-    //private var storageReference = FirebaseStorage.getInstance().getReference()
-    private lateinit var photo: PhotoModel
+    // objects and lists
+    private var adImages: ArrayList<ImageView> = ArrayList<ImageView>()
+    private val user = Firebase.auth.currentUser
+    private lateinit var ad: AdModel
 
-    //private lateinit var viewModel : AdsViewModel
-    private lateinit var ads: AdModel
-    //private lateinit var _binding :
+    // database instances and references
+    private val db = Firebase.firestore
+    private var storageRef = FirebaseStorage.getInstance().reference
+
+    // strings
+    private var TAG = "PHOTO"
+    private lateinit var adImage: ImageView
+    private var imageURI: Uri? = null
+
+    //private lateInit var viewModel : AdsViewModel
+    //private lateInit var _binding :
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +60,17 @@ class CreateAdFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //viewModel = ViewModelProvider.get(AdsViewModel::class.java)
+        adImage = view.findViewById(R.id.adImageView)
+        val galleryBtn = view.findViewById<Button>(R.id.galleryBtn)
+        galleryBtn.setOnClickListener {
+            //takePhoto()
+            ImagePicker.with(requireActivity())
+                .galleryOnly()
+                .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
+                .createIntent { intent ->
+                    getImageResult.launch(intent)
+                }
+        }
 
         val spinner: Spinner = view.findViewById(R.id.spinner_catergory)
         this.activity?.let {
@@ -60,21 +83,33 @@ class CreateAdFragment : Fragment() {
                 spinner.adapter = adapter
             }
         }
+
         val saveButton = view.findViewById<Button>(R.id.createAd)
         saveButton.setOnClickListener {
             setTokens()
             saveAd(RandomId.randomID())
-          saveAd(RandomId.randomID())
         }
-
-        val photoBtn = view.findViewById<Button>(R.id.photoBtn)
-        photoBtn.setOnClickListener {
-
-        }
-
-
     }
 
+    private val getImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result: ActivityResult ->
+        val resultCode = result.resultCode
+        val data = result.data
+
+        if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            val fileUri = data?.data!!
+            imageURI = fileUri
+            Log.v(TAG, "$fileUri")
+            adImage.setImageURI(fileUri)
+
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(activity, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            Log.v(TAG, ImagePicker.getError(data))
+        } else {
+            Toast.makeText(activity, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            Log.v(TAG, ImagePicker.getError(data))
+        }
+    }
     fun setTokens(){
         val price = view?.findViewById<EditText>(R.id.price_createAd)
         val price1 = price?.text.toString()
@@ -124,6 +159,16 @@ class CreateAdFragment : Fragment() {
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
 
+        val adToSave = AdModel(
+            adId = documentId,
+            title = title?.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
+            description = desc?.text.toString(),
+            price = prices?.text.toString(),
+            category = spinner?.selectedItem.toString(),
+            imageUri = "",
+            userId = user!!.uid,
+            timestamp = Timestamp.now()
+        )
         //changes the price input to a static value in line with the token system
         if(price1 <= 100){
             price2 = "100"
@@ -174,23 +219,22 @@ class CreateAdFragment : Fragment() {
                 "All fields needs to be filled",
                 Toast.LENGTH_LONG
             ).show()
-        } else if (!title.maxLength(16) || !title.atleastOneUpperCase()) {
+        } else if (!title.maxLength(20)) {
             Toast.makeText(
                 activity,
-                "The title can only be 10 chars long and must have at least one uppercase char",
+                "Title is too long",
                 Toast.LENGTH_LONG
             ).show()
         } else if (!desc.minLength(16)) {
             Toast.makeText(
                 activity,
-                "The description must at least be 16 chars long",
+                "Description is too short",
                 Toast.LENGTH_LONG
             ).show()
         } else if (!prices.onlyNumbers() || !prices.maxLength(5)) {
             Toast.makeText(
                 activity,
-                "The price can only consist of numbers and can only be 999999"+
-                "The price can only consist of numbers",
+                "Price can only consist of numbers and can only be 999999",
                 Toast.LENGTH_LONG
             ).show()
         }else if (!addr.minLength(8)) {
@@ -201,7 +245,7 @@ class CreateAdFragment : Fragment() {
             ).show()
         } else {
             db.collection("Ads").document(documentId)
-                .set(adModel)
+                .set(adToSave)
                 .addOnSuccessListener {
                     title.text.clear()
                     desc.text.clear()
@@ -213,11 +257,17 @@ class CreateAdFragment : Fragment() {
                 }.addOnCompleteListener {
                     val action =
                         CreateAdFragmentDirections.actionCreateAdsFragmentToAdDetailFragment(
-                            adModel.adId
+                            adToSave.adId
                         )
-                    val navController = view?.findNavController()
-                    navController?.navigate(action)
-                    //uploadImg()
+
+                    storageRef.child("images/ads/${adToSave.adId}").putFile(imageURI!!)
+                        .addOnSuccessListener {
+                            db.collection("Ads").document(adToSave.adId).update("imageUri", it.storage.path)
+
+                            val navController = view?.findNavController()
+                            navController?.navigate(action)
+                        }
+
                 }
                 .addOnFailureListener {
                     Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
@@ -226,5 +276,3 @@ class CreateAdFragment : Fragment() {
         }
     }
 }
-
-

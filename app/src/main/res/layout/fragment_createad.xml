@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout3"
+    android:id="@+id/createAdLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ad.CreateAdFragment">
@@ -11,11 +11,11 @@
         android:id="@+id/createAd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/create_ad"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/spinner_catergory"
-        app:layout_constraintTop_toBottomOf="@+id/adPhoto"
         app:layout_constraintVertical_bias="0.153" />
 
     <TextView
@@ -31,10 +31,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/title_create_ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/title"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photoBtn" />
+
+    <EditText
         android:id="@+id/desc_createAd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="32dp"
         android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
@@ -51,7 +66,7 @@
         android:id="@+id/price_createAd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="32dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/price"
@@ -63,15 +78,6 @@
         app:layout_constraintStart_toStartOf="@+id/address_createAd"
         app:layout_constraintTop_toBottomOf="@+id/address_createAd" />
 
-    <Button
-        android:id="@+id/createAd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/create_ad"
-        app:layout_constraintEnd_toEndOf="@+id/spinner_catergory"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_catergory" />
 
     <EditText
         android:id="@+id/address_createAd"
@@ -90,60 +96,103 @@
         app:layout_constraintStart_toStartOf="@+id/desc_createAd"
         app:layout_constraintTop_toBottomOf="@+id/desc_createAd" />
 
-    <Button
-        android:id="@+id/photoBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="Photo"
-        app:layout_constraintBottom_toTopOf="@+id/createAd"
-        app:layout_constraintEnd_toEndOf="@+id/spinner_catergory"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_catergory"
-        app:layout_constraintVertical_bias="0.525" />
-
     <Spinner
         android:id="@+id/spinner_catergory"
         android:layout_width="213dp"
         android:layout_height="48dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="32dp"
         android:contentDescription="@string/category"
         android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="@+id/price_createAd"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="@+id/price_createAd"
         app:layout_constraintTop_toBottomOf="@+id/price_createAd" />
 
-    <EditText
-        android:id="@+id/title_create_ad"
+    <Button
+        android:id="@+id/galleryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/title"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:textColorHint="#757575"
-        app:layout_constraintEnd_toEndOf="@+id/createAdTitle"
-        app:layout_constraintHorizontal_bias="0.516"
-        app:layout_constraintStart_toStartOf="@+id/createAdTitle"
-        app:layout_constraintTop_toBottomOf="@+id/createAdTitle" />
-        android:layout_marginEnd="12dp"
-        android:text="Photo"
-        app:layout_constraintBottom_toTopOf="@+id/createAd"
-        app:layout_constraintEnd_toEndOf="@+id/spinner_catergory"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_catergory"
-        app:layout_constraintVertical_bias="0.087" />
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="36dp"
+        android:drawableEnd="@drawable/ic_twotone_photo_library_24"
+        android:text="@string/gallery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
-    <ImageView
-        android:id="@+id/adPhoto"
+    <Button
+        android:id="@+id/photoBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        app:layout_constraintEnd_toEndOf="@+id/photoBtn"
-        app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintStart_toStartOf="@+id/photoBtn"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_catergory"
-        tools:src="@tools:sample/avatars" />
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_twotone_photo_camera_24"
+        android:text="@string/camera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/createAdLayout"
+        app:layout_constraintTop_toTopOf="@+id/createAdLayout"
+        app:cardCornerRadius="12dp">
+
+        <ImageView
+            android:id="@+id/adImageView"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/title"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/title_create_ad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/title_create_ad" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/price"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/price_createAd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/price_createAd" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/category"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_catergory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinner_catergory" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/description"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/desc_createAd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/desc_createAd" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
