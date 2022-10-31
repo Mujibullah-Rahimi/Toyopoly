@@ -17,5 +17,5 @@ data class AdModel(
     var token : Int = 0,
     //val img_ref : ReferenceSet? = null
                    ){
-    constructor() : this(adId = "", title ="", description="", price="", category="", imageUri = "", userId="", timestamp = Timestamp.now())
+    constructor() : this(adId = "", title ="", description="", price="", category="", imageUri = "", userId="", timestamp = Timestamp.now(), token = 0)
 }

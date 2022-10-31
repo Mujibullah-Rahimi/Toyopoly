@@ -5,8 +5,9 @@ data class UserModel(
     val lastName:String,
     val birthday:String,
     val address:String,
-    val email:String
+    val email:String,
+    val imageUri : String,
 ){
     constructor(firstName: String, lastName: String, email: String)
-            : this(firstName, lastName, "", "" , email)
+            : this(firstName, lastName, "", "" , email, "")
 }
