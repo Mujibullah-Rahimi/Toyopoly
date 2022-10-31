@@ -76,9 +76,9 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-//        if(enableDrawer() != null && FirebaseAuth.getInstance().currentUser != null) {
-//            getUser()
-//        }
+        if(enableDrawer() != null && FirebaseAuth.getInstance().currentUser != null) {
+            getUser()
+        }
         //getUser()
 
         setupActionBarWithNavController(navController, appBarConfiguration)

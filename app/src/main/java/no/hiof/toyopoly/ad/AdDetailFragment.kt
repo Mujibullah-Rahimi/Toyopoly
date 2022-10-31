@@ -15,18 +15,15 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.common.io.Files.map
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import no.hiof.toyopoly.models.ChatChannelModel
 import no.hiof.toyopoly.R
+import no.hiof.toyopoly.models.ChatChannelModel
 import no.hiof.toyopoly.util.RandomId
 
 
@@ -93,10 +90,10 @@ class AdDetailFragment : Fragment() {
                 if (document != null) {
                     Log.d("isHere", "Snapshot: ${document.data}")
                     title_ad?.text = document.getString("value")
-                    price_ad?.text = "Adjusted Money price: " + document.getString("price") + " kr"
+                    price_ad?.text = "Price: " + document.getString("price") + " kr"
                     desc_ad?.text = document.getString("description")
                     addr_ad?.text = document.getString("address")
-                    token_ad?.text = "Token price: " + document.getLong("token").toString() + " Tokens"
+                    token_ad?.text = "Tokens: " + document.getLong("token").toString() + " Tokens"
                     //time_ad?.text = document.getDate("timestamp").toString()
                 }
                 else{

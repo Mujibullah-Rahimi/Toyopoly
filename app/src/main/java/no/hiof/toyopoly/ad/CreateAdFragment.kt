@@ -1,6 +1,6 @@
 package no.hiof.toyopoly.ad
 
-import android.content.ContentValues.TAG
+//import com.google.firebase.storage.FirebaseStorage
 import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
@@ -19,8 +19,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-//import com.google.firebase.storage.FirebaseStorage
-import com.wajahatkarim3.easyvalidation.core.view_ktx.*
 import com.wajahatkarim3.easyvalidation.core.view_ktx.maxLength
 import com.wajahatkarim3.easyvalidation.core.view_ktx.minLength
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
@@ -161,14 +159,18 @@ class CreateAdFragment : Fragment() {
 
         val adToSave = AdModel(
             adId = documentId,
-            title = title?.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
+            title = title?.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(
+                Locale.ROOT) else it.toString() },
             description = desc?.text.toString(),
-            price = prices?.text.toString(),
+            address = addr?.text.toString(),
+            price = price2,
             category = spinner?.selectedItem.toString(),
             imageUri = "",
             userId = user!!.uid,
+            token = tokenValue,
             timestamp = Timestamp.now()
         )
+
         //changes the price input to a static value in line with the token system
         if(price1 <= 100){
             price2 = "100"
@@ -194,19 +196,18 @@ class CreateAdFragment : Fragment() {
         }
 
 
-        var adModel = AdModel().apply {
-            adId = documentId
-            value = title?.text.toString()
-            description = desc?.text.toString()
-            address = addr?.text.toString()
-            price = prices?.text.toString()
-            price = price2
-            category = spinner?.selectedItem.toString()
-       //     remoteUri = photo!!.remoteUri
-            //remoteUri = photo!!.remoteUri
-            userId = user!!.uid
-            token = tokenValue
-        }
+
+//        var adModel = AdModel().apply {
+//            adId = documentId
+//            value = title?.text.toString()
+//            description = desc?.text.toString()
+//
+//            category = spinner?.selectedItem.toString()
+//       //     remoteUri = photo!!.remoteUri
+//            //remoteUri = photo!!.remoteUri
+//            userId = user!!.uid
+//            token = tokenValue
+//        }
 
         if (
             !title!!.nonEmpty() ||
