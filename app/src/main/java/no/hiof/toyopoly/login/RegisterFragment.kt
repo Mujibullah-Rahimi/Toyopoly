@@ -1,8 +1,6 @@
 package no.hiof.toyopoly.login
 
 import android.app.Activity
-import android.content.ContentValues.TAG
-import android.content.Intent
 import android.os.Bundle
 import android.text.NoCopySpan
 import android.text.TextUtils
@@ -22,15 +20,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -208,7 +199,8 @@ class RegisterFragment : Fragment(), NoCopySpan{
                                 lastName.replaceFirstChar {if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()},
                                 birthday,
                                 address,
-                                email)
+                                email,
+                                "")
 
                             db.collection("Users").document(auth.currentUser!!.uid)
                                 .set(userToSave)

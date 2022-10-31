@@ -2,7 +2,6 @@ package no.hiof.toyopoly
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,11 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -29,7 +26,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.models.AdModel
-import androidx.fragment.app.FragmentManager
 
 
 class MyPageFragment : Fragment(){
@@ -119,7 +115,9 @@ class MyPageFragment : Fragment(){
             userImageURI = fileUri
             Log.v(TAG, "$fileUri")
             userImage.setImageURI(fileUri)
+
             storageRef.child("images/users/${user!!.uid}").putFile(userImageURI!!).addOnSuccessListener {
+                db.collection("Users").document(userUID).update("imageUri", it.storage.path)
                 getUser()
             }
 
@@ -170,7 +168,7 @@ class MyPageFragment : Fragment(){
                     Log.d("currentUser", "Snapshot: ${document.data}")
                     getEmail?.text = document.getString("email")
                     getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
-                    getTokens?.text = "Amount of tokens: " + document.getLong("token").toString()
+                    getTokens?.text = "Tokens: " + document.getLong("token").toString()
                     getAddress?.text = document.getString("address")
                     //time_ad?.text = document.getDate("timestamp").toString()
                 } else {
