@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.findNavController
@@ -59,12 +61,17 @@ class TokenDialog : DialogFragment() {
              }
 
              builder.setNegativeButton("Cancel"){dialogInterface, which ->
-
+                dismiss()
 
              }
              builder.show()
         }
         recyclerView.adapter = adapterToken
+
+        val cancel = view.findViewById<Button>(R.id.cancelToken)
+        cancel.setOnClickListener{
+            dialog?.dismiss()
+        }
         getTokens()
     }
     var tokenValue : Long = 0

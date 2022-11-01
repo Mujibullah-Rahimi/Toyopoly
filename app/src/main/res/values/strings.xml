@@ -62,5 +62,6 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="change_picture">change picture</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

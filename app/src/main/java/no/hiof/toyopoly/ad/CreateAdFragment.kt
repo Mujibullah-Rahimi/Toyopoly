@@ -157,19 +157,6 @@ class CreateAdFragment : Fragment() {
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
 
-        val adToSave = AdModel(
-            adId = documentId,
-            title = title?.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(
-                Locale.ROOT) else it.toString() },
-            description = desc?.text.toString(),
-            address = addr?.text.toString(),
-            price = price2,
-            category = spinner?.selectedItem.toString(),
-            imageUri = "",
-            userId = user!!.uid,
-            token = tokenValue,
-            timestamp = Timestamp.now()
-        )
 
         //changes the price input to a static value in line with the token system
         if(price1 <= 100){
@@ -195,6 +182,19 @@ class CreateAdFragment : Fragment() {
             tokenValue = 99999
         }
 
+        val adToSave = AdModel(
+            adId = documentId,
+            title = title?.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(
+                Locale.ROOT) else it.toString() },
+            description = desc?.text.toString(),
+            address = addr?.text.toString(),
+            price = price2,
+            category = spinner?.selectedItem.toString(),
+            imageUri = "",
+            userId = user!!.uid,
+            token = tokenValue,
+            timestamp = Timestamp.now()
+        )
 
 
 //        var adModel = AdModel().apply {
