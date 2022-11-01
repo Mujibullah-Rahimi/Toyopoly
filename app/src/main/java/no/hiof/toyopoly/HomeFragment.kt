@@ -68,8 +68,8 @@ class HomeFragment : Fragment(), View.OnClickListener{
 
 
         val searchRef = db.collection("Ads")
-            searchRef.whereGreaterThanOrEqualTo("value", getSearch)
-                .whereLessThanOrEqualTo("value", "$getSearch\uF7FF")
+            searchRef.whereGreaterThanOrEqualTo("title", getSearch)
+                .whereLessThanOrEqualTo("title", "$getSearch\uF7FF")
                 .addSnapshotListener(object : EventListener<QuerySnapshot> {
                     override fun onEvent(
                         value: QuerySnapshot?,
