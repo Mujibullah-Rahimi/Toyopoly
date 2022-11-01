@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
+import no.hiof.toyopoly.ad.AdDetailFragmentArgs
 import no.hiof.toyopoly.adapter.AdapterToken
 import no.hiof.toyopoly.models.AdModel
 import no.hiof.toyopoly.models.TokenModel
@@ -28,6 +29,7 @@ class TokenDialog : DialogFragment() {
     private lateinit var adapterToken: AdapterToken
     private val db = FirebaseFirestore.getInstance()
     val user = Firebase.auth.currentUser
+    private val args: TokenDialogArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,13 +45,14 @@ class TokenDialog : DialogFragment() {
         recyclerView = view.findViewById(R.id.recyclerViewForTokens)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         tokenArrayList = arrayListOf()
+        getTokens()
 
          adapterToken = AdapterToken(tokenArrayList){ token ->
              val builder = AlertDialog.Builder(this.activity)
              builder.setTitle(R.string.dialogTitleToken)
              builder.setMessage(R.string.dialogMessageToken)
              builder.setIcon(android.R.drawable.ic_dialog_alert)
-             getTokenAmount()
+             getTokenAmount(token.tokenId)
 
 
              builder.setPositiveButton("Buy Token"){dialogInterface, which ->
@@ -72,17 +75,15 @@ class TokenDialog : DialogFragment() {
         cancel.setOnClickListener{
             dialog?.dismiss()
         }
-        getTokens()
     }
     var tokenValue : Long = 0
 
 
 
-    private fun getTokenAmount() {
-            val test = view?.findViewById<TextView>(R.id.token_ref)
-            val test1 = test?.text.toString()
-            Log.d(TAG, test1)
-            db.collection("Tokens").document(test1)
+    private fun getTokenAmount(token : String) {
+            Log.d(TAG, token)
+
+            db.collection("Tokens").document(token)
                 .get()
                 .addOnSuccessListener { document ->
                     Log.d("currentToken", "Snapshot: ${document.data}")
