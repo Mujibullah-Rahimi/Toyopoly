@@ -164,9 +164,6 @@
         android:id="@+id/tokenDialog"
         android:name="no.hiof.toyopoly.TokenDialog"
         android:label="TokenDialog" >
-        <action
-            android:id="@+id/action_tokenDialog_self"
-            app:destination="@id/tokenDialog" />
         <argument
             android:name="tokenId"
             app:argType="string" />

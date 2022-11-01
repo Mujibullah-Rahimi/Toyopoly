@@ -124,7 +124,7 @@ class CreateAdFragment : Fragment() {
         }else if(price2 <= 800){
             tokenValue = 8
         }else if(price2 <= 1000){
-            tokenValue = 1000
+            tokenValue = 10
         }else if(price2 <= 1500){
             tokenValue = 15
         }else if(price2 <= 2000){

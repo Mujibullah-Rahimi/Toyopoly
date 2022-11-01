@@ -29,7 +29,6 @@ class TokenDialog : DialogFragment() {
     private lateinit var adapterToken: AdapterToken
     private val db = FirebaseFirestore.getInstance()
     val user = Firebase.auth.currentUser
-    private val args: TokenDialogArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +59,8 @@ class TokenDialog : DialogFragment() {
                  UpdateToken()
 
                  Log.d(TAG, "clicked")
+
+                 dismiss()
 
              }
 
