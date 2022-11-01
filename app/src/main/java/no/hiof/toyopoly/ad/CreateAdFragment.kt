@@ -70,7 +70,7 @@ class CreateAdFragment : Fragment() {
                 }
         }
 
-        val spinner: Spinner = view.findViewById(R.id.spinner_catergory)
+        val spinner: Spinner = view.findViewById(R.id.spinner_category)
         this.activity?.let {
             ArrayAdapter.createFromResource(
                 it,
@@ -153,7 +153,7 @@ class CreateAdFragment : Fragment() {
         val priceFire = prices?.text.toString()
         val price1 = Integer.parseInt(priceFire)
         var price2 = price1.toString()
-        val spinner = view?.findViewById<Spinner>(R.id.spinner_catergory)
+        val spinner = view?.findViewById<Spinner>(R.id.spinner_category)
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
 
