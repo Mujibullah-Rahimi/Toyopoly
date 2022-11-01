@@ -59,11 +59,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
                         Toast.makeText(activity, "Successfully Logged In", Toast.LENGTH_LONG).show()
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         navController?.navigate(action)
+//                         Hide keyboard when logged in
                         val imm: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-                        (activity as MainActivity?)?.deleteCache(requireActivity())
-                        (activity as MainActivity?)?.getUser()
-                    }else {
+                        }else {
                         Toast.makeText(activity, "Login Failed ", Toast.LENGTH_LONG).show()
                     }
                 })

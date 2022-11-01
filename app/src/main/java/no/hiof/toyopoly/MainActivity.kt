@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(){
     private lateinit var homeFragment: HomeFragment
     private var currentUser : FirebaseUser? = null
     private var storageRef = FirebaseStorage.getInstance().reference
+    private lateinit var authStateListener : FirebaseAuth.AuthStateListener
 
 
     @SuppressLint("RestrictedApi")
@@ -76,11 +77,37 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-        if(enableDrawer() != null && FirebaseAuth.getInstance().currentUser != null) {
-            getUser()
-        }
-        //getUser()
+        authStateListener = FirebaseAuth.AuthStateListener {
+            val firebaseUser = auth.currentUser
+            if (firebaseUser != null){
+                val header = navView.getHeaderView(0)
+                val headerUserImage = header.findViewById<ImageView>(R.id.drawerHeaderImageView)
+                val headerUserName = header.findViewById<TextView>(R.id.drawerHeaderUserName)
+                val headerEmail = header.findViewById<TextView>(R.id.drawerHeaderUserEmail)
 
+                val docRef = db.collection("Users").document(firebaseUser.uid)
+                docRef
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            Log.d("isHere", "Snapshot: ${document.data}")
+                            headerEmail?.text = document.getString("email")
+                            headerUserName?.text = document.getString("firstName")+ " " + document.getString("lastName")
+                            //time_ad?.text = document.getDate("timestamp").toString()
+                        } else {
+                            Log.d("isNotHere", "The document snapshot doesn't exist")
+                        }
+                    }
+                    .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
+
+                val pictureReference = storageRef.storage.getReference("images/users/${firebaseUser.uid}")
+                if (pictureReference != null){
+                    Glide.with(this)
+                        .load(pictureReference)
+                        .into(headerUserImage)
+                }
+            }
+        }
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
@@ -146,7 +173,17 @@ class MainActivity : AppCompatActivity(){
         }
 
     }
+    override fun onResume() {
+        super.onResume()
 
+        auth.addAuthStateListener(authStateListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        auth.removeAuthStateListener(authStateListener)
+    }
     fun disableDrawer(){
         val drawerLayout : DrawerLayout = binding.drawerLayout
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
