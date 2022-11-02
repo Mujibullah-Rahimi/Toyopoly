@@ -19,6 +19,10 @@ import androidx.navigation.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -27,7 +31,10 @@ import com.wajahatkarim3.easyvalidation.core.view_ktx.minLength
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import com.wajahatkarim3.easyvalidation.core.view_ktx.onlyNumbers
 import no.hiof.toyopoly.R
+import no.hiof.toyopoly.adapter.AdapterAds
+import no.hiof.toyopoly.adapter.AdapterCat
 import no.hiof.toyopoly.models.AdModel
+import no.hiof.toyopoly.models.CategoryModel
 import no.hiof.toyopoly.util.RandomId
 import java.util.*
 
@@ -37,6 +44,8 @@ class CreateAdFragment : Fragment() {
     private var adImages: ArrayList<ImageView> = ArrayList<ImageView>()
     private val user = Firebase.auth.currentUser
     private lateinit var ad: AdModel
+    private lateinit var adapterCat: AdapterCat
+    private lateinit var catArrayList : ArrayList<CategoryModel>
 
     // database instances and references
     private val db = Firebase.firestore
@@ -66,6 +75,7 @@ class CreateAdFragment : Fragment() {
         galleryBtn.setOnClickListener {
             invokeGallery()
         }
+        catArrayList = arrayListOf()
 
         val spinner: Spinner = view.findViewById(R.id.spinner_catergory)
         this.activity?.let {
@@ -313,6 +323,23 @@ class CreateAdFragment : Fragment() {
                         .show()
                 }
         }
+    }
+    fun getCategories() {
+        db.collection("Category")
+            .addSnapshotListener(object : EventListener<QuerySnapshot> {
+                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                    if (error != null) {
+                        Log.e("Firestore ERROR", error.message.toString())
+                        return
+                    }
+                    for (dc: DocumentChange in value?.documentChanges!!) {
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            catArrayList.add(dc.document.toObject(CategoryModel::class.java))
+                        }
+                    }
+                    adapterCat.notifyDataSetChanged()
+                }
+            })
     }
     fun hasExternalReadStoragePermission() = this.activity?.let {
         ContextCompat.checkSelfPermission(
