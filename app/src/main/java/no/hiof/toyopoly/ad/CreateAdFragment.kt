@@ -1,7 +1,9 @@
 package no.hiof.toyopoly.ad
 
 //import com.google.firebase.storage.FirebaseStorage
+import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -61,13 +64,7 @@ class CreateAdFragment : Fragment() {
         adImage = view.findViewById(R.id.adImageView)
         val galleryBtn = view.findViewById<Button>(R.id.galleryBtn)
         galleryBtn.setOnClickListener {
-            //takePhoto()
-            ImagePicker.with(requireActivity())
-                .galleryOnly()
-                .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
-                .createIntent { intent ->
-                    getImageResult.launch(intent)
-                }
+            invokeGallery()
         }
 
         val spinner: Spinner = view.findViewById(R.id.spinner_catergory)
@@ -88,6 +85,47 @@ class CreateAdFragment : Fragment() {
             saveAd(RandomId.randomID())
         }
     }
+
+    private fun invokeGallery(){
+        if(hasExternalReadStoragePermission() == PERMISSION_GRANTED){
+            openGallery()
+        }else{
+            requestMultiplePermissionsLauncher.launch(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ))
+        }
+    }
+
+
+    fun openGallery() {
+        ImagePicker.with(requireActivity())
+            .galleryOnly()
+            .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
+            .createIntent { intent ->
+                getImageResult.launch(intent)
+            }
+    }
+
+        private val requestMultiplePermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
+            var permissionGranted = false
+            resultsMap.forEach {
+                if (it.value == true) {
+                    permissionGranted = it.value
+                } else {
+                    permissionGranted = false
+                    return@forEach
+                }
+            }
+            if (permissionGranted) {
+                openGallery()
+            } else {
+                Toast.makeText(this.activity, "No read permission", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+
+
 
     private val getImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result: ActivityResult ->
         val resultCode = result.resultCode
@@ -275,5 +313,11 @@ class CreateAdFragment : Fragment() {
                         .show()
                 }
         }
+    }
+    fun hasExternalReadStoragePermission() = this.activity?.let {
+        ContextCompat.checkSelfPermission(
+            it,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
     }
 }
