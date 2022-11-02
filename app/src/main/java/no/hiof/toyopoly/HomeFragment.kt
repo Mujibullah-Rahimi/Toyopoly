@@ -63,6 +63,7 @@ class HomeFragment : Fragment(), View.OnClickListener{
         }
 
         getRecycleAds()
+        getAds()
 
     }
 
