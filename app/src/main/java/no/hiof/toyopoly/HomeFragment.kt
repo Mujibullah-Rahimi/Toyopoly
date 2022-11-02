@@ -1,8 +1,8 @@
 package no.hiof.toyopoly
 
-import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
-import android.text.method.TextKeyListener.clear
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
+import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.models.AdModel
 import kotlin.text.replaceFirstChar as replaceFirstChar1
@@ -27,6 +28,7 @@ class HomeFragment : Fragment(), View.OnClickListener{
     private lateinit var adapterAds: AdapterAds
     private val db = FirebaseFirestore.getInstance()
     val user = Firebase.auth.currentUser
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,20 +57,21 @@ class HomeFragment : Fragment(), View.OnClickListener{
 
         recyclerView.adapter = adapterAds
 
+
         val searchbtn = view.findViewById<ImageButton>(R.id.searchButton)
         searchbtn.setOnClickListener{
-            getSearchResult()
+                adsArrayList.clear()
+                getSearchResult()
+                getSearchResultCat()
         }
+
     }
 
     private fun getSearchResult() {
         val searchBox = view?.findViewById<EditText>(R.id.searchBar)
         val getSearch = searchBox?.text.toString().replaceFirstChar1(Char::titlecase)
         //Log.d(TAG, docID)
-
-
-        val searchRef = db.collection("Ads")
-            searchRef.whereGreaterThanOrEqualTo("title", getSearch)
+            db.collection("Ads").whereGreaterThanOrEqualTo("title", getSearch)
                 .whereLessThanOrEqualTo("title", "$getSearch\uF7FF")
                 .addSnapshotListener(object : EventListener<QuerySnapshot> {
                     override fun onEvent(
@@ -79,27 +82,6 @@ class HomeFragment : Fragment(), View.OnClickListener{
                             Log.e("Firestore ERROR", error.message.toString())
                             return
                         }
-                        adsArrayList.clear()
-                        for (dc: DocumentChange in value?.documentChanges!!) {
-                            if (dc.type == DocumentChange.Type.ADDED) {
-                                adsArrayList.add(dc.document.toObject(AdModel::class.java))
-                            }
-                        }
-                        adapterAds.notifyDataSetChanged()
-                    }
-                })
-            searchRef.whereGreaterThanOrEqualTo("category", getSearch)
-                .whereLessThanOrEqualTo("category", "$getSearch\uF7FF")
-                .addSnapshotListener(object : EventListener<QuerySnapshot> {
-                    override fun onEvent(
-                        value: QuerySnapshot?,
-                        error: FirebaseFirestoreException?
-                    ) {
-                        if (error != null) {
-                            Log.e("Firestore ERROR", error.message.toString())
-                            return
-                        }
-
                         for (dc: DocumentChange in value?.documentChanges!!) {
                             if (dc.type == DocumentChange.Type.ADDED) {
                                 adsArrayList.add(dc.document.toObject(AdModel::class.java))
@@ -109,6 +91,51 @@ class HomeFragment : Fragment(), View.OnClickListener{
                     }
                 })
 
+    }
+
+    fun getSearchResultCat(){
+        val searchBox = view?.findViewById<EditText>(R.id.searchBar)
+        val getSearch = searchBox?.text.toString().replaceFirstChar1(Char::titlecase)
+        db.collection("Ads").whereGreaterThanOrEqualTo("category", getSearch)
+            .whereLessThanOrEqualTo("category", "$getSearch\uF7FF")
+            .addSnapshotListener(object : EventListener<QuerySnapshot> {
+                override fun onEvent(
+                    value: QuerySnapshot?,
+                    error: FirebaseFirestoreException?
+                ) {
+                    if (error != null) {
+                        Log.e("Firestore ERROR", error.message.toString())
+                        return
+                    }
+                    for (dc: DocumentChange in value?.documentChanges!!) {
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            adsArrayList.add(dc.document.toObject(AdModel::class.java))
+                        }
+                    }
+                    adapterAds.notifyDataSetChanged()
+                }
+            })
+    }
+
+    fun getAds(){
+        db.collection("Ads")
+            .addSnapshotListener(object : EventListener<QuerySnapshot> {
+                override fun onEvent(
+                    value: QuerySnapshot?,
+                    error: FirebaseFirestoreException?
+                ) {
+                    if (error != null) {
+                        Log.e("Firestore ERROR", error.message.toString())
+                        return
+                    }
+                    for (dc: DocumentChange in value?.documentChanges!!) {
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            adsArrayList.add(dc.document.toObject(AdModel::class.java))
+                        }
+                    }
+                    adapterAds.notifyDataSetChanged()
+                }
+            })
     }
 
     override fun onClick(v: View?) {
