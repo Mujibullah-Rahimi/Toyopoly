@@ -1,15 +1,16 @@
 package no.hiof.toyopoly
 
-import android.content.Intent
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ class HomeFragment : Fragment(), View.OnClickListener{
     private lateinit var adapterAds: AdapterAds
     private var db = FirebaseFirestore.getInstance()
     val user = Firebase.auth.currentUser
+    private lateinit var navController: NavController
 
 
     override fun onCreateView(
@@ -40,6 +42,8 @@ class HomeFragment : Fragment(), View.OnClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = view.findNavController()
+
         recyclerView = view.findViewById(R.id.home_ads_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager (this.activity)
 
@@ -47,7 +51,6 @@ class HomeFragment : Fragment(), View.OnClickListener{
 
         adapterAds = AdapterAds(adsArrayList){ad ->
             val action = HomeFragmentDirections.actionHomeFragmentToAdDetailFragment(ad.adId)
-            val navController = view.findNavController()
             navController.navigate(action)
 
         }
@@ -64,6 +67,11 @@ class HomeFragment : Fragment(), View.OnClickListener{
 
 
         GetAds()
+
+        val seeAllBtn = view.findViewById<Button>(R.id.seeAllButton)
+        seeAllBtn.setOnClickListener{
+            navController.navigate(HomeFragmentDirections.actionHomeFragmentToAllToysFragment())
+        }
 
     }
 
