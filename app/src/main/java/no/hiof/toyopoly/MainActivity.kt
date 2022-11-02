@@ -8,12 +8,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MenuItem.OnMenuItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -115,6 +117,9 @@ class MainActivity : AppCompatActivity(){
 
     }
 
+
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.ad_action, menu)
         return true
@@ -123,9 +128,11 @@ class MainActivity : AppCompatActivity(){
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val currentFragment = supportFragmentManager.fragments.last()
+        item.isVisible = false
         return when(item.itemId) {
             R.id.createAdsFragment -> {
                 NavHostFragment.findNavController(currentFragment).navigate(R.id.createAdsFragment)
+
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -219,5 +226,6 @@ class MainActivity : AppCompatActivity(){
         }
     }
 }
+
 
 
