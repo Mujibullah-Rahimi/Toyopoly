@@ -62,43 +62,24 @@ class HomeFragment : Fragment(), View.OnClickListener{
                 getSearchResultCat()
         }
 
-        getRecycleAds()
-        getAds()
+
+        GetAds()
 
     }
 
-    private fun getRecycleAds(){
+    private fun GetAds(){
         db = FirebaseFirestore.getInstance()
         db.collection("Ads")
             .addSnapshotListener(object : EventListener<QuerySnapshot>{
-                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                override fun onEvent(value: QuerySnapshot?,
+                                     error: FirebaseFirestoreException?
+                ){
                     if(error != null){
                         Log.e("Firestore ERROR", error.message.toString())
                         return
                     }
                     for ( dc : DocumentChange in value?.documentChanges!!) {
                         if (dc.type == DocumentChange.Type.ADDED){
-                            adsArrayList.add(dc.document.toObject(AdModel::class.java))
-                        }
-                    }
-                    adapterAds.notifyDataSetChanged()
-                }
-            })
-    }
-
-    fun getAds(){
-        db.collection("Ads")
-            .addSnapshotListener(object : EventListener<QuerySnapshot> {
-                override fun onEvent(
-                    value: QuerySnapshot?,
-                    error: FirebaseFirestoreException?
-                ) {
-                    if (error != null) {
-                        Log.e("Firestore ERROR", error.message.toString())
-                        return
-                    }
-                    for (dc: DocumentChange in value?.documentChanges!!) {
-                        if (dc.type == DocumentChange.Type.ADDED) {
                             adsArrayList.add(dc.document.toObject(AdModel::class.java))
                         }
                     }
