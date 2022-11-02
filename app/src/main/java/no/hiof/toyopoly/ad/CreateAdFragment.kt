@@ -7,9 +7,7 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentChange
@@ -37,6 +36,7 @@ import no.hiof.toyopoly.models.AdModel
 import no.hiof.toyopoly.models.CategoryModel
 import no.hiof.toyopoly.util.RandomId
 import java.util.*
+
 
 class CreateAdFragment : Fragment() {
 
@@ -94,6 +94,7 @@ class CreateAdFragment : Fragment() {
             setTokens()
             saveAd(RandomId.randomID())
         }
+
     }
 
     private fun invokeGallery(){

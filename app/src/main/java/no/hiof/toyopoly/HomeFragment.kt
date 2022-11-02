@@ -1,12 +1,12 @@
 package no.hiof.toyopoly
 
 import android.content.Intent
+import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
-import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.models.AdModel
 import kotlin.text.replaceFirstChar as replaceFirstChar1
@@ -26,7 +25,7 @@ class HomeFragment : Fragment(), View.OnClickListener{
     private lateinit var recyclerView: RecyclerView
     private lateinit var adsArrayList: ArrayList<AdModel>
     private lateinit var adapterAds: AdapterAds
-    private val db = FirebaseFirestore.getInstance()
+    private var db = FirebaseFirestore.getInstance()
     val user = Firebase.auth.currentUser
 
 
@@ -48,9 +47,7 @@ class HomeFragment : Fragment(), View.OnClickListener{
 
         adapterAds = AdapterAds(adsArrayList){ad ->
             val action = HomeFragmentDirections.actionHomeFragmentToAdDetailFragment(ad.adId)
-
             val navController = view.findNavController()
-
             navController.navigate(action)
 
         }
@@ -65,8 +62,30 @@ class HomeFragment : Fragment(), View.OnClickListener{
                 getSearchResultCat()
         }
 
+        getAds()
+
     }
 
+    private fun getAds(){
+        db = FirebaseFirestore.getInstance()
+        db.collection("Ads")
+            .addSnapshotListener(object : EventListener<QuerySnapshot>{
+                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                    if(error != null){
+                        Log.e("Firestore ERROR", error.message.toString())
+                        return
+                    }
+                    for ( dc : DocumentChange in value?.documentChanges!!) {
+                        if (dc.type == DocumentChange.Type.ADDED){
+                            adsArrayList.add(dc.document.toObject(AdModel::class.java))
+                        }
+                    }
+                    adapterAds.notifyDataSetChanged()
+                }
+            })
+    }
+
+    @SuppressLint("SuspiciousIndentation")
     private fun getSearchResult() {
         val searchBox = view?.findViewById<EditText>(R.id.searchBar)
         val getSearch = searchBox?.text.toString().replaceFirstChar1(Char::titlecase)
