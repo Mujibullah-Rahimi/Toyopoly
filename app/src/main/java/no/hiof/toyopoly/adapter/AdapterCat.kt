@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import no.hiof.toyopoly.R
-import no.hiof.toyopoly.model.AdModel
-import no.hiof.toyopoly.model.CategoryModel
+import no.hiof.toyopoly.models.CategoryModel
 
 class AdapterCat(
     private val catList: ArrayList<CategoryModel>,
@@ -15,7 +14,7 @@ class AdapterCat(
 ) : RecyclerView.Adapter<AdapterCat.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.cat_list, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.category_item, parent, false)
 
         return MyViewHolder(itemView)
     }

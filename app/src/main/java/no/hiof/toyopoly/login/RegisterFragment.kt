@@ -27,13 +27,13 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.wajahatkarim3.easyvalidation.core.view_ktx.atleastOneNumber
 import com.wajahatkarim3.easyvalidation.core.view_ktx.atleastOneUpperCase
 import com.wajahatkarim3.easyvalidation.core.view_ktx.minLength
 import no.hiof.toyopoly.MainActivity
 import no.hiof.toyopoly.R
-import no.hiof.toyopoly.model.UserModel
+import no.hiof.toyopoly.models.UserModel
 import no.hiof.toyopoly.util.DateInputMask
+import java.util.*
 
 
 class RegisterFragment : Fragment(), NoCopySpan{
@@ -44,13 +44,16 @@ class RegisterFragment : Fragment(), NoCopySpan{
     private lateinit var googleLoginButton : Button
     private lateinit var navController : NavController
     private lateinit var googleSignInClient: GoogleSignInClient
-
+    private val AUTOCOMPLETE_REQUEST_CODE = 1
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register, container, false)
+
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +68,9 @@ class RegisterFragment : Fragment(), NoCopySpan{
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(),gso)
+
+        //Places.initialize(context, "AIzaSyCk4yNxdlQogDiA0PAKgZw4ye79frYDZUM")
+
     }
 
     private fun signInGoogle(){
@@ -77,6 +83,8 @@ class RegisterFragment : Fragment(), NoCopySpan{
         if (result.resultCode == Activity.RESULT_OK){
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleResult(task)
+        }else{
+            Log.v("GOOGLE", result.toString())
         }
     }
     private fun handleResult(task: Task<GoogleSignInAccount>) {
@@ -118,8 +126,8 @@ class RegisterFragment : Fragment(), NoCopySpan{
         registerButton = requireView().findViewById(R.id.UserRegisterButton)
         cancelRegisterButton = requireView().findViewById(R.id.cancelRegistrationButton)
 
-        val registerEmail  = requireView().findViewById<EditText>(R.id.emailAddressRegister)
-        val registerPassword  = requireView().findViewById<EditText>(R.id.passwordRegister)
+        val registerEmail = requireView().findViewById<EditText>(R.id.emailAddressRegister)
+        val registerPassword = requireView().findViewById<EditText>(R.id.passwordRegister)
 
 
         val registerFirstName = requireView().findViewById<EditText>(R.id.firstName)
@@ -128,58 +136,72 @@ class RegisterFragment : Fragment(), NoCopySpan{
         val registerAddress = requireView().findViewById<EditText>(R.id.address)
 
         DateInputMask(registerBirthday).listen()
-        cancelRegisterButton.setOnClickListener{
+        cancelRegisterButton.setOnClickListener {
             val cancelAction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             navController.navigate(cancelAction)
         }
         googleLoginButton = view.findViewById(R.id.googleLoginBtn)
-        googleLoginButton.setOnClickListener{
+        googleLoginButton.setOnClickListener {
             signInGoogle()
         }
 
-        registerButton.setOnClickListener{
+        registerButton.setOnClickListener {
             val email: String = registerEmail.text.toString()
             val password: String = registerPassword.text.toString()
             val birthday: String = registerBirthday.text.toString()
             val address: String = registerAddress.text.toString()
             val firstName: String = registerFirstName.text.toString()
             val lastName: String = registerLastName.text.toString()
+
             //val navController = findNavController()
             val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             //Check if any empty fields
-            if(
+            if (
                 TextUtils.isEmpty(email) ||
                 TextUtils.isEmpty(password) ||
                 TextUtils.isEmpty(birthday) ||
                 TextUtils.isEmpty(address) ||
                 TextUtils.isEmpty(firstName) ||
-                TextUtils.isEmpty(lastName)) {
+                TextUtils.isEmpty(lastName)
+            ) {
                 Toast.makeText(activity, "Please fill out all the fields", Toast.LENGTH_LONG).show()
-            //Check if birthday is not less then 10 ints
-            }else if (birthday.length != 10){
+                //Check if birthday is not less then 10 ints
+            } else if (birthday.length != 10) {
                 Toast.makeText(activity, "Date of birth is not valid", Toast.LENGTH_LONG).show()
             }
             //Check if the password contains at least one Uppercase char and is a minimum of 8 chars
-            else if (!password.minLength(8) || !password.atleastOneUpperCase()){
-                Toast.makeText(activity, "Your password need at least one Uppercase and min 8 letters", Toast.LENGTH_LONG).show()
+            else if (!password.minLength(8)) {
+                Toast.makeText(
+                    activity,
+                    "Password is too short",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             //Check if the address has a minimum of 16 chars and contains at least one number(int)
-            else if(!address.minLength(16) || !address.atleastOneNumber()){
+            /*else if(!address.minLength(16) || !address.atleastOneNumber()){
                 Toast.makeText(activity, "Address must consist of at least 16 letters and 1 digit", Toast.LENGTH_LONG).show()
-            }
+            }*/
             //Check if firstname contains at least one uppercase char
-            else if(!firstName.atleastOneUpperCase()) {
-                Toast.makeText(activity, "Your firstname need at least one uppercase letter", Toast.LENGTH_LONG).show()
-            }
-            //Check if lastname contains at least one uppercase char
-            else if(!lastName.atleastOneUpperCase()) {
-                Toast.makeText(activity, "Your lastname need at least one uppercase letter", Toast.LENGTH_LONG).show()
+            else if (!password.atleastOneUpperCase()) {
+                Toast.makeText(
+                    activity,
+                    "Password need at least one uppercase letter",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             else {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener((requireActivity()), OnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val userToSave = UserModel(firstName, lastName, birthday, address, email)
+
+                            val userToSave = UserModel(
+                                firstName.replaceFirstChar {if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()},
+                                lastName.replaceFirstChar {if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()},
+                                birthday,
+                                address,
+                                email,
+                                "")
+
                             db.collection("Users").document(auth.currentUser!!.uid)
                                 .set(userToSave)
                             Toast.makeText(activity, "Successfully Registered", Toast.LENGTH_LONG)
@@ -190,8 +212,10 @@ class RegisterFragment : Fragment(), NoCopySpan{
                                 .show()
                         }
                     })
-                }
+            }
+
         }
+
     }
 
     override fun onResume() {
@@ -205,4 +229,5 @@ class RegisterFragment : Fragment(), NoCopySpan{
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         (activity as MainActivity?)!!.enableDrawer()
     }
+
 }

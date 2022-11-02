@@ -52,6 +52,16 @@
     <string name="Delete">Slett</string>
     <string name="dialogTitle">"Velg "</string>
     <string name="dialogMessage">Gå til eller slett</string>
+    <string name="dialogTitleToken">"Velg "</string>
+    <string name="dialogMessageToken">Kjøp en token eller gå tilbake</string>
     <string name="my_page">My Page</string>
+    <string name="test">test</string>
+    <string name="token">Token</string>
+    <string name="image_of_ad">image of ad</string>
+    <string name="goToMyPage">Go to my page</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="change_picture">change picture</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

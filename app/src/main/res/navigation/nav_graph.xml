@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="no.hiof.toyopoly.CategoryFragment"
+        android:name="no.hiof.toyopoly.ad.CategoryFragment"
         android:label="Category"
         tools:layout="@layout/fragment_category" >
         <argument
@@ -33,11 +33,17 @@
         <action
             android:id="@+id/action_homeFragment_to_myPageFragment"
             app:destination="@id/myPageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_self"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_adDetailFragment"
+            app:destination="@id/adDetailFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/createAdsFragment"
-        android:name="no.hiof.toyopoly.CreateAdFragment"
+        android:name="no.hiof.toyopoly.ad.CreateAdFragment"
         android:label="Create Ads"
         tools:layout="@layout/fragment_createad" >
         <action
@@ -91,7 +97,7 @@
 
     <fragment
         android:id="@+id/adDetailFragment"
-        android:name="no.hiof.toyopoly.AdDetailFragment"
+        android:name="no.hiof.toyopoly.ad.AdDetailFragment"
         android:label="Ad detail"
         tools:layout="@layout/fragment_ad_detail" >
         <action
@@ -100,20 +106,29 @@
         <argument
             android:name="AdId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_adDetailFragment_to_messageDetailFragment"
+            app:destination="@id/messageDetailFragment" />
+        <action
+            android:id="@+id/action_adDetailFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/messageFragment"
-        android:name="no.hiof.toyopoly.MessageFragment"
+        android:name="no.hiof.toyopoly.chat.ChatChannelFragment"
         android:label="Message"
-        tools:layout="@layout/fragment_message" >
+        tools:layout="@layout/fragment_chat_channel" >
         <argument
             android:name="otherUserId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_messageFragment_to_messageDetailFragment"
+            app:destination="@id/messageDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/allToysFragment"
-        android:name="no.hiof.toyopoly.AllToysFragment"
+        android:name="no.hiof.toyopoly.ad.AllToysFragment"
         android:label="All toys"
         tools:layout="@layout/fragment_all_toys" >
         <action
@@ -135,4 +150,22 @@
             android:id="@+id/action_myPageFragment_self"
             app:destination="@id/myPageFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/messageDetailFragment"
+        android:name="no.hiof.toyopoly.chat.MessageDetailFragment"
+        android:label="MessageDetailFragment" >
+        <argument android:name="otherUser"
+            app:argType="string" />
+        <argument
+            android:name="chatChannelId"
+            app:argType="string" />
+    </fragment>
+    <dialog
+        android:id="@+id/tokenDialog"
+        android:name="no.hiof.toyopoly.TokenDialog"
+        android:label="TokenDialog" >
+        <argument
+            android:name="tokenId"
+            app:argType="string" />
+    </dialog>
 </navigation>

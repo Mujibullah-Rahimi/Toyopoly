@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs'
     id 'com.google.gms.google-services'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -47,6 +49,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.android.libraries.places:places:2.5.0'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.2'
+    implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
     // navigation
     def nav_version = "2.5.1"
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
@@ -55,9 +60,13 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.4.1')
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
-    // Sendbird
-    //implementation 'com.sendbird.sdk:sendbird-android-sdk:3.1.21'
-    implementation 'com.sendbird.sdk:uikit:3.2.1'
+    implementation 'com.firebaseui:firebase-ui-storage:8.0.2'
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
+    // Image picker
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
 
     def ev_version = "1.0.4"
     //Easy validation

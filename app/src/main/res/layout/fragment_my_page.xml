@@ -11,17 +11,19 @@
         android:id="@+id/my_ads_recycler"
         android:layout_width="411dp"
         android:layout_height="500dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/emailUserPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/e_mail"
-        app:layout_constraintEnd_toEndOf="@+id/nameUserPage"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/nameUserPage"
         app:layout_constraintTop_toBottomOf="@+id/nameUserPage" />
 
@@ -29,21 +31,78 @@
         android:id="@+id/nameUserPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="128dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="24dp"
         android:text="@string/first_name"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/profilePicCardView"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView2"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/profilePicCardView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="75dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/profilePicImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/changePicBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="40dp"
+        android:singleLine="true"
+        android:text="@string/change_picture"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@+id/profilePicCardView"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="@+id/profilePicCardView"
+        app:layout_constraintTop_toBottomOf="@id/profilePicCardView" />
+
+    <Button
+        android:id="@+id/tokensBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        android:layout_marginEnd="32dp"
+        android:text="Buy Tokens"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/changePicBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/changePicBtn"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/userTokens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/test"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tokensBtn"
+        app:layout_constraintEnd_toEndOf="@+id/tokensBtn"
+        app:layout_constraintTop_toBottomOf="@+id/addressUserPage"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/addressUserPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/address"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/emailUserPage"
+        app:layout_constraintTop_toBottomOf="@+id/emailUserPage" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
