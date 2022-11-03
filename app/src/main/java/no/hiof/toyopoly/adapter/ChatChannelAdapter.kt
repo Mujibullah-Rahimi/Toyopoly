@@ -48,14 +48,15 @@ class ChatChannelAdapter(
                 .addOnSuccessListener {
                     val userName = it.getString("firstName")
                     inChatWith.text = userName
-                    otherUserImageUri = it.getString("imageUri")
+                    if (it.getString("imageUri")?.isNotEmpty() == true){
+                        otherUserImageUri = it.getString("imageUri")
+                        if (otherUserImageUri!!.isNotEmpty()){
+                            val otherUserImageRef = Firebase.storage.getReference(otherUserImageUri!!)
 
-                    if (otherUserImageUri!!.isNotEmpty()){
-                        val otherUserImageRef = Firebase.storage.getReference(otherUserImageUri!!)
-
-                        Glide.with(this)
-                            .load(otherUserImageRef)
-                            .into(userImage)
+                            Glide.with(this)
+                                .load(otherUserImageRef)
+                                .into(userImage)
+                        }
                     }
                 }
 
