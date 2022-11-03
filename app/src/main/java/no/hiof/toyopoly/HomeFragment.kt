@@ -3,15 +3,14 @@ package no.hiof.toyopoly
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
@@ -19,6 +18,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.models.AdModel
+import kotlin.properties.Delegates
 import kotlin.text.replaceFirstChar as replaceFirstChar1
 
 
@@ -29,7 +29,6 @@ class HomeFragment : Fragment(), View.OnClickListener{
     private var db = FirebaseFirestore.getInstance()
     val user = Firebase.auth.currentUser
     private lateinit var navController: NavController
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +72,10 @@ class HomeFragment : Fragment(), View.OnClickListener{
             navController.navigate(HomeFragmentDirections.actionHomeFragmentToAllToysFragment())
         }
 
+
     }
+
+
 
     private fun GetAds(){
         db = FirebaseFirestore.getInstance()
@@ -155,6 +157,5 @@ class HomeFragment : Fragment(), View.OnClickListener{
 //            }
         }
     }
-
 
 }
