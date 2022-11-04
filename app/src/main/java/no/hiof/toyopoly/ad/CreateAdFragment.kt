@@ -1,21 +1,27 @@
 package no.hiof.toyopoly.ad
 
 //import com.google.firebase.storage.FirebaseStorage
+import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -24,9 +30,13 @@ import com.wajahatkarim3.easyvalidation.core.view_ktx.minLength
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import com.wajahatkarim3.easyvalidation.core.view_ktx.onlyNumbers
 import no.hiof.toyopoly.R
+import no.hiof.toyopoly.adapter.AdapterAds
+import no.hiof.toyopoly.adapter.AdapterCat
 import no.hiof.toyopoly.models.AdModel
+import no.hiof.toyopoly.models.CategoryModel
 import no.hiof.toyopoly.util.RandomId
 import java.util.*
+
 
 class CreateAdFragment : Fragment() {
 
@@ -34,6 +44,8 @@ class CreateAdFragment : Fragment() {
     private var adImages: ArrayList<ImageView> = ArrayList<ImageView>()
     private val user = Firebase.auth.currentUser
     private lateinit var ad: AdModel
+    private lateinit var adapterCat: AdapterCat
+    private lateinit var catArrayList : ArrayList<CategoryModel>
 
     // database instances and references
     private val db = Firebase.firestore
@@ -61,14 +73,9 @@ class CreateAdFragment : Fragment() {
         adImage = view.findViewById(R.id.adImageView)
         val galleryBtn = view.findViewById<Button>(R.id.galleryBtn)
         galleryBtn.setOnClickListener {
-            //takePhoto()
-            ImagePicker.with(requireActivity())
-                .galleryOnly()
-                .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
-                .createIntent { intent ->
-                    getImageResult.launch(intent)
-                }
+            invokeGallery()
         }
+        catArrayList = arrayListOf()
 
         val spinner: Spinner = view.findViewById(R.id.spinner_category)
         this.activity?.let {
@@ -87,7 +94,49 @@ class CreateAdFragment : Fragment() {
             setTokens()
             saveAd(RandomId.randomID())
         }
+
     }
+
+    private fun invokeGallery(){
+        if(hasExternalReadStoragePermission() == PERMISSION_GRANTED){
+            openGallery()
+        }else{
+            requestMultiplePermissionsLauncher.launch(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ))
+        }
+    }
+
+
+    fun openGallery() {
+        ImagePicker.with(requireActivity())
+            .galleryOnly()
+            .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
+            .createIntent { intent ->
+                getImageResult.launch(intent)
+            }
+    }
+
+        private val requestMultiplePermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
+            var permissionGranted = false
+            resultsMap.forEach {
+                if (it.value == true) {
+                    permissionGranted = it.value
+                } else {
+                    permissionGranted = false
+                    return@forEach
+                }
+            }
+            if (permissionGranted) {
+                openGallery()
+            } else {
+                Toast.makeText(this.activity, "No read permission", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+
+
 
     private val getImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result: ActivityResult ->
         val resultCode = result.resultCode
@@ -275,5 +324,28 @@ class CreateAdFragment : Fragment() {
                         .show()
                 }
         }
+    }
+    fun getCategories() {
+        db.collection("Category")
+            .addSnapshotListener(object : EventListener<QuerySnapshot> {
+                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                    if (error != null) {
+                        Log.e("Firestore ERROR", error.message.toString())
+                        return
+                    }
+                    for (dc: DocumentChange in value?.documentChanges!!) {
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            catArrayList.add(dc.document.toObject(CategoryModel::class.java))
+                        }
+                    }
+                    adapterCat.notifyDataSetChanged()
+                }
+            })
+    }
+    fun hasExternalReadStoragePermission() = this.activity?.let {
+        ContextCompat.checkSelfPermission(
+            it,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
     }
 }

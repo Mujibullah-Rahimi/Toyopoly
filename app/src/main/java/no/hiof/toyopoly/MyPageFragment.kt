@@ -1,7 +1,9 @@
 package no.hiof.toyopoly
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,12 +58,7 @@ class MyPageFragment : Fragment(){
         getUser()
         val changePic = view.findViewById<Button>(R.id.changePicBtn)
         changePic.setOnClickListener{
-            ImagePicker.with(requireActivity())
-                .galleryOnly()
-                .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
-                .createIntent { intent ->
-                    getImageFromGallery.launch(intent)
-                }
+                invokeGallery()
         }
         recyclerView = view.findViewById(R.id.my_ads_recycler)
         recyclerView.layoutManager = LinearLayoutManager (this.activity)
@@ -118,7 +116,7 @@ class MyPageFragment : Fragment(){
 
             storageRef.child("images/users/${user!!.uid}").putFile(userImageURI!!).addOnSuccessListener {
                 db.collection("Users").document(userUID).update("imageUri", it.storage.path)
-                getUser()
+                //getUser()
             }
 
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -128,6 +126,53 @@ class MyPageFragment : Fragment(){
             Toast.makeText(activity, "Task Cancelled", Toast.LENGTH_SHORT).show()
             Log.v(TAG, ImagePicker.getError(data))
         }
+    }
+
+    //permission handling
+
+    fun openGallery() {
+        ImagePicker.with(requireActivity())
+            .galleryOnly()
+            .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
+            .createIntent { intent ->
+                getImageFromGallery.launch(intent)
+            }
+    }
+
+    private fun invokeGallery(){
+        if(hasExternalReadStoragePermission() == PackageManager.PERMISSION_GRANTED){
+            openGallery()
+        }else{
+            requestMultiplePermissionsLauncher.launch(arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ))
+        }
+    }
+
+    private val requestMultiplePermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
+            var permissionGranted = false
+            resultsMap.forEach {
+                if (it.value == true) {
+                    permissionGranted = it.value
+                } else {
+                    permissionGranted = false
+                    return@forEach
+                }
+            }
+            if (permissionGranted) {
+                openGallery()
+            } else {
+                Toast.makeText(this.activity, "No read permission", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+
+    fun hasExternalReadStoragePermission() = this.activity?.let {
+        ContextCompat.checkSelfPermission(
+            it,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
     }
 
     val userUID = user!!.uid
@@ -185,7 +230,7 @@ class MyPageFragment : Fragment(){
     }
 
     fun updateImage(){
-
+        db.collection("Users").document(userUID).update("imageUri", userImageURI)
     }
     fun deleteAd(documentId: String) {
 

@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_homeFragment_to_adDetailFragment"
             app:destination="@id/adDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_allToysFragment"
+            app:destination="@id/allToysFragment" />
     </fragment>
 
     <fragment
