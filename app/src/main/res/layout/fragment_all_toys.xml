@@ -9,19 +9,23 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewForAllToys"
-        android:layout_width="match_parent"
-        android:layout_height="706dp"
+        android:layout_width="393dp"
+        android:layout_height="590dp"
         android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewForAllCategories" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewForAllCategories"
+        app:layout_constraintVertical_bias="0.59" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewForAllCategories"
         android:layout_width="match_parent"
         android:layout_height="110dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
