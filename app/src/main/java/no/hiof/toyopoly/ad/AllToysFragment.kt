@@ -1,5 +1,6 @@
 package no.hiof.toyopoly.ad
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -87,6 +88,7 @@ class AllToysFragment : Fragment() {
                         return
                     }
                     for ( dc : DocumentChange in value?.documentChanges!!) {
+                        Log.d(TAG, value.toString())
                         if (dc.type == DocumentChange.Type.ADDED){
                             adsArrayList.add(dc.document.toObject(AdModel::class.java))
                         }

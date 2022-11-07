@@ -65,11 +65,12 @@ class AdDetailFragment : Fragment() {
         getAd()
         getImage()
         getOtherUserId()
-
+        val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
         val contactSellerButton = view.findViewById<Button>(R.id.contactSellerButton)
         db.collection("Ads").document(args.adId).get().addOnSuccessListener {
             if (it.getString("userId") == currentUser){
                 contactSellerButton.text = getString(R.string.goToMyPage)
+                buyItemBtn.visibility = View.INVISIBLE
                 contactSellerButton.setOnClickListener{
                     navController.navigate(AdDetailFragmentDirections.actionAdDetailFragmentToMyPageFragment())
                 }
@@ -81,8 +82,7 @@ class AdDetailFragment : Fragment() {
             }
         }
 
-        val buyItemBtn = view.findViewById<Button>(R.id.buyBtn)
-        buyItemBtn.setOnClickListener{
+        buyItemBtn?.setOnClickListener{
 
             getTokenAmount()
 
@@ -98,15 +98,18 @@ class AdDetailFragment : Fragment() {
             builder.setNegativeButton("Cancel"){dialogInterface, which ->
                 val action = AdDetailFragmentDirections.actionAdDetailFragmentSelf(args.adId)
 
-                val navController = view.findNavController()
+                val navController = view?.findNavController()
 
-                navController.navigate(action)
+                navController?.navigate(action)
             }
             builder.show()
         }
     }
 
+    var isSold = false
+
     fun getAd(){
+        val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
         val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
         val price_ad = view?.findViewById<TextView>(R.id.adDetailPrice)
         val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
@@ -125,6 +128,12 @@ class AdDetailFragment : Fragment() {
                     desc_ad?.text = document.getString("description")
                     addr_ad?.text = document.getString("address")
                     token_ad?.text = "Tokens: " + document.getLong("token").toString() + " Tokens"
+                    isSold = document.getBoolean("sold")!!
+                    if(isSold == true){
+                        buyItemBtn?.text = context?.getText(R.string.Sold)
+                        buyItemBtn?.isClickable = false
+                        buyItemBtn?.alpha = .5f
+                    }
                     //time_ad?.text = document.getDate("timestamp").toString()
                 }
                 else{
@@ -257,15 +266,15 @@ class AdDetailFragment : Fragment() {
             }
     }
 
-
-
     fun buyItem(){
         val docRefUsers = db.collection("Users")
+        val docRefAds = db.collection("Ads")
 
         docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
 
         docRefUsers.document(otherUser).update("token", FieldValue.increment(tokenValue))
 
-
+        docRefAds.document(args.adId).update("sold", true)
     }
+
 }
