@@ -54,18 +54,33 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
         when (v?.id) {
             R.id.loginButton -> {
-                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(requireActivity(), OnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        Toast.makeText(activity, "Successfully Logged In", Toast.LENGTH_LONG).show()
-                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                        navController?.navigate(action)
+                if (email.isEmpty() && password.isEmpty()) {
+                    Toast.makeText(activity, "Email and Password missing", Toast.LENGTH_LONG).show()
+                }
+                else if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(activity, "Please fill in all fields", Toast.LENGTH_LONG).show()
+                }
+                else {
+                    auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(requireActivity(), OnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(
+                                    activity,
+                                    "Successfully Logged In",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                val action =
+                                    LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                                navController?.navigate(action)
 //                         Hide keyboard when logged in
-                        val imm: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-                        }else {
-                        Toast.makeText(activity, "Login Failed ", Toast.LENGTH_LONG).show()
-                    }
-                })
+                                val imm: InputMethodManager =
+                                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+                            }else{
+                                Toast.makeText(activity, "One or more fields were incorrect", Toast.LENGTH_LONG).show()
+                            }
+                        })
+                }
             }
             R.id.registerButton ->{
                 val action =

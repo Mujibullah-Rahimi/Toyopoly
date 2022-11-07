@@ -63,5 +63,6 @@
     <string name="camera">Camera</string>
     <string name="change_picture">change picture</string>
     <string name="cancel">Cancel</string>
+    <string name="contact_seller">Contact seller</string>
 
 </resources>
