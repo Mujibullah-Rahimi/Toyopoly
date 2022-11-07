@@ -54,6 +54,7 @@
     <string name="dialogMessage">Gå til eller slett</string>
     <string name="dialogTitleToken">"Velg "</string>
     <string name="dialogMessageToken">Kjøp en token eller gå tilbake</string>
+    <string name="dialogMessageBuy">Are you sure you want to buy the item</string>
     <string name="my_page">My Page</string>
     <string name="test">test</string>
     <string name="token">Token</string>
@@ -63,5 +64,6 @@
     <string name="camera">Camera</string>
     <string name="change_picture">change picture</string>
     <string name="cancel">Cancel</string>
+    <string name="buy">Buy</string>
 
 </resources>
