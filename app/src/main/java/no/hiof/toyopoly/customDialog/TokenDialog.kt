@@ -75,7 +75,6 @@ class TokenDialog : DialogFragment() {
     var tokenValue : Long = 0
 
 
-
     private fun getTokenAmount(token : String) {
             Log.d(TAG, token)
 
