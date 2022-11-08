@@ -13,9 +13,11 @@ data class AdModel(
     var category: String ="Other",
     var imageUri: String = "",
     var userId: String= "",
-    var timestamp: com.google.firebase.Timestamp,
+    var timestamp: Timestamp,
     var token : Int = 0,
+    var sold : Boolean = false
     //val img_ref : ReferenceSet? = null
                    ){
-    constructor() : this(adId = "", title ="", description="", price="", category="Other", imageUri = "", userId="", timestamp = Timestamp.now(), token = 0)
+    constructor() : this(adId = "", title ="", description="", price="", category="Other", imageUri = "", userId="", timestamp = Timestamp.now(), token = 0, sold = false)
+
 }

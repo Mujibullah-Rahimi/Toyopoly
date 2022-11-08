@@ -22,12 +22,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import no.hiof.toyopoly.adapter.AdapterAds
+import no.hiof.toyopoly.customDialog.TokenDialog
 import no.hiof.toyopoly.models.AdModel
 
 
@@ -116,7 +118,7 @@ class MyPageFragment : Fragment(){
 
             storageRef.child("images/users/${user!!.uid}").putFile(userImageURI!!).addOnSuccessListener {
                 db.collection("Users").document(userUID).update("imageUri", it.storage.path)
-                //getUser()
+                getUser()
             }
 
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -226,11 +228,13 @@ class MyPageFragment : Fragment(){
 
         Glide.with(requireView())
             .load(pictureReference)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(userImage)
     }
 
     fun updateImage(){
-        db.collection("Users").document(userUID).update("imageUri", userImageURI)
+
     }
     fun deleteAd(documentId: String) {
 

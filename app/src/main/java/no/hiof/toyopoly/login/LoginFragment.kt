@@ -1,14 +1,20 @@
 package no.hiof.toyopoly.login
 
 import android.content.Context
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
+import android.os.NetworkOnMainThreadException
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -16,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import no.hiof.toyopoly.MainActivity
 import no.hiof.toyopoly.R
+import android.net.ConnectivityManager as ConnectivityManagerInternet
 
 class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
@@ -31,6 +38,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,8 +48,15 @@ class LoginFragment : Fragment(), View.OnClickListener {
         val registerButton = view.findViewById<Button>(R.id.registerButton)
         registerButton.setOnClickListener(this)
 
+        val logintext = view.findViewById<TextView>(R.id.loginTextView)
 
-
+        if(this.activity?.let { isOnline(it) } == false){
+            loginButton.alpha = .5f
+            registerButton.alpha = .5f
+            loginButton.isClickable = false
+            registerButton.isClickable = false
+            logintext.text = getString(R.string.noInternet)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -102,5 +117,25 @@ class LoginFragment : Fragment(), View.OnClickListener {
         (activity as MainActivity?)!!.enableDrawer()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun isOnline(context: Context) : Boolean{
+        val connectionManger = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManagerInternet
+        if(connectionManger != null){
+            val capabilities = connectionManger.getNetworkCapabilities(connectionManger.activeNetwork)
+            if(capabilities != null){
+                //checks for cellular network
+                if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
+                    Log.i("hasInternet", "Cellular is on")
+                    return true
+                }
+                //checks for Wi-FI
+                else if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)){
+                    Log.i("hasInternet", "Wi-Fi is on")
+                    return true
+                }
+            }
+        }
+        return false
+    }
 }
 

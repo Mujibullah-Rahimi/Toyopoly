@@ -8,10 +8,12 @@
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
             <value value="C:\Users\mujibulr\.android\avd\ToyopolyPhone.avd" />
+            <value value="C:\Users\gghh\.android\avd\Pixel_6_Pro_API_32.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
     <timeTargetWasSelectedWithDropDown value="2022-11-08T19:55:56.860624Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-11-08T13:21:39.881037700Z" />
   </component>
 </project>

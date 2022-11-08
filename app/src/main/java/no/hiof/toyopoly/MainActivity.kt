@@ -1,8 +1,8 @@
 package no.hiof.toyopoly
 
-// Sendbird
-
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipData.Item
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +12,17 @@ import android.view.MenuItem.OnMenuItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.ListFragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,6 +30,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -32,6 +41,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import no.hiof.toyopoly.databinding.ActivityMainBinding
 import java.io.File
+import java.text.FieldPosition
 
 class MainActivity : AppCompatActivity(){
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -102,10 +112,12 @@ class MainActivity : AppCompatActivity(){
                     }
                     .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
 
-                val pictureReference = storageRef.storage.getReference("images/users/${firebaseUser.uid}")
-                if (pictureReference != null){
+                val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
+                if(pictureReference != null) {
                     Glide.with(this)
                         .load(pictureReference)
+                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                        .apply(RequestOptions.skipMemoryCacheOf(true))
                         .into(headerUserImage)
                 }
             }
@@ -114,10 +126,42 @@ class MainActivity : AppCompatActivity(){
         navView.setupWithNavController(navController)
 
         binding.navView.setupWithNavController(navHostFragment.navController)
-
     }
 
 
+    fun test(){
+        authStateListener = FirebaseAuth.AuthStateListener {
+            val firebaseUser = auth.currentUser
+            if (firebaseUser != null){
+                val header = navView.getHeaderView(0)
+                val headerUserImage = header.findViewById<ImageView>(R.id.drawerHeaderImageView)
+                val headerUserName = header.findViewById<TextView>(R.id.drawerHeaderUserName)
+                val headerEmail = header.findViewById<TextView>(R.id.drawerHeaderUserEmail)
+
+                val docRef = db.collection("Users").document(firebaseUser.uid)
+                docRef
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            Log.d("isHere", "Snapshot: ${document.data}")
+                            headerEmail?.text = document.getString("email")
+                            headerUserName?.text = document.getString("firstName")+ " " + document.getString("lastName")
+                            //time_ad?.text = document.getDate("timestamp").toString()
+                        } else {
+                            Log.d("isNotHere", "The document snapshot doesn't exist")
+                        }
+                    }
+                    .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
+
+                val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
+                Glide.with(this)
+                    .load(pictureReference)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(headerUserImage)
+            }
+        }
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -177,6 +221,8 @@ class MainActivity : AppCompatActivity(){
         if (pictureReference != null){
             Glide.with(this)
                 .load(pictureReference)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(headerUserImage)
         }
 
@@ -226,6 +272,5 @@ class MainActivity : AppCompatActivity(){
         }
     }
 }
-
 
 
