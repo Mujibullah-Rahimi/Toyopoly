@@ -66,5 +66,6 @@
     <string name="cancel">Cancel</string>
     <string name="buy">Buy</string>
     <string name="Sold">Sold</string>
+    <string name="noInternet">Connect to the internet to login</string>
 
 </resources>
