@@ -17,7 +17,7 @@
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        app:cardBackgroundColor="@color/quantum_teal50"
+        app:cardBackgroundColor="@color/tertiaryVariant"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -61,6 +61,7 @@
         android:id="@+id/cardView4"
         android:layout_width="134dp"
         android:layout_height="134dp"
+
 
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"

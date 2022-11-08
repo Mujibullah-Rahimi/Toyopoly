@@ -64,6 +64,8 @@
         android:layout_marginTop="40dp"
         android:singleLine="true"
         android:text="@string/change_picture"
+        android:backgroundTint="@color/tertiaryVariant"
+        android:textColor="@color/tertiary"
         android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="@+id/profilePicCardView"
         app:layout_constraintHorizontal_bias="0.473"

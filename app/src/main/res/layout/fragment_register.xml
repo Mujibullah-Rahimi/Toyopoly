@@ -40,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register_new_account"
+        android:textColor="@color/tertiary"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="@string/register"
+        android:backgroundTint="@color/primaryVariant"
         app:layout_constraintEnd_toEndOf="@+id/registerTextView"
         app:layout_constraintTop_toBottomOf="@+id/address" />
 
@@ -119,17 +121,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="@android:string/cancel"
+        android:backgroundTint="@color/secondaryVariant"
+        android:textColor="@color/onSecondary"
         app:layout_constraintStart_toStartOf="@+id/registerTextView"
         app:layout_constraintTop_toBottomOf="@+id/address" />
-
-    <Button
-        android:id="@+id/googleLoginBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Sign in with Google"
-        app:layout_constraintEnd_toEndOf="@+id/registerTextView"
-        app:layout_constraintTop_toBottomOf="@+id/UserRegisterButton" />
 
     <TextView
         android:id="@+id/EmailLabel"
@@ -137,6 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/e_mail"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/registerTextView"
         app:layout_constraintTop_toBottomOf="@+id/registerTextView" />
@@ -147,6 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/password"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/registerTextView"
         app:layout_constraintTop_toBottomOf="@+id/EmailLabel" />
@@ -157,6 +154,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/address"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/registerTextView"
         app:layout_constraintTop_toBottomOf="@+id/BirthdayLabel" />
@@ -167,6 +165,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/birthday"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/registerTextView"
         app:layout_constraintTop_toBottomOf="@+id/LastNameLabel" />
@@ -177,6 +176,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/last_name"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/registerTextView"
         app:layout_constraintTop_toBottomOf="@+id/FirstNameLabel" />
@@ -187,6 +187,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/first_name"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/registerTextView"
         app:layout_constraintTop_toBottomOf="@+id/PasswordLabel" />

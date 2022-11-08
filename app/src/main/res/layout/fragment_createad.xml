@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="@string/address"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/address_createAd"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +33,7 @@
         android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
         android:text="@string/create_ad"
+        android:backgroundTint="@color/primaryVariant"
         app:layout_constraintTop_toBottomOf="@+id/spinner_category"
         app:layout_constraintEnd_toEndOf="@+id/spinner_category"
         app:layout_constraintVertical_bias="0.153" />
@@ -134,6 +136,8 @@
         android:layout_marginEnd="36dp"
         android:drawableEnd="@drawable/ic_twotone_photo_library_24"
         android:text="@string/gallery"
+        android:backgroundTint="@color/secondary"
+        android:textColor="@color/onSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
@@ -145,6 +149,8 @@
         android:layout_marginTop="16dp"
         android:drawableEnd="@drawable/ic_twotone_photo_camera_24"
         android:text="@string/camera"
+        android:backgroundTint="@color/secondary"
+        android:textColor="@color/onSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
@@ -153,6 +159,7 @@
         android:layout_width="220dp"
         android:layout_height="220dp"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/secondaryVariant"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/createAdLayout"
@@ -175,6 +182,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="@string/title"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/title_create_ad"
         app:layout_constraintStart_toStartOf="parent"
@@ -186,6 +194,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="@string/price"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/price_createAd"
         app:layout_constraintStart_toStartOf="parent"
@@ -197,6 +206,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="@string/category"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/spinner_category"
         app:layout_constraintStart_toStartOf="parent"
@@ -208,6 +218,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="@string/description"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/desc_createAd"
         app:layout_constraintStart_toStartOf="parent"

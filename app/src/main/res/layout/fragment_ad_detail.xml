@@ -66,7 +66,7 @@
         android:layout_width="142dp"
         android:layout_height="34dp"
         android:layout_marginTop="32dp"
-        android:text="Title"
+        android:text="@string/title"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/imageViewAdDetail"
         app:layout_constraintTop_toBottomOf="@+id/imageViewAdDetail" />
@@ -76,7 +76,7 @@
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Description"
+        android:text="@string/description"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/adDetailTitle"
         app:layout_constraintTop_toBottomOf="@+id/adDetailTitle" />
@@ -86,7 +86,7 @@
         android:layout_width="146dp"
         android:layout_height="47dp"
         android:layout_marginTop="16dp"
-        android:text="Address"
+        android:text="@string/address"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/adDetailDescription"
         app:layout_constraintTop_toBottomOf="@+id/adDetailDescription" />
@@ -97,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Price"
+        android:text="@string/price"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/adDetailDescription"
         app:layout_constraintTop_toBottomOf="@+id/adDetailAddress" />
@@ -107,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="Contact seller"
+        android:text="@string/contact_seller"
         app:layout_constraintEnd_toEndOf="@+id/adDetailPrice"
         app:layout_constraintTop_toBottomOf="@+id/adDetailPrice" />
 

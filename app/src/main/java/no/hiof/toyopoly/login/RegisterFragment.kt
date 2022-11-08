@@ -140,10 +140,10 @@ class RegisterFragment : Fragment(), NoCopySpan{
             val cancelAction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             navController.navigate(cancelAction)
         }
-        googleLoginButton = view.findViewById(R.id.googleLoginBtn)
-        googleLoginButton.setOnClickListener {
-            signInGoogle()
-        }
+//        googleLoginButton = view.findViewById(R.id.googleLoginBtn)
+//        googleLoginButton.setOnClickListener {
+//            signInGoogle()
+//        }
 
         registerButton.setOnClickListener {
             val email: String = registerEmail.text.toString()

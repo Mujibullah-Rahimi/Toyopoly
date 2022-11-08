@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="@color/purple_200"
+        app:cardBackgroundColor="@color/tertiaryVariant"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -48,7 +48,8 @@
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="@string/test"
+        android:textColor="@color/onSecondary"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/engagedChatCardView"
         app:layout_constraintTop_toTopOf="parent" />

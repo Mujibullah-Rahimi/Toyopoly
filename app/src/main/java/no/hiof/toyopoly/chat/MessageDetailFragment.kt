@@ -5,8 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -49,7 +49,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 //        setChatChannelId()
         Log.v("OTHERUSER", otherUserId)
 
-        val sendButton = view.findViewById<Button>(R.id.sendMessageButton)
+        val sendButton = view.findViewById<ImageButton>(R.id.sendMessageButton)
         sendButton?.setOnClickListener(this)
 
         messagesRecyclerView = view.findViewById(R.id.messagesRecyclerView)
@@ -78,7 +78,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
     fun saveMsg(){
         val messageInput = view?.findViewById<EditText>(R.id.editText_message)
-        val sendMsgButton = view?.findViewById<Button>(R.id.sendMessageButton)
+        val sendMsgButton = view?.findViewById<ImageButton>(R.id.sendMessageButton)
         val message = messageInput?.text.toString()
 
         val messageToSave = MessageModel(RandomId.randomID(),message, Timestamp.now(), auth.currentUser!!.uid)
