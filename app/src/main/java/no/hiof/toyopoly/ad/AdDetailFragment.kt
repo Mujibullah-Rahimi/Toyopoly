@@ -1,8 +1,6 @@
 package no.hiof.toyopoly.ad
 
 import android.app.AlertDialog
-import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -28,7 +26,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import no.hiof.toyopoly.MyPageFragmentDirections
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.ChatChannelModel
 import no.hiof.toyopoly.util.RandomId
@@ -106,7 +103,7 @@ class AdDetailFragment : Fragment() {
         }
     }
 
-    var isSold = false
+
 
     fun getAd(){
         val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
@@ -128,8 +125,8 @@ class AdDetailFragment : Fragment() {
                     desc_ad?.text = document.getString("description")
                     addr_ad?.text = document.getString("address")
                     token_ad?.text = "Tokens: " + document.getLong("token").toString() + " Tokens"
-                    isSold = document.getBoolean("sold")!!
-                    if(isSold == true){
+                    val sold = document.getBoolean("sold")!!
+                    if(sold){
                         buyItemBtn?.text = context?.getText(R.string.Sold)
                         buyItemBtn?.isClickable = false
                         buyItemBtn?.alpha = .5f
@@ -270,11 +267,21 @@ class AdDetailFragment : Fragment() {
         val docRefUsers = db.collection("Users")
         val docRefAds = db.collection("Ads")
 
-        docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
+        val myUser = docRefUsers.document(userUID).get().addOnSuccessListener {
+            if (it != null){
+                val myTokens = it.getLong("token")
+                if (myTokens?.toInt()!! < tokenValue.toInt()){
+                    Toast.makeText(activity, "Kjøp tokens først", Toast.LENGTH_LONG).show()
+                }else{
+                    docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
 
-        docRefUsers.document(otherUser).update("token", FieldValue.increment(tokenValue))
+                    docRefUsers.document(otherUser).update("token", FieldValue.increment(tokenValue))
 
-        docRefAds.document(args.adId).update("sold", true)
+                    docRefAds.document(args.adId).update("sold", true)
+                }
+            }
+        }
+
     }
 
 }
