@@ -26,6 +26,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
     private lateinit var messagesRecyclerView : RecyclerView
     private lateinit var messageList: ArrayList<MessageModel>
     private lateinit var messageAdapter: MessageAdapter
+    private var messageType = 0
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
@@ -43,6 +44,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         auth = FirebaseAuth.getInstance()
         otherUserId = args.otherUser
         chatChannelId = args.chatChannelId
@@ -55,7 +57,9 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
         messagesRecyclerView = view.findViewById(R.id.messagesRecyclerView)
         messagesRecyclerView.layoutManager = LinearLayoutManager(this.activity)
         messageList = arrayListOf()
-
+        if (messageList.size > 1){
+            messagesRecyclerView.smoothScrollToPosition(messageList.size - 1)
+        }
         messageAdapter = MessageAdapter(messageList){}
         messagesRecyclerView.adapter = messageAdapter
 
@@ -81,22 +85,32 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
         val sendMsgButton = view?.findViewById<ImageButton>(R.id.sendMessageButton)
         val message = messageInput?.text.toString()
 
-        val messageToSave = MessageModel(RandomId.randomID(),message, Timestamp.now(), auth.currentUser!!.uid)
+        db.collection("ChatChannels").document(args.chatChannelId).get().addOnSuccessListener {
+            if (it.exists()){
+                var userIds : MutableList<String> = it.get("userIds") as MutableList<String>
+                var index = userIds.indexOf(auth.currentUser?.uid)
+                this.messageType = index + 1
+            }
+            val messageToSave = MessageModel(RandomId.randomID(),message, Timestamp.now(), auth.currentUser!!.uid, this.messageType)
 
-        if (messageToSave.message.isNotEmpty()){
-            Log.v("chatChannelId", chatChannelId)
-            db.collection("ChatChannels").document(chatChannelId)
-                .collection("messages").document()
-                .set(messageToSave)
-                .addOnCompleteListener {
-                    Log.v(TAG, "Messaged saved in chatChannels")
-                    messageInput!!.text.clear()}
-                .addOnFailureListener{
-                    Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
-                        .show()
-                }
+            if (messageToSave.message.isNotEmpty()){
+                Log.v("chatChannelId", chatChannelId)
+                db.collection("ChatChannels").document(chatChannelId)
+                    .collection("messages").document()
+                    .set(messageToSave)
+                    .addOnCompleteListener {
+                        Log.v(TAG, "Messaged saved in chatChannels")
+                        messageInput!!.text.clear()
+                        messagesRecyclerView.smoothScrollToPosition(messageList.size - 1);
+                    }
+                    .addOnFailureListener{
+                        Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
+                            .show()
+                    }
+            }
         }
     }
+
     fun getMessages(){
         Log.v("GETMESSAGES", "get messages has been called")
 //        Users/FaTMSJiGPGQVKgHtFl34w3lk3pJ3/engagedChats/2FBGPPtWDrQVENG3A7t50XMz9Yk2/messages

@@ -6,12 +6,12 @@
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
-            <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\mujibulr\.android\avd\ToyopolyPhone.avd" />
+            <type value="SERIAL_NUMBER" />
+            <value value="R5CT2294SJT" />
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-11-09T14:13:00.647061600Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-11-09T14:58:30.668591200Z" />
   </component>
 </project>

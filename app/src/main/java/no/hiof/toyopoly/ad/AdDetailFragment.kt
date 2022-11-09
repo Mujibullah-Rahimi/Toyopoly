@@ -108,7 +108,6 @@ class AdDetailFragment : Fragment() {
     fun getAd(){
         val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
         val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
-        val price_ad = view?.findViewById<TextView>(R.id.adDetailPrice)
         val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
         val addr_ad = view?.findViewById<TextView>(R.id.adDetailAddress)
         val token_ad = view?.findViewById<TextView>(R.id.tokenPrice)
@@ -120,8 +119,7 @@ class AdDetailFragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     Log.d("isHere", "Snapshot: ${document.data}")
-                    title_ad?.text = document.getString("value")
-                    price_ad?.text = "Price: " + document.getString("price") + " kr"
+                    title_ad?.text = document.getString("title")
                     desc_ad?.text = document.getString("description")
                     addr_ad?.text = document.getString("address")
                     token_ad?.text = "Tokens: " + document.getLong("token").toString() + " Tokens"

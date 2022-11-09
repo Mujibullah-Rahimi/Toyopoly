@@ -215,7 +215,7 @@ class MyPageFragment : Fragment(){
                     Log.d("currentUser", "Snapshot: ${document.data}")
                     getEmail?.text = document.getString("email")
                     getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
-                    getTokens?.text = "Tokens: " + document.getLong("token").toString()
+                    getTokens?.text = "${R.string.token}: ${ document.getLong("token").toString() }"
                     getAddress?.text = document.getString("address")
                     //time_ad?.text = document.getDate("timestamp").toString()
                 } else {

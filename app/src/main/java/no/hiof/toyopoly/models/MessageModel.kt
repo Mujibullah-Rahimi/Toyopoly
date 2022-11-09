@@ -7,7 +7,8 @@ data class MessageModel(
     val message : String,
     val timestamp: com.google.firebase.Timestamp,
     val senderId : String,
+    val messageType : Int
     //val receiverId : String
     ){
-    constructor() :this(messageId = "", message = "", timestamp = Timestamp.now(), senderId = "")
+    constructor() :this(messageId = "", message = "", timestamp = Timestamp.now(), senderId = "", messageType =0)
 }
