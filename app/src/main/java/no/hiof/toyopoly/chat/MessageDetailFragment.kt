@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import no.hiof.toyopoly.MainActivity
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.adapter.MessageAdapter
 import no.hiof.toyopoly.models.MessageModel
@@ -47,6 +48,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
         auth = FirebaseAuth.getInstance()
         otherUserId = args.otherUser
+        Log.v("otheruserinmessage",otherUserId)
         chatChannelId = args.chatChannelId
 //        setChatChannelId()
         Log.v("OTHERUSER", otherUserId)
@@ -64,6 +66,16 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
         messagesRecyclerView.adapter = messageAdapter
 
         getMessages()
+        getOtherUserName()
+    }
+
+    private fun getOtherUserName(){
+        db.collection("Users").document(otherUserId).get().addOnSuccessListener {
+            if (it.exists()){
+                var otherUserName = it.getString("firstName")
+                (activity as MainActivity).supportActionBar?.title = otherUserName
+            }
+        }
     }
 
 //    private fun setChatChannelId(){

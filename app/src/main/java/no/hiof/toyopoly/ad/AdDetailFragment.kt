@@ -181,7 +181,7 @@ class AdDetailFragment : Fragment() {
                     Log.v("ChatExists", existingChatId)
                     navController.navigate(
                         AdDetailFragmentDirections.actionAdDetailFragmentToMessageDetailFragment(
-                            otherUser,existingChatId)
+                            this.otherUser,existingChatId)
                         )
                 }
 
