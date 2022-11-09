@@ -119,6 +119,7 @@ class MainActivity : AppCompatActivity(){
                         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                         .apply(RequestOptions.skipMemoryCacheOf(true))
                         .into(headerUserImage)
+                        .clearOnDetach()
                 }
             }
         }
