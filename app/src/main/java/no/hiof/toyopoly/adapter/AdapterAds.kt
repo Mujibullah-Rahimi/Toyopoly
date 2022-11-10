@@ -1,5 +1,6 @@
 package no.hiof.toyopoly.adapter
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +35,7 @@ class AdapterAds(
         val title: TextView = itemView.findViewById(R.id.ValueAd)
         val price: TextView = itemView.findViewById(R.id.PriceAd)
         val adImage: ImageView = itemView.findViewById(R.id.adPresentationImage)
-//        val userImage : ImageView = itemView.findViewById(R.id.profilePicImageView)
+//      val userImage : ImageView = itemView.findViewById(R.id.profilePicImageView)
 
 
         fun bindItems(ad : AdModel) = with(itemView){
@@ -52,7 +53,13 @@ class AdapterAds(
             }
             Log.v("PHOTO", ad.imageUri)
             title.text = ad.title
-            price.text = ad.price + " kr"
+            var x = ad.sold
+            if(x == true){
+                price.text = context.getString(R.string.Sold)
+            }else {
+                price.text = ad.price + " kr"
+            }
+            Log.d(TAG, x.toString() + ad.title + ad.price)
             setOnClickListener{ listener(ad) }
         }
     }

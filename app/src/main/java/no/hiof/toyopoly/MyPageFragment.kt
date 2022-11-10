@@ -28,6 +28,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import no.hiof.toyopoly.adapter.AdapterAds
+import no.hiof.toyopoly.customDialog.TokenDialog
 import no.hiof.toyopoly.models.AdModel
 
 
@@ -116,7 +117,7 @@ class MyPageFragment : Fragment(){
 
             storageRef.child("images/users/${user!!.uid}").putFile(userImageURI!!).addOnSuccessListener {
                 db.collection("Users").document(userUID).update("imageUri", it.storage.path)
-                //getUser()
+                getUser()
             }
 
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -230,7 +231,7 @@ class MyPageFragment : Fragment(){
     }
 
     fun updateImage(){
-        db.collection("Users").document(userUID).update("imageUri", userImageURI)
+
     }
     fun deleteAd(documentId: String) {
 

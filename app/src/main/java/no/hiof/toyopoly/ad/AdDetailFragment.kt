@@ -1,5 +1,8 @@
 package no.hiof.toyopoly.ad
 
+import android.app.AlertDialog
+import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,8 +13,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -19,9 +24,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import no.hiof.toyopoly.MyPageFragmentDirections
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.ChatChannelModel
 import no.hiof.toyopoly.util.RandomId
@@ -58,11 +65,12 @@ class AdDetailFragment : Fragment() {
         getAd()
         getImage()
         getOtherUserId()
-
+        val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
         val contactSellerButton = view.findViewById<Button>(R.id.contactSellerButton)
         db.collection("Ads").document(args.adId).get().addOnSuccessListener {
             if (it.getString("userId") == currentUser){
                 contactSellerButton.text = getString(R.string.goToMyPage)
+                buyItemBtn.visibility = View.INVISIBLE
                 contactSellerButton.setOnClickListener{
                     navController.navigate(AdDetailFragmentDirections.actionAdDetailFragmentToMyPageFragment())
                 }
@@ -73,9 +81,35 @@ class AdDetailFragment : Fragment() {
                 }
             }
         }
+
+        buyItemBtn?.setOnClickListener{
+
+            getTokenAmount()
+
+            val builder = AlertDialog.Builder(this.activity)
+            builder.setTitle(R.string.dialogTitle)
+            builder.setMessage(R.string.dialogMessageBuy)
+            builder.setIcon(android.R.drawable.ic_dialog_alert)
+
+            builder.setPositiveButton("Buy"){dialogInterface, which ->
+                buyItem()
+            }
+
+            builder.setNegativeButton("Cancel"){dialogInterface, which ->
+                val action = AdDetailFragmentDirections.actionAdDetailFragmentSelf(args.adId)
+
+                val navController = view?.findNavController()
+
+                navController?.navigate(action)
+            }
+            builder.show()
+        }
     }
 
+    var isSold = false
+
     fun getAd(){
+        val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
         val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
         val price_ad = view?.findViewById<TextView>(R.id.adDetailPrice)
         val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
@@ -94,6 +128,12 @@ class AdDetailFragment : Fragment() {
                     desc_ad?.text = document.getString("description")
                     addr_ad?.text = document.getString("address")
                     token_ad?.text = "Tokens: " + document.getLong("token").toString() + " Tokens"
+                    isSold = document.getBoolean("sold")!!
+                    if(isSold == true){
+                        buyItemBtn?.text = context?.getText(R.string.Sold)
+                        buyItemBtn?.isClickable = false
+                        buyItemBtn?.alpha = .5f
+                    }
                     //time_ad?.text = document.getDate("timestamp").toString()
                 }
                 else{
@@ -213,4 +253,28 @@ class AdDetailFragment : Fragment() {
                 }
             }
     }
+    var tokenValue : Long = 0
+
+
+    private fun getTokenAmount() {
+
+        db.collection("Ads").document(args.adId)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.d("currentToken", "Snapshot: ${document.data}")
+                tokenValue = document.getLong("token")!!
+            }
+    }
+
+    fun buyItem(){
+        val docRefUsers = db.collection("Users")
+        val docRefAds = db.collection("Ads")
+
+        docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
+
+        docRefUsers.document(otherUser).update("token", FieldValue.increment(tokenValue))
+
+        docRefAds.document(args.adId).update("sold", true)
+    }
+
 }

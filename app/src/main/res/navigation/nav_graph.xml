@@ -115,6 +115,9 @@
         <action
             android:id="@+id/action_adDetailFragment_to_myPageFragment"
             app:destination="@id/myPageFragment" />
+        <action
+            android:id="@+id/action_adDetailFragment_self"
+            app:destination="@id/adDetailFragment" />
     </fragment>
 
     <fragment
@@ -165,7 +168,7 @@
     </fragment>
     <dialog
         android:id="@+id/tokenDialog"
-        android:name="no.hiof.toyopoly.TokenDialog"
+        android:name="no.hiof.toyopoly.customDialog.TokenDialog"
         android:label="TokenDialog" >
         <argument
             android:name="tokenId"

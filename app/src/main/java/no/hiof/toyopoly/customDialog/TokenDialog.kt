@@ -1,4 +1,4 @@
-package no.hiof.toyopoly
+package no.hiof.toyopoly.customDialog
 
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
@@ -8,19 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
-import no.hiof.toyopoly.ad.AdDetailFragmentArgs
+import no.hiof.toyopoly.R
 import no.hiof.toyopoly.adapter.AdapterToken
-import no.hiof.toyopoly.models.AdModel
 import no.hiof.toyopoly.models.TokenModel
 
 class TokenDialog : DialogFragment() {
