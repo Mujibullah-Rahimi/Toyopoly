@@ -52,13 +52,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:background="@drawable/messageborder"
         android:text="@string/address"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/contactSellerButton"
         app:layout_constraintTop_toBottomOf="@+id/buyBtn"
         android:layout_marginBottom="50dp"/>
+
+
+    <TextView
+        android:id="@+id/adDetailAddressLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:text="@string/se_adresse_i_kart"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/adDetailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/adDetailAddress"
+        android:layout_marginBottom="50dp"/>
+
+    <View
+        android:layout_width="280dp"
+        android:layout_height="1dp"
+        android:background="@color/primaryVariant"
+        app:layout_constraintStart_toStartOf="@id/adDetailAddressLink"
+        app:layout_constraintTop_toBottomOf="@id/adDetailAddressLink"/>
+    <ImageView
+        android:id="@+id/addressPin"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_pin_drop_24"
+        app:layout_constraintStart_toEndOf="@id/adDetailAddressLink"
+        app:layout_constraintBottom_toBottomOf="@id/adDetailAddressLink"
+        app:layout_constraintTop_toTopOf="@id/adDetailAddressLink"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/token" />
+
 
     <Button
         android:id="@+id/contactSellerButton"

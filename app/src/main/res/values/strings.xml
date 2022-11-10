@@ -73,5 +73,6 @@
     <string name="Sold">Sold</string>
     <string name="noInternet">Connect to the internet to login</string>
     <string name="buy_tokens">Buy Tokens</string>
+    <string name="se_adresse_i_kart">Se adresse i kart</string>
 
 </resources>

@@ -110,6 +110,7 @@ class AdDetailFragment : Fragment() {
         val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
         val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
         val addr_ad = view?.findViewById<TextView>(R.id.adDetailAddress)
+        val addr_ad_link = view?.findViewById<TextView>(R.id.adDetailAddressLink)
         val token_ad = view?.findViewById<TextView>(R.id.tokenPrice)
         //val time_ad = view?.findViewById<TextView>(R.id.adDetailTimeStamp)
 
@@ -137,9 +138,9 @@ class AdDetailFragment : Fragment() {
             }
             .addOnFailureListener{e -> Log.d("Error", "Fail at: ", e) }
 
-        addr_ad?.setOnClickListener {
+        addr_ad_link?.setOnClickListener {
             val gmmIntentUri =
-                Uri.parse("geo:0,0?q=" + addr_ad.text)
+                Uri.parse("geo:0,0?q=" + addr_ad?.text)
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 startActivity(mapIntent)
