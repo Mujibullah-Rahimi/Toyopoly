@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:text="@string/test"
         android:textSize="18sp"
-        android:textColor="@color/tertiary"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/PriceToken"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintStart_toStartOf="@+id/cardView2"

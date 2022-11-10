@@ -96,6 +96,17 @@
         app:layout_constraintTop_toBottomOf="@+id/addressUserPage"
         app:layout_constraintVertical_bias="0.0" />
 
+    <ImageView
+        android:id="@+id/tokenImageInMyPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_token_24"
+        app:layout_constraintEnd_toStartOf="@id/userTokens"
+        app:layout_constraintBottom_toBottomOf="@id/userTokens"
+        app:layout_constraintTop_toTopOf="@id/userTokens"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/token" />
+
     <TextView
         android:id="@+id/addressUserPage"
         android:layout_width="wrap_content"

@@ -56,6 +56,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ImageView
+        android:id="@+id/tokenImageInAd"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_token_24"
+        app:layout_constraintEnd_toStartOf="@id/PriceAd"
+        app:layout_constraintBottom_toBottomOf="@id/PriceAd"
+        app:layout_constraintTop_toTopOf="@id/PriceAd"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/token" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView4"
