@@ -125,7 +125,7 @@ class AdDetailFragment : Fragment() {
                     addr_ad?.text = document.getString("address")
                     token_ad?.text = document.getLong("token").toString() + " Tokens"
                     val sold = document.getBoolean("sold")!!
-                    if(sold){
+                    if(sold == true){
                         buyItemBtn?.text = context?.getText(R.string.Sold)
                         buyItemBtn?.isClickable = false
                         buyItemBtn?.alpha = .5f

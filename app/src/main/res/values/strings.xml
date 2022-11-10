@@ -8,10 +8,15 @@
     <string name="createAds">Create ads</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="toyCategory">
-        <item>Toy-car</item>
+        <item>Cars</item>
+        <item>Cards</item>
         <item>Doll</item>
-        <item>Play kitchen</item>
+        <item>Electric</item>
+        <item>Kitchen and Food</item>
+        <item>Learning</item>
         <item>Lego</item>
+        <item>Other</item>
+        <item>Play-set</item>
     </string-array>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
