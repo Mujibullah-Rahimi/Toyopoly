@@ -43,15 +43,23 @@ class ChatChannelFragment : Fragment(), View.OnClickListener {
 
         chatChannelAdapter = ChatChannelAdapter(chatChannelsArrayList){chatChannel ->
             Log.v("userIds", chatChannel.userIds.toString())
-            val otherUser = chatChannel.userIds[0]
+            var otherUser = ""
+            chatChannel.userIds.forEach {
+                if (it==auth.currentUser?.uid){
+
+                }else{
+                    otherUser = it
+                }
+            }
             val chatChannelId = chatChannel.chatChannelId
 
             val action =
                 ChatChannelFragmentDirections.actionMessageFragmentToMessageDetailFragment(
                     otherUser,chatChannelId
                 )
+            Log.v("UserFromChatChannel", otherUser)
             val navController = view.findNavController()
-            Log.v("OtherUser", otherUser)
+
             navController.navigate(action)
         }
         chatChannelsRecyclerView.adapter = chatChannelAdapter
