@@ -7,7 +7,9 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,7 +17,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentChange
@@ -30,7 +31,6 @@ import com.wajahatkarim3.easyvalidation.core.view_ktx.minLength
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import com.wajahatkarim3.easyvalidation.core.view_ktx.onlyNumbers
 import no.hiof.toyopoly.R
-import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.adapter.AdapterCat
 import no.hiof.toyopoly.models.AdModel
 import no.hiof.toyopoly.models.CategoryModel
@@ -75,6 +75,10 @@ class CreateAdFragment : Fragment() {
         galleryBtn.setOnClickListener {
             invokeGallery()
         }
+        val photoBtn = view.findViewById<Button>(R.id.photoBtn)
+        photoBtn.setOnClickListener{
+            invokeCamera()
+        }
         catArrayList = arrayListOf()
 
         val spinner: Spinner = view.findViewById(R.id.spinner_category)
@@ -101,14 +105,23 @@ class CreateAdFragment : Fragment() {
         if(hasExternalReadStoragePermission() == PERMISSION_GRANTED){
             openGallery()
         }else{
-            requestMultiplePermissionsLauncher.launch(arrayOf(
+            requestGalleryPermissionsLauncher.launch(arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ))
         }
     }
 
+    private fun invokeCamera(){
+        if(hasCameraPermission() == PERMISSION_GRANTED){
+            openCamera()
+        }else{
+            requestCameraPermissionsLauncher.launch(arrayOf(
+                Manifest.permission.CAMERA
+            ))
+        }
+    }
 
-    fun openGallery() {
+    private fun openGallery() {
         ImagePicker.with(requireActivity())
             .galleryOnly()
             .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
@@ -117,25 +130,49 @@ class CreateAdFragment : Fragment() {
             }
     }
 
-        private val requestMultiplePermissionsLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
-            var permissionGranted = false
-            resultsMap.forEach {
-                if (it.value == true) {
-                    permissionGranted = it.value
-                } else {
-                    permissionGranted = false
-                    return@forEach
-                }
+    private fun openCamera(){
+        ImagePicker.with(requireActivity())
+            .cameraOnly()
+            .maxResultSize(1080, 1080)
+            .createIntent { intent ->
+                getImageResult.launch(intent)
             }
-            if (permissionGranted) {
-                openGallery()
+    }
+
+    private val requestGalleryPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
+        var permissionGranted = false
+        resultsMap.forEach {
+            if (it.value == true) {
+                permissionGranted = it.value
             } else {
-                Toast.makeText(this.activity, "No read permission", Toast.LENGTH_LONG)
-                    .show()
+                permissionGranted = false
+                return@forEach
             }
         }
-
+        if (permissionGranted) {
+            openGallery()
+        } else {
+            Toast.makeText(this.activity, "Allow permission to gallery", Toast.LENGTH_LONG)
+                .show()
+        }
+    }
+    private val requestCameraPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
+        var permissionGranted = false
+        resultsMap.forEach {
+            if (it.value == true) {
+                permissionGranted = it.value
+            } else {
+                permissionGranted = false
+                return@forEach
+            }
+        }
+        if (permissionGranted) {
+            openGallery()
+        } else {
+            Toast.makeText(this.activity, "Allow permission to gallery", Toast.LENGTH_LONG)
+                .show()
+        }
+    }
 
 
     private val getImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result: ActivityResult ->
@@ -346,6 +383,12 @@ class CreateAdFragment : Fragment() {
         ContextCompat.checkSelfPermission(
             it,
             Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+    }
+    fun hasCameraPermission() = this.activity?.let {
+        ContextCompat.checkSelfPermission(
+            it,
+            Manifest.permission.CAMERA
         )
     }
 }
