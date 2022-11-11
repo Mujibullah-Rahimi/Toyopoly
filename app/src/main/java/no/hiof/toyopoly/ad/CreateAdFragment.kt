@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -46,6 +47,8 @@ class CreateAdFragment : Fragment() {
     private lateinit var ad: AdModel
     private lateinit var adapterCat: AdapterCat
     private lateinit var catArrayList : ArrayList<CategoryModel>
+    private var progressBarStatus = 0
+    var progress:Int = 0
 
     // database instances and references
     private val db = Firebase.firestore
@@ -90,9 +93,19 @@ class CreateAdFragment : Fragment() {
         }
 
         val saveButton = view.findViewById<Button>(R.id.createAd)
-        saveButton.setOnClickListener {
+        saveButton.setOnClickListener { v ->
+            val progressBar = view.findViewById<ProgressBar>(R.id.progressBar_creatad)
+            progressBar.isVisible = true
             setTokens()
-            saveAd(RandomId.randomID())
+            Thread(Runnable {
+
+                    try {
+                        saveAd(RandomId.randomID())
+                    }catch (e: InterruptedException){
+                        e.printStackTrace()
+                    }
+
+            }).start()
         }
 
     }
@@ -163,29 +176,31 @@ class CreateAdFragment : Fragment() {
         val price2 = Integer.parseInt(price1)
         var token = 0
 
-
-        if(price2 <= 100){
+    if(price1 != "") {
+        if (price2 <= 100) {
             tokenValue = 1
-        } else if(price2 <= 200){
+        } else if (price2 <= 200) {
             tokenValue = 2
-        }else if(price2 <= 500){
+        } else if (price2 <= 500) {
             tokenValue = 5
-        }else if(price2 <= 800){
+        } else if (price2 <= 800) {
             tokenValue = 8
-        }else if(price2 <= 1000){
+        } else if (price2 <= 1000) {
             tokenValue = 10
-        }else if(price2 <= 1500){
+        } else if (price2 <= 1500) {
             tokenValue = 15
-        }else if(price2 <= 2000){
+        } else if (price2 <= 2000) {
             tokenValue = 20
-        }else if(price2 <= 2500){
+        } else if (price2 <= 2500) {
             tokenValue = 25
-        }
-        else if(price2 <= 10000){
+        } else if (price2 <= 10000) {
             tokenValue = 100
-        }else if(price2 <= 99999){
+        } else if (price2 <= 99999) {
             tokenValue = 999
         }
+    }else{
+        Toast.makeText(activity, "Fill out every field", Toast.LENGTH_LONG).show()
+    }
 
         Log.d(TAG, "${token}")
     }
