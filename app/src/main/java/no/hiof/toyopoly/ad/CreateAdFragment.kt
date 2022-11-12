@@ -102,7 +102,6 @@ class CreateAdFragment : Fragment() {
             progressBar.isVisible = true
             setTokens()
             Thread(Runnable {
-
                     try {
                         saveAd(RandomId.randomID())
                     }catch (e: InterruptedException){
@@ -291,24 +290,10 @@ class CreateAdFragment : Fragment() {
             address = addr?.text.toString(),
             price = price2,
             category = spinner?.selectedItem.toString(),
-            imageUri = "",
             userId = user!!.uid,
             token = tokenValue,
             timestamp = Timestamp.now()
         )
-
-
-//        var adModel = AdModel().apply {
-//            adId = documentId
-//            value = title?.text.toString()
-//            description = desc?.text.toString()
-//
-//            category = spinner?.selectedItem.toString()
-//       //     remoteUri = photo!!.remoteUri
-//            //remoteUri = photo!!.remoteUri
-//            userId = user!!.uid
-//            token = tokenValue
-//        }
 
         if (
             !title!!.nonEmpty() ||
@@ -361,16 +346,19 @@ class CreateAdFragment : Fragment() {
                         CreateAdFragmentDirections.actionCreateAdsFragmentToAdDetailFragment(
                             adToSave.adId
                         )
+                    if (imageURI != null){
+                        storageRef.child("images/ads/${adToSave.adId}").putFile(imageURI!!)
+                            .addOnSuccessListener {
+                                db.collection("Ads").document(adToSave.adId).update("imageUri", it.storage.path)
 
-                    storageRef.child("images/ads/${adToSave.adId}").putFile(imageURI!!)
-                        .addOnSuccessListener {
-                            db.collection("Ads").document(adToSave.adId).update("imageUri", it.storage.path)
-
+                                val navController = view?.findNavController()
+                                navController?.navigate(action)
+                            }
+                        }else{
                             val navController = view?.findNavController()
                             navController?.navigate(action)
                         }
-
-                }
+                    }
                 .addOnFailureListener {
                     Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
                         .show()

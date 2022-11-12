@@ -40,8 +40,8 @@ class AdapterAds(
 
 
         fun bindItems(ad : AdModel) = with(itemView){
-            if (ad.imageUri.isNotEmpty()){
-                val adImageReference = Firebase.storage.getReference(ad.imageUri)
+            if (ad.imageUri?.isNotEmpty() == true){
+                val adImageReference = Firebase.storage.getReference(ad.imageUri!!)
 //                val userImageReference = Firebase.storage.getReference(FirebaseAuth.getInstance().currentUser!!.uid)
 
                 Glide.with(this)
@@ -52,7 +52,7 @@ class AdapterAds(
 //                    .load(userImageReference)
 //                    .into(userImage)
             }
-            Log.v("PHOTO", ad.imageUri)
+            Log.v("PHOTO", ad.imageUri!!)
             title.text = ad.title
             var x = ad.sold
             if(x == true){
