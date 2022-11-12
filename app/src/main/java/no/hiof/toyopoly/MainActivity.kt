@@ -1,28 +1,17 @@
 package no.hiof.toyopoly
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipData.Item
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MenuItem.OnMenuItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.ListFragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -41,7 +30,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import no.hiof.toyopoly.databinding.ActivityMainBinding
 import java.io.File
-import java.text.FieldPosition
 
 class MainActivity : AppCompatActivity(){
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -96,7 +84,7 @@ class MainActivity : AppCompatActivity(){
                 val headerUserImage = header.findViewById<ImageView>(R.id.drawerHeaderImageView)
                 val headerUserName = header.findViewById<TextView>(R.id.drawerHeaderUserName)
                 val headerEmail = header.findViewById<TextView>(R.id.drawerHeaderUserEmail)
-
+                var imageUri = ""
                 val docRef = db.collection("Users").document(firebaseUser.uid)
                 docRef
                     .get()
@@ -105,22 +93,22 @@ class MainActivity : AppCompatActivity(){
                             Log.d("isHere", "Snapshot: ${document.data}")
                             headerEmail?.text = document.getString("email")
                             headerUserName?.text = document.getString("firstName")+ " " + document.getString("lastName")
-                            //time_ad?.text = document.getDate("timestamp").toString()
+                            imageUri = document.getString("imageUri").toString()
+
+                            val pictureReference = storageRef.storage.getReference(imageUri)
+                            Glide.with(this)
+                                .load(pictureReference)
+                                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                                .apply(RequestOptions.skipMemoryCacheOf(true))
+                                .into(headerUserImage)
+                                .clearOnDetach()
                         } else {
                             Log.d("isNotHere", "The document snapshot doesn't exist")
                         }
                     }
                     .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
 
-                val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
-                if(pictureReference != null) {
-                    Glide.with(this)
-                        .load(pictureReference)
-                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                        .apply(RequestOptions.skipMemoryCacheOf(true))
-                        .into(headerUserImage)
-                        .clearOnDetach()
-                }
+
             }
         }
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -138,7 +126,7 @@ class MainActivity : AppCompatActivity(){
                 val headerUserImage = header.findViewById<ImageView>(R.id.drawerHeaderImageView)
                 val headerUserName = header.findViewById<TextView>(R.id.drawerHeaderUserName)
                 val headerEmail = header.findViewById<TextView>(R.id.drawerHeaderUserEmail)
-
+                var imageUri = ""
                 val docRef = db.collection("Users").document(firebaseUser.uid)
                 docRef
                     .get()
@@ -147,19 +135,19 @@ class MainActivity : AppCompatActivity(){
                             Log.d("isHere", "Snapshot: ${document.data}")
                             headerEmail?.text = document.getString("email")
                             headerUserName?.text = document.getString("firstName")+ " " + document.getString("lastName")
-                            //time_ad?.text = document.getDate("timestamp").toString()
+                            imageUri = document.getString("imageUri").toString()
+
+                            val pictureReference = storageRef.storage.getReference(imageUri)
+                            Glide.with(this)
+                                .load(pictureReference)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .into(headerUserImage)
                         } else {
                             Log.d("isNotHere", "The document snapshot doesn't exist")
                         }
                     }
                     .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
-
-                val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
-                Glide.with(this)
-                    .load(pictureReference)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(headerUserImage)
             }
         }
     }
@@ -219,7 +207,13 @@ class MainActivity : AppCompatActivity(){
             .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
 
         val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
-        if (pictureReference != null){
+        val defaultReference = storageRef.storage.getReference("images/users/default.png")
+        Log.v("defaultpic", defaultReference.toString())
+        if (pictureReference == null){
+            Glide.with(this)
+                .load(defaultReference)
+                .into(headerUserImage)
+        }else{
             Glide.with(this)
                 .load(pictureReference)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
