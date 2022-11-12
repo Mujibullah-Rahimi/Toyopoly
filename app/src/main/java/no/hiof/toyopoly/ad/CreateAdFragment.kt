@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -95,14 +96,40 @@ class CreateAdFragment : Fragment() {
                 spinner.adapter = adapter
             }
         }
+        val title = view.findViewById<EditText>(R.id.title_create_ad)
+        val title_txt = view.findViewById<TextView>(R.id.title_createad_txt)
+        val desc = view.findViewById<EditText>(R.id.desc_createAd)
+        val desc_txt = view.findViewById<TextView>(R.id.desc_createad_txt)
+        val addr = view.findViewById<EditText>(R.id.address_createAd)
+        val addr_txt = view.findViewById<TextView>(R.id.address_createad_txt)
+        val prices = view.findViewById<EditText>(R.id.price_createAd)
+        val price_txt = view.findViewById<TextView>(R.id.price_createad_txt)
+        val cat_txt = view.findViewById<TextView>(R.id.cat_createad_txt)
+        val card_view = view.findViewById<CardView>(R.id.cardView3)
+
 
         val saveButton = view.findViewById<Button>(R.id.createAd)
         saveButton.setOnClickListener { v ->
             val progressBar = view.findViewById<ProgressBar>(R.id.progressBar_creatad)
             progressBar.isVisible = true
-            setTokens()
+            title.isVisible = false
+            title_txt.isVisible = false
+            desc.isVisible = false
+            desc_txt.isVisible = false
+            addr_txt.isVisible = false
+            addr.isVisible = false
+            price_txt.isVisible = false
+            prices.isVisible = false
+            cat_txt.isVisible = false
+            card_view.isVisible = false
+            galleryBtn.isVisible = false
+            photoBtn.isVisible = false
+            spinner.isVisible = false
+            saveButton.isVisible = false
+
             Thread(Runnable {
                     try {
+
                         saveAd(RandomId.randomID())
                     }catch (e: InterruptedException){
                         e.printStackTrace()
@@ -110,7 +137,18 @@ class CreateAdFragment : Fragment() {
 
             }).start()
         }
-
+/*
+        if (!title!!.nonEmpty() ||
+            !desc!!.nonEmpty() ||
+            !addr!!.nonEmpty() ||
+            !prices!!.nonEmpty()){
+            saveButton.alpha = 0.5f
+            saveButton.isClickable = false
+        }else{
+            saveButton.alpha = 1f
+            saveButton.isClickable = true
+        }
+        */
     }
 
     private fun invokeGallery(){
@@ -257,7 +295,7 @@ class CreateAdFragment : Fragment() {
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
 
-
+        setTokens()
         //changes the price input to a static value in line with the token system
         if(price1 <= 100){
             price2 = "100"

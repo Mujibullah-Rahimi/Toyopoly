@@ -14,7 +14,7 @@
 
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/address_createad_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -177,7 +177,7 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/title_createad_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -189,7 +189,7 @@
         app:layout_constraintTop_toTopOf="@+id/title_create_ad" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/price_createad_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -201,7 +201,7 @@
         app:layout_constraintTop_toTopOf="@+id/price_createAd" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/cat_createad_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -213,7 +213,7 @@
         app:layout_constraintTop_toTopOf="@+id/spinner_category" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/desc_createad_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
