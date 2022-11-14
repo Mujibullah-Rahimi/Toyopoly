@@ -1,8 +1,6 @@
 package no.hiof.toyopoly.ad
 
 import android.app.AlertDialog
-import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -28,7 +26,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import no.hiof.toyopoly.MyPageFragmentDirections
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.ChatChannelModel
 import no.hiof.toyopoly.util.RandomId
@@ -106,14 +103,14 @@ class AdDetailFragment : Fragment() {
         }
     }
 
-    var isSold = false
+
 
     fun getAd(){
         val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
         val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
-        val price_ad = view?.findViewById<TextView>(R.id.adDetailPrice)
         val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
         val addr_ad = view?.findViewById<TextView>(R.id.adDetailAddress)
+        val addr_ad_link = view?.findViewById<TextView>(R.id.adDetailAddressLink)
         val token_ad = view?.findViewById<TextView>(R.id.tokenPrice)
         //val time_ad = view?.findViewById<TextView>(R.id.adDetailTimeStamp)
 
@@ -123,13 +120,12 @@ class AdDetailFragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     Log.d("isHere", "Snapshot: ${document.data}")
-                    title_ad?.text = document.getString("value")
-                    price_ad?.text = "Price: " + document.getString("price") + " kr"
+                    title_ad?.text = document.getString("title")
                     desc_ad?.text = document.getString("description")
                     addr_ad?.text = document.getString("address")
-                    token_ad?.text = "Tokens: " + document.getLong("token").toString() + " Tokens"
-                    isSold = document.getBoolean("sold")!!
-                    if(isSold == true){
+                    token_ad?.text = document.getLong("token").toString() + " Tokens"
+                    val sold = document.getBoolean("sold")!!
+                    if(sold == true){
                         buyItemBtn?.text = context?.getText(R.string.Sold)
                         buyItemBtn?.isClickable = false
                         buyItemBtn?.alpha = .5f
@@ -142,9 +138,9 @@ class AdDetailFragment : Fragment() {
             }
             .addOnFailureListener{e -> Log.d("Error", "Fail at: ", e) }
 
-        addr_ad?.setOnClickListener {
+        addr_ad_link?.setOnClickListener {
             val gmmIntentUri =
-                Uri.parse("geo:0,0?q=" + addr_ad.text)
+                Uri.parse("geo:0,0?q=" + addr_ad?.text)
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 startActivity(mapIntent)
@@ -186,7 +182,7 @@ class AdDetailFragment : Fragment() {
                     Log.v("ChatExists", existingChatId)
                     navController.navigate(
                         AdDetailFragmentDirections.actionAdDetailFragmentToMessageDetailFragment(
-                            otherUser,existingChatId)
+                            this.otherUser,existingChatId)
                         )
                 }
 
@@ -270,11 +266,21 @@ class AdDetailFragment : Fragment() {
         val docRefUsers = db.collection("Users")
         val docRefAds = db.collection("Ads")
 
-        docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
+        val myUser = docRefUsers.document(userUID).get().addOnSuccessListener {
+            if (it != null){
+                val myTokens = it.getLong("token")
+                if (myTokens?.toInt()!! < tokenValue.toInt()){
+                    Toast.makeText(activity, "Kjøp tokens først", Toast.LENGTH_LONG).show()
+                }else{
+                    docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
 
-        docRefUsers.document(otherUser).update("token", FieldValue.increment(tokenValue))
+                    docRefUsers.document(otherUser).update("token", FieldValue.increment(tokenValue))
 
-        docRefAds.document(args.adId).update("sold", true)
+                    docRefAds.document(args.adId).update("sold", true)
+                }
+            }
+        }
+
     }
 
 }

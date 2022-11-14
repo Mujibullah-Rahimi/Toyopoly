@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/frameLayout5"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ad.AdDetailFragment" >
 
     <ImageView
@@ -15,124 +21,116 @@
         tools:srcCompat="@tools:sample/avatars"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!--
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:elevation="3dp"
-            android:src="@drawable/car_ui_icon_arrow_back"
-            app:layout_constraintBottom_toBottomOf="@+id/previousImageButton"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewAdDetail"
-            app:layout_constraintStart_toStartOf="@+id/previousImageButton"
-            app:layout_constraintTop_toTopOf="@+id/previousImageButton"
-            app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/image_of_ad" />
 
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:elevation="3dp"
-            android:rotationY="180"
-            android:src="@drawable/car_ui_icon_arrow_back"
-            app:layout_constraintBottom_toBottomOf="@+id/nextImageButton"
-            app:layout_constraintEnd_toEndOf="@+id/nextImageButton"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/nextImageButton"
-            app:layout_constraintTop_toTopOf="@+id/nextImageButton"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/nextImageButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="nextImageButton"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewAdDetail"
-            app:layout_constraintStart_toEndOf="@+id/imageViewAdDetail"
-            app:layout_constraintTop_toTopOf="@+id/imageViewAdDetail" />
-
-        <Button
-            android:id="@+id/previousImageButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="previousImageButton"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewAdDetail"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewAdDetail"
-            app:layout_constraintTop_toTopOf="@+id/imageViewAdDetail" />
-    -->
     <TextView
         android:id="@+id/adDetailTitle"
         android:layout_width="142dp"
         android:layout_height="34dp"
         android:layout_marginTop="32dp"
-        android:text="@string/adTitle"
+        android:text="@string/title"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/imageViewAdDetail"
         app:layout_constraintTop_toBottomOf="@+id/imageViewAdDetail" />
+
 
     <TextView
         android:id="@+id/adDetailDescription"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/adDescription"
+        android:layout_marginTop="36dp"
+        android:text="@string/description"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/adDetailTitle"
-        app:layout_constraintTop_toBottomOf="@+id/adDetailTitle" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tokenPrice"
+        tools:layout_editor_absoluteX="65dp" />
 
     <TextView
         android:id="@+id/adDetailAddress"
-        android:layout_width="146dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/adAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/address"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/adDetailDescription"
-        app:layout_constraintTop_toBottomOf="@+id/adDetailDescription" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/contactSellerButton"
+        app:layout_constraintTop_toBottomOf="@+id/buyBtn"
+        android:layout_marginBottom="50dp"/>
 
 
     <TextView
-        android:id="@+id/adDetailPrice"
+        android:id="@+id/adDetailAddressLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/adPrice"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/adDetailDescription"
-        app:layout_constraintTop_toBottomOf="@+id/adDetailAddress" />
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:text="@string/se_adresse_i_kart"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/adDetailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/adDetailAddress"
+        android:layout_marginBottom="50dp"/>
+
+    <View
+        android:layout_width="280dp"
+        android:layout_height="1dp"
+        android:background="@color/primaryVariant"
+        app:layout_constraintStart_toStartOf="@id/adDetailAddressLink"
+        app:layout_constraintTop_toBottomOf="@id/adDetailAddressLink"/>
+    <ImageView
+        android:id="@+id/addressPin"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_pin_drop_24"
+        app:layout_constraintStart_toEndOf="@id/adDetailAddressLink"
+        app:layout_constraintBottom_toBottomOf="@id/adDetailAddressLink"
+        app:layout_constraintTop_toTopOf="@id/adDetailAddressLink"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/token" />
+
 
     <Button
         android:id="@+id/contactSellerButton"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="48dp"
         android:text="@string/contact_seller"
-        app:layout_constraintEnd_toEndOf="@+id/adDetailPrice"
-        app:layout_constraintTop_toBottomOf="@+id/adDetailPrice" />
+        app:layout_constraintEnd_toEndOf="@+id/adDetailDescription"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/adDetailDescription"
+        app:layout_constraintTop_toBottomOf="@+id/adDetailDescription" />
 
     <TextView
         android:id="@+id/tokenPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/valueAd"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/contactSellerButton"
-        app:layout_constraintEnd_toEndOf="@+id/adDetailPrice"
-        app:layout_constraintHorizontal_bias="0.967"
-        app:layout_constraintStart_toStartOf="@+id/adDetailPrice"
-        app:layout_constraintTop_toBottomOf="@+id/adDetailPrice"
-        app:layout_constraintVertical_bias="0.155" />
+        android:layout_marginTop="16dp"
+        android:text="@string/test"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewAdDetail"
+        app:layout_constraintTop_toBottomOf="@+id/adDetailTitle" />
+
+    <ImageView
+        android:id="@+id/tokenImageInAdDetail"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_token_24"
+        app:layout_constraintEnd_toStartOf="@id/tokenPrice"
+        app:layout_constraintBottom_toBottomOf="@id/tokenPrice"
+        app:layout_constraintTop_toTopOf="@id/tokenPrice"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/token" />
 
     <Button
         android:id="@+id/buyBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="36dp"
         android:text="@string/buy"
         app:layout_constraintEnd_toEndOf="@+id/contactSellerButton"
-        app:layout_constraintHorizontal_bias="0.985"
-        app:layout_constraintStart_toStartOf="@+id/contactSellerButton"
         app:layout_constraintTop_toBottomOf="@+id/contactSellerButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

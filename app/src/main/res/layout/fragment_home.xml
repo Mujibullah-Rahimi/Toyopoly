@@ -12,7 +12,8 @@
         android:layout_width="49dp"
         android:layout_height="54dp"
         android:contentDescription="@android:string/search_go"
-        android:src="?android:attr/actionModeWebSearchDrawable"
+        android:backgroundTint="@color/primaryVariant"
+        android:src="@drawable/ic_baseline_search_24"
         app:layout_constraintBottom_toBottomOf="@+id/searchBar"
         app:layout_constraintStart_toEndOf="@+id/searchBar"
         app:layout_constraintTop_toTopOf="@+id/searchBar" />
@@ -49,7 +50,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/see_all"
+        android:text="@string/se_alle"
+        android:backgroundTint="@color/tertiaryVariant"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/home_ads_recycler_view"
         app:layout_constraintTop_toBottomOf="@+id/home_ads_recycler_view" />
 

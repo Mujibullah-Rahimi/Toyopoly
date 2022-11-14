@@ -5,8 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import no.hiof.toyopoly.MainActivity
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.adapter.MessageAdapter
 import no.hiof.toyopoly.models.MessageModel
@@ -26,6 +27,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
     private lateinit var messagesRecyclerView : RecyclerView
     private lateinit var messageList: ArrayList<MessageModel>
     private lateinit var messageAdapter: MessageAdapter
+    private var messageType = 0
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
@@ -43,23 +45,37 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         auth = FirebaseAuth.getInstance()
         otherUserId = args.otherUser
+        Log.v("otheruserinmessage",otherUserId)
         chatChannelId = args.chatChannelId
 //        setChatChannelId()
         Log.v("OTHERUSER", otherUserId)
 
-        val sendButton = view.findViewById<Button>(R.id.sendMessageButton)
+        val sendButton = view.findViewById<ImageButton>(R.id.sendMessageButton)
         sendButton?.setOnClickListener(this)
 
         messagesRecyclerView = view.findViewById(R.id.messagesRecyclerView)
         messagesRecyclerView.layoutManager = LinearLayoutManager(this.activity)
         messageList = arrayListOf()
-
+        if (messageList.size > 1){
+            messagesRecyclerView.smoothScrollToPosition(messageList.size - 1)
+        }
         messageAdapter = MessageAdapter(messageList){}
         messagesRecyclerView.adapter = messageAdapter
 
         getMessages()
+        getOtherUserName()
+    }
+
+    private fun getOtherUserName(){
+        db.collection("Users").document(otherUserId).get().addOnSuccessListener {
+            if (it.exists()){
+                var otherUserName = it.getString("firstName")
+                (activity as MainActivity).supportActionBar?.title = otherUserName
+            }
+        }
     }
 
 //    private fun setChatChannelId(){
@@ -78,25 +94,35 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
     fun saveMsg(){
         val messageInput = view?.findViewById<EditText>(R.id.editText_message)
-        val sendMsgButton = view?.findViewById<Button>(R.id.sendMessageButton)
+        val sendMsgButton = view?.findViewById<ImageButton>(R.id.sendMessageButton)
         val message = messageInput?.text.toString()
 
-        val messageToSave = MessageModel(RandomId.randomID(),message, Timestamp.now(), auth.currentUser!!.uid)
+        db.collection("ChatChannels").document(args.chatChannelId).get().addOnSuccessListener {
+            if (it.exists()){
+                var userIds : MutableList<String> = it.get("userIds") as MutableList<String>
+                var index = userIds.indexOf(auth.currentUser?.uid)
+                this.messageType = index + 1
+            }
+            val messageToSave = MessageModel(RandomId.randomID(),message, Timestamp.now(), auth.currentUser!!.uid, this.messageType)
 
-        if (messageToSave.message.isNotEmpty()){
-            Log.v("chatChannelId", chatChannelId)
-            db.collection("ChatChannels").document(chatChannelId)
-                .collection("messages").document()
-                .set(messageToSave)
-                .addOnCompleteListener {
-                    Log.v(TAG, "Messaged saved in chatChannels")
-                    messageInput!!.text.clear()}
-                .addOnFailureListener{
-                    Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
-                        .show()
-                }
+            if (messageToSave.message.isNotEmpty()){
+                Log.v("chatChannelId", chatChannelId)
+                db.collection("ChatChannels").document(chatChannelId)
+                    .collection("messages").document()
+                    .set(messageToSave)
+                    .addOnCompleteListener {
+                        Log.v(TAG, "Messaged saved in chatChannels")
+                        messageInput!!.text.clear()
+                        messagesRecyclerView.smoothScrollToPosition(messageList.size - 1);
+                    }
+                    .addOnFailureListener{
+                        Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
+                            .show()
+                    }
+            }
         }
     }
+
     fun getMessages(){
         Log.v("GETMESSAGES", "get messages has been called")
 //        Users/FaTMSJiGPGQVKgHtFl34w3lk3pJ3/engagedChats/2FBGPPtWDrQVENG3A7t50XMz9Yk2/messages

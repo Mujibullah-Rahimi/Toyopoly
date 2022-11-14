@@ -9,8 +9,10 @@
         android:id="@+id/chatbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/messageborder"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="15dp">
 
         <EditText
             android:id="@+id/editText_message"
@@ -27,15 +29,14 @@
             android:textColorHint="#757575"
             tools:ignore="Autofill" />
 
-        <Button
+        <ImageButton
             android:id="@+id/sendMessageButton"
             android:layout_width="78dp"
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
-            android:background="?attr/selectableItemBackground"
+            android:backgroundTint="@color/primaryVariant"
             android:contentDescription="@string/send_message"
-            android:drawableTop="@drawable/ic_send_black_24dp"
-            android:textColor="@color/design_default_color_primary" />
+            android:src="@drawable/ic_baseline_rocket_launch_24" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

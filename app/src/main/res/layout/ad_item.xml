@@ -17,7 +17,7 @@
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        app:cardBackgroundColor="@color/quantum_teal50"
+        app:cardBackgroundColor="@color/tertiaryVariant"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -56,11 +56,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ImageView
+        android:id="@+id/tokenImageInAd"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_token_24"
+        app:layout_constraintEnd_toStartOf="@id/PriceAd"
+        app:layout_constraintBottom_toBottomOf="@id/PriceAd"
+        app:layout_constraintTop_toTopOf="@id/PriceAd"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/token" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView4"
         android:layout_width="134dp"
         android:layout_height="134dp"
+
 
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"

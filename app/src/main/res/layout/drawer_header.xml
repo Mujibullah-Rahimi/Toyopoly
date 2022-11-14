@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/e_mail"
+        android:textColor="@color/tertiary"
         app:layout_constraintEnd_toEndOf="@+id/drawerHeaderCardView"
         app:layout_constraintStart_toStartOf="@+id/drawerHeaderCardView"
         app:layout_constraintTop_toBottomOf="@+id/drawerHeaderUserName" />
@@ -45,6 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/first_name"
+        android:textColor="@color/tertiary"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/drawerHeaderCardView"

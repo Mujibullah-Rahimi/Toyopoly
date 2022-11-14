@@ -7,15 +7,18 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentChange
@@ -30,7 +33,6 @@ import com.wajahatkarim3.easyvalidation.core.view_ktx.minLength
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import com.wajahatkarim3.easyvalidation.core.view_ktx.onlyNumbers
 import no.hiof.toyopoly.R
-import no.hiof.toyopoly.adapter.AdapterAds
 import no.hiof.toyopoly.adapter.AdapterCat
 import no.hiof.toyopoly.models.AdModel
 import no.hiof.toyopoly.models.CategoryModel
@@ -46,6 +48,8 @@ class CreateAdFragment : Fragment() {
     private lateinit var ad: AdModel
     private lateinit var adapterCat: AdapterCat
     private lateinit var catArrayList : ArrayList<CategoryModel>
+    private var progressBarStatus = 0
+    var progress:Int = 0
 
     // database instances and references
     private val db = Firebase.firestore
@@ -75,6 +79,10 @@ class CreateAdFragment : Fragment() {
         galleryBtn.setOnClickListener {
             invokeGallery()
         }
+        val photoBtn = view.findViewById<Button>(R.id.photoBtn)
+        photoBtn.setOnClickListener{
+            invokeCamera()
+        }
         catArrayList = arrayListOf()
 
         val spinner: Spinner = view.findViewById(R.id.spinner_category)
@@ -88,27 +96,82 @@ class CreateAdFragment : Fragment() {
                 spinner.adapter = adapter
             }
         }
+        val title = view.findViewById<EditText>(R.id.title_create_ad)
+        val title_txt = view.findViewById<TextView>(R.id.title_createad_txt)
+        val desc = view.findViewById<EditText>(R.id.desc_createAd)
+        val desc_txt = view.findViewById<TextView>(R.id.desc_createad_txt)
+        val addr = view.findViewById<EditText>(R.id.address_createAd)
+        val addr_txt = view.findViewById<TextView>(R.id.address_createad_txt)
+        val prices = view.findViewById<EditText>(R.id.price_createAd)
+        val price_txt = view.findViewById<TextView>(R.id.price_createad_txt)
+        val cat_txt = view.findViewById<TextView>(R.id.cat_createad_txt)
+        val card_view = view.findViewById<CardView>(R.id.cardView3)
+
 
         val saveButton = view.findViewById<Button>(R.id.createAd)
-        saveButton.setOnClickListener {
-            setTokens()
-            saveAd(RandomId.randomID())
-        }
+        saveButton.setOnClickListener { v ->
+            val progressBar = view.findViewById<ProgressBar>(R.id.progressBar_creatad)
+            progressBar.isVisible = true
+            title.isVisible = false
+            title_txt.isVisible = false
+            desc.isVisible = false
+            desc_txt.isVisible = false
+            addr_txt.isVisible = false
+            addr.isVisible = false
+            price_txt.isVisible = false
+            prices.isVisible = false
+            cat_txt.isVisible = false
+            card_view.isVisible = false
+            galleryBtn.isVisible = false
+            photoBtn.isVisible = false
+            spinner.isVisible = false
+            saveButton.isVisible = false
 
+            Thread(Runnable {
+                    try {
+
+                        saveAd(RandomId.randomID())
+                    }catch (e: InterruptedException){
+                        e.printStackTrace()
+                    }
+
+            }).start()
+        }
+/*
+        if (!title!!.nonEmpty() ||
+            !desc!!.nonEmpty() ||
+            !addr!!.nonEmpty() ||
+            !prices!!.nonEmpty()){
+            saveButton.alpha = 0.5f
+            saveButton.isClickable = false
+        }else{
+            saveButton.alpha = 1f
+            saveButton.isClickable = true
+        }
+        */
     }
 
     private fun invokeGallery(){
         if(hasExternalReadStoragePermission() == PERMISSION_GRANTED){
             openGallery()
         }else{
-            requestMultiplePermissionsLauncher.launch(arrayOf(
+            requestGalleryPermissionsLauncher.launch(arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ))
         }
     }
 
+    private fun invokeCamera(){
+        if(hasCameraPermission() == PERMISSION_GRANTED){
+            openCamera()
+        }else{
+            requestCameraPermissionsLauncher.launch(arrayOf(
+                Manifest.permission.CAMERA
+            ))
+        }
+    }
 
-    fun openGallery() {
+    private fun openGallery() {
         ImagePicker.with(requireActivity())
             .galleryOnly()
             .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
@@ -117,25 +180,49 @@ class CreateAdFragment : Fragment() {
             }
     }
 
-        private val requestMultiplePermissionsLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
-            var permissionGranted = false
-            resultsMap.forEach {
-                if (it.value == true) {
-                    permissionGranted = it.value
-                } else {
-                    permissionGranted = false
-                    return@forEach
-                }
+    private fun openCamera(){
+        ImagePicker.with(requireActivity())
+            .cameraOnly()
+            .maxResultSize(1080, 1080)
+            .createIntent { intent ->
+                getImageResult.launch(intent)
             }
-            if (permissionGranted) {
-                openGallery()
+    }
+
+    private val requestGalleryPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
+        var permissionGranted = false
+        resultsMap.forEach {
+            if (it.value == true) {
+                permissionGranted = it.value
             } else {
-                Toast.makeText(this.activity, "No read permission", Toast.LENGTH_LONG)
-                    .show()
+                permissionGranted = false
+                return@forEach
             }
         }
-
+        if (permissionGranted) {
+            openGallery()
+        } else {
+            Toast.makeText(this.activity, "Allow permission to gallery", Toast.LENGTH_LONG)
+                .show()
+        }
+    }
+    private val requestCameraPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
+        var permissionGranted = false
+        resultsMap.forEach {
+            if (it.value == true) {
+                permissionGranted = it.value
+            } else {
+                permissionGranted = false
+                return@forEach
+            }
+        }
+        if (permissionGranted) {
+            openGallery()
+        } else {
+            Toast.makeText(this.activity, "Allow permission to gallery", Toast.LENGTH_LONG)
+                .show()
+        }
+    }
 
 
     private val getImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result: ActivityResult ->
@@ -163,29 +250,31 @@ class CreateAdFragment : Fragment() {
         val price2 = Integer.parseInt(price1)
         var token = 0
 
-
-        if(price2 <= 100){
+    if(price1 != "") {
+        if (price2 <= 100) {
             tokenValue = 1
-        } else if(price2 <= 200){
+        } else if (price2 <= 200) {
             tokenValue = 2
-        }else if(price2 <= 500){
+        } else if (price2 <= 500) {
             tokenValue = 5
-        }else if(price2 <= 800){
+        } else if (price2 <= 800) {
             tokenValue = 8
-        }else if(price2 <= 1000){
+        } else if (price2 <= 1000) {
             tokenValue = 10
-        }else if(price2 <= 1500){
+        } else if (price2 <= 1500) {
             tokenValue = 15
-        }else if(price2 <= 2000){
+        } else if (price2 <= 2000) {
             tokenValue = 20
-        }else if(price2 <= 2500){
+        } else if (price2 <= 2500) {
             tokenValue = 25
-        }
-        else if(price2 <= 10000){
+        } else if (price2 <= 10000) {
             tokenValue = 100
-        }else if(price2 <= 99999){
+        } else if (price2 <= 99999) {
             tokenValue = 999
         }
+    }else{
+        Toast.makeText(activity, "Fill out every field", Toast.LENGTH_LONG).show()
+    }
 
         Log.d(TAG, "${token}")
     }
@@ -206,7 +295,7 @@ class CreateAdFragment : Fragment() {
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
 
-
+        setTokens()
         //changes the price input to a static value in line with the token system
         if(price1 <= 100){
             price2 = "100"
@@ -239,24 +328,10 @@ class CreateAdFragment : Fragment() {
             address = addr?.text.toString(),
             price = price2,
             category = spinner?.selectedItem.toString(),
-            imageUri = "",
             userId = user!!.uid,
             token = tokenValue,
             timestamp = Timestamp.now()
         )
-
-
-//        var adModel = AdModel().apply {
-//            adId = documentId
-//            value = title?.text.toString()
-//            description = desc?.text.toString()
-//
-//            category = spinner?.selectedItem.toString()
-//       //     remoteUri = photo!!.remoteUri
-//            //remoteUri = photo!!.remoteUri
-//            userId = user!!.uid
-//            token = tokenValue
-//        }
 
         if (
             !title!!.nonEmpty() ||
@@ -309,16 +384,19 @@ class CreateAdFragment : Fragment() {
                         CreateAdFragmentDirections.actionCreateAdsFragmentToAdDetailFragment(
                             adToSave.adId
                         )
+                    if (imageURI != null){
+                        storageRef.child("images/ads/${adToSave.adId}").putFile(imageURI!!)
+                            .addOnSuccessListener {
+                                db.collection("Ads").document(adToSave.adId).update("imageUri", it.storage.path)
 
-                    storageRef.child("images/ads/${adToSave.adId}").putFile(imageURI!!)
-                        .addOnSuccessListener {
-                            db.collection("Ads").document(adToSave.adId).update("imageUri", it.storage.path)
-
+                                val navController = view?.findNavController()
+                                navController?.navigate(action)
+                            }
+                        }else{
                             val navController = view?.findNavController()
                             navController?.navigate(action)
                         }
-
-                }
+                    }
                 .addOnFailureListener {
                     Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
                         .show()
@@ -346,6 +424,12 @@ class CreateAdFragment : Fragment() {
         ContextCompat.checkSelfPermission(
             it,
             Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+    }
+    fun hasCameraPermission() = this.activity?.let {
+        ContextCompat.checkSelfPermission(
+            it,
+            Manifest.permission.CAMERA
         )
     }
 }

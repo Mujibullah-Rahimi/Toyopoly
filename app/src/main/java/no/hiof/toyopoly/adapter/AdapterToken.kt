@@ -34,7 +34,7 @@ class AdapterToken (
         fun bindItems(token : TokenModel) = with(itemView){
             value.text = token.Name
             price.text = token.Price + " kr"
-            tokenId.text = token.tokenId
+            tokenId.text = context.getString(R.string.clicktobuy)
             setOnClickListener{ listener(token) }
         }
     }

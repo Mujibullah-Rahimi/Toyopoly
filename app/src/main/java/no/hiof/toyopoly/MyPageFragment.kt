@@ -22,6 +22,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
@@ -214,7 +215,7 @@ class MyPageFragment : Fragment(){
                     Log.d("currentUser", "Snapshot: ${document.data}")
                     getEmail?.text = document.getString("email")
                     getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
-                    getTokens?.text = "Tokens: " + document.getLong("token").toString()
+                    getTokens?.text = document.getLong("token").toString()
                     getAddress?.text = document.getString("address")
                     //time_ad?.text = document.getDate("timestamp").toString()
                 } else {
@@ -227,6 +228,8 @@ class MyPageFragment : Fragment(){
 
         Glide.with(requireView())
             .load(pictureReference)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(userImage)
     }
 

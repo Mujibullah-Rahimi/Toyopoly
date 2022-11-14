@@ -1,17 +1,22 @@
 <resources>
     <string name="app_name">Toyopoly</string>
     <string name="lego">Lego</string>
-    <string name="see_more">See all</string>
+    <string name="see_more">Se mer</string>
     <string name="cars">Toy-car</string>
     <string name="dolls">Doll</string>
-    <string name="searchLabel">Search</string>
+    <string name="searchLabel">Søk</string>
     <string name="createAds">Create ads</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="toyCategory">
-        <item>Toy-car</item>
+        <item>Cars</item>
+        <item>Cards</item>
         <item>Doll</item>
-        <item>Play kitchen</item>
+        <item>Electric</item>
+        <item>Kitchen and Food</item>
+        <item>Learning</item>
         <item>Lego</item>
+        <item>Other</item>
+        <item>Play-set</item>
     </string-array>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -48,14 +53,15 @@
     <string name="all_toys">All toys</string>
     <string name="web_client_id">108228096973-aj8ki5ukd13hefadigjl53co5vpf3d59.apps.googleusercontent.com</string>
     <string name="loginGoogle">login Google</string>
-    <string name="Move_to">Go too</string>
-    <string name="Delete">Delete</string>
-    <string name="dialogTitle">"choose "</string>
-    <string name="dialogMessage">Go to or Delete</string>
-    <string name="dialogTitleToken">"choose "</string>
-    <string name="dialogMessageToken">Buy a token or go back</string>
+    <string name="Move_to">Gå til</string>
+    <string name="Delete">Slett</string>
+    <string name="dialogTitle">"Velg "</string>
+    <string name="dialogMessage">Gå til eller slett</string>
+    <string name="dialogTitleToken">"Velg "</string>
+    <string name="dialogMessageToken">Kjøp en token eller gå tilbake</string>
+    <string name="dialogMessageBuy">Are you sure you want to buy the item</string>
     <string name="my_page">My Page</string>
-    <string name="valueAd">test</string>
+    <string name="test">test</string>
     <string name="token">Token</string>
     <string name="image_of_ad">image of ad</string>
     <string name="goToMyPage">Go to my page</string>
@@ -63,18 +69,15 @@
     <string name="camera">Camera</string>
     <string name="change_picture">change picture</string>
     <string name="cancel">Cancel</string>
+    <string name="contact_seller">Contact seller</string>
+    <string name="se_alle">Se alle</string>
+    <string name="time">10:00</string>
+    <string name="date">June 10</string>
+    <string name="clicktobuy">Klikk for å kjøpe</string>
     <string name="buy">Buy</string>
     <string name="Sold">Sold</string>
-    <string name="textview">TextView</string>
-    <string name="see_all">See all</string>
-    <string name="adAddress">Address</string>
-    <string name="adPrice">Price</string>
-    <string name="contact_seller">Contact seller</string>
-    <string name="adDescription">Description</string>
-    <string name="adTitle">Title</string>
-    <string name="CategoryAdTest">test</string>
-    <string name="engageChatView">TextView</string>
+    <string name="noInternet">Connect to the internet to login</string>
     <string name="buy_tokens">Buy Tokens</string>
-    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="se_adresse_i_kart">Se adresse i kart</string>
 
 </resources>

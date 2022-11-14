@@ -33,14 +33,15 @@ class AdapterAds(
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val title: TextView = itemView.findViewById(R.id.ValueAd)
-        val price: TextView = itemView.findViewById(R.id.PriceAd)
-        val adImage: ImageView = itemView.findViewById(R.id.adPresentationImage)
+        var price: TextView = itemView.findViewById(R.id.PriceAd)
+        var adImage: ImageView = itemView.findViewById(R.id.adPresentationImage)
+        var tokenImage: ImageView = itemView.findViewById(R.id.tokenImageInAd)
 //      val userImage : ImageView = itemView.findViewById(R.id.profilePicImageView)
 
 
         fun bindItems(ad : AdModel) = with(itemView){
-            if (ad.imageUri.isNotEmpty()){
-                val adImageReference = Firebase.storage.getReference(ad.imageUri)
+            if (ad.imageUri?.isNotEmpty() == true){
+                val adImageReference = Firebase.storage.getReference(ad.imageUri!!)
 //                val userImageReference = Firebase.storage.getReference(FirebaseAuth.getInstance().currentUser!!.uid)
 
                 Glide.with(this)
@@ -51,13 +52,14 @@ class AdapterAds(
 //                    .load(userImageReference)
 //                    .into(userImage)
             }
-            Log.v("PHOTO", ad.imageUri)
+            Log.v("PHOTO", ad.imageUri!!)
             title.text = ad.title
             var x = ad.sold
             if(x == true){
                 price.text = context.getString(R.string.Sold)
+                tokenImage.setVisibility(View.GONE)
             }else {
-                price.text = ad.price + " kr"
+                price.text = ad.token.toString()
             }
             Log.d(TAG, x.toString() + ad.title + ad.price)
             setOnClickListener{ listener(ad) }
