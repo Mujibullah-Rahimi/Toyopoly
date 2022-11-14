@@ -105,7 +105,7 @@ class AdDetailFragment : Fragment() {
 
 
 
-    fun getAd(){
+    private fun getAd(){
         val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
         val title_ad = view?.findViewById<TextView>(R.id.adDetailTitle)
         val desc_ad = view?.findViewById<TextView>(R.id.adDetailDescription)
@@ -114,7 +114,7 @@ class AdDetailFragment : Fragment() {
         val token_ad = view?.findViewById<TextView>(R.id.tokenPrice)
         //val time_ad = view?.findViewById<TextView>(R.id.adDetailTimeStamp)
 
-        val docRef = db.collection("Ads").document(args.adId!!)
+        val docRef = db.collection("Ads").document(args.adId)
         docRef
             .get()
             .addOnSuccessListener { document ->

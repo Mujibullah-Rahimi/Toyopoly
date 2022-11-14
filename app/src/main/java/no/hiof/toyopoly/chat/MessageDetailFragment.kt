@@ -1,5 +1,13 @@
 package no.hiof.toyopoly.chat
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +16,9 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +33,7 @@ import no.hiof.toyopoly.models.MessageModel
 import no.hiof.toyopoly.util.RandomId
 
 
+
 class MessageDetailFragment : Fragment(), View.OnClickListener  {
     private val args : MessageDetailFragmentArgs by navArgs()
     private lateinit var messagesRecyclerView : RecyclerView
@@ -34,6 +46,12 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
     val TAG = "MESSAGE"
     private lateinit var otherUserId : String
     private var chatChannelId = ""
+    private var CHANNELID = "chatChannel"
+    private val notificationId = 101
+    private lateinit var myUserName : String
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +68,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
         otherUserId = args.otherUser
         Log.v("otheruserinmessage",otherUserId)
         chatChannelId = args.chatChannelId
+
 //        setChatChannelId()
         Log.v("OTHERUSER", otherUserId)
 
@@ -67,16 +86,44 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
         getMessages()
         getOtherUserName()
+        createNotificationChannel()
+        myUserName()
     }
 
-    private fun getOtherUserName(){
+
+    private fun myUserName() {
+        auth.currentUser?.let {
+            db.collection("Users").document(it.uid).get().addOnSuccessListener {
+                if (it.exists()){
+                   this.myUserName = it.getString("firstName").toString()
+
+                }
+            }
+        }
+    }
+
+     private fun getOtherUserName() {
         db.collection("Users").document(otherUserId).get().addOnSuccessListener {
             if (it.exists()){
-                var otherUserName = it.getString("firstName")
+                val otherUserName = it.getString("firstName")
                 (activity as MainActivity).supportActionBar?.title = otherUserName
             }
         }
     }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification Title"
+            val descriptionText = "Notification Description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNELID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager = context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
 
 //    private fun setChatChannelId(){
 //        db.collection("Users").document(auth.currentUser!!.uid)
@@ -114,6 +161,29 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
                         Log.v(TAG, "Messaged saved in chatChannels")
                         messageInput!!.text.clear()
                         messagesRecyclerView.smoothScrollToPosition(messageList.size - 1);
+
+                        val bitmap = BitmapFactory.decodeResource(activity?.applicationContext?.resources, R.mipmap.ic_launcher)
+                        db.collection("Users").document(otherUserId).get().addOnSuccessListener {
+                            if (it.exists()){
+                                val otherUserName =  it.getString("firstName")
+
+                                val builder = activity?.let { it ->
+                                    NotificationCompat.Builder(it.application, CHANNELID)
+                                        .setSmallIcon(R.mipmap.ic_launcher)
+                                        .setContentTitle(this.myUserName)
+                                        .setContentText(messageToSave.message)
+                                        .setLargeIcon(bitmap)
+                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                }
+
+                                with(activity?.let { NotificationManagerCompat.from(it.application) }) {
+                                    if (builder != null) {
+                                        this?.notify(notificationId, builder.build())
+                                    }
+                                }
+                            }
+                        }
+
                     }
                     .addOnFailureListener{
                         Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
@@ -121,6 +191,8 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
                     }
             }
         }
+
+
     }
 
     fun getMessages(){
@@ -148,3 +220,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
         saveMsg()
     }
 }
+
+
+
+

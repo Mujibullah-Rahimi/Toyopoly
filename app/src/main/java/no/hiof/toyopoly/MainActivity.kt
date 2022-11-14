@@ -1,7 +1,10 @@
 package no.hiof.toyopoly
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -10,6 +13,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -44,14 +49,16 @@ class MainActivity : AppCompatActivity(){
     private lateinit var authStateListener : FirebaseAuth.AuthStateListener
 
 
+
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
-
         setSupportActionBar(binding.toolbar)
+
+
 
         val drawerLayout : DrawerLayout = binding.drawerLayout
         navView = binding.navView
@@ -115,7 +122,11 @@ class MainActivity : AppCompatActivity(){
         navView.setupWithNavController(navController)
 
         binding.navView.setupWithNavController(navHostFragment.navController)
+
+
     }
+
+
 
 
     fun test(){

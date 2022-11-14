@@ -64,10 +64,11 @@ class ChatChannelFragment : Fragment(), View.OnClickListener {
         }
         chatChannelsRecyclerView.adapter = chatChannelAdapter
         db = FirebaseFirestore.getInstance()
+
         getMyChatChannels()
     }
 
-    fun getMyChatChannels(){
+    private fun getMyChatChannels(){
         db.collection("Users").document(auth.currentUser!!.uid).collection("engagedChats")
 //        whereArrayContains(auth.currentUser!!.uid)
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
