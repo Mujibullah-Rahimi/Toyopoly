@@ -128,8 +128,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
                                 lastName.replaceFirstChar {if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()},
                                 birthday,
                                 address,
-                                email,
-                                "")
+                                email)
 
                             db.collection("Users").document(auth.currentUser!!.uid)
                                 .set(userToSave)
