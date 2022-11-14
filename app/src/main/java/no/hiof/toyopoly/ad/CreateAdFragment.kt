@@ -129,7 +129,6 @@ class CreateAdFragment : Fragment() {
 
             Thread(Runnable {
                     try {
-
                         saveAd(RandomId.randomID())
                     }catch (e: InterruptedException){
                         e.printStackTrace()
