@@ -286,6 +286,7 @@ class AdDetailFragment : Fragment() {
             }
     }
 
+
     private fun itemSoldNotification() {
         val builder = activity?.let { it ->
             val pendingNotification = context?.let { it1 ->
@@ -313,10 +314,6 @@ class AdDetailFragment : Fragment() {
         }
     }
 
-    fun itemIsSold() {
-
-    }
-
     fun buyItem(){
         val docRefUsers = db.collection("Users")
         val docRefAds = db.collection("Ads")
@@ -330,7 +327,7 @@ class AdDetailFragment : Fragment() {
                     docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
 
                     docRefUsers.document(this.otherUser).update("token", FieldValue.increment(tokenValue))
-
+                    itemSoldNotification()
                     docRefAds.document(args.adId).update("sold", true)
                 }
             }
