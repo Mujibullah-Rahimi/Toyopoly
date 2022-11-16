@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity(){
     private lateinit var authStateListener : FirebaseAuth.AuthStateListener
 
 
-
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -362,7 +362,7 @@ class CreateAdFragment : Fragment() {
                 "Price can only consist of numbers and can only be 999999",
                 Toast.LENGTH_LONG
             ).show()
-        }else if (!addr.minLength(8)) {
+        }else if (!addr.minLength(0)) {
             Toast.makeText(
                 activity,
                 "address must be at least 8 chars long",

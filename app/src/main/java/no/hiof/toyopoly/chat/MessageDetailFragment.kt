@@ -3,7 +3,6 @@ package no.hiof.toyopoly.chat
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -16,13 +15,16 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig.Flag
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
@@ -46,9 +48,9 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
     val TAG = "MESSAGE"
     private lateinit var otherUserId : String
     private var chatChannelId = ""
-    private var CHANNELID = "chatChannel"
+    private var CHANNELID = "notificationChannel"
     private val notificationId = 101
-    private lateinit var myUserName : String
+    private var myUserName : String = ""
 
 
 
@@ -93,7 +95,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
     private fun myUserName() {
         auth.currentUser?.let {
-            db.collection("Users").document(it.uid).get().addOnSuccessListener {
+            db.collection("Users").document(auth.currentUser?.uid.toString()).get().addOnSuccessListener {
                 if (it.exists()){
                    this.myUserName = it.getString("firstName").toString()
 
@@ -123,7 +125,6 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
             notificationManager.createNotificationChannel(channel)
         }
     }
-
 
 //    private fun setChatChannelId(){
 //        db.collection("Users").document(auth.currentUser!!.uid)
@@ -160,27 +161,35 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
                     .addOnCompleteListener {
                         Log.v(TAG, "Messaged saved in chatChannels")
                         messageInput!!.text.clear()
-                        messagesRecyclerView.smoothScrollToPosition(messageList.size - 1);
+                        messagesRecyclerView.smoothScrollToPosition(messageList.size - 1)
 
-                        val bitmap = BitmapFactory.decodeResource(activity?.applicationContext?.resources, R.mipmap.ic_launcher)
-                        db.collection("Users").document(otherUserId).get().addOnSuccessListener {
-                            if (it.exists()){
-                                val otherUserName =  it.getString("firstName")
 
-                                val builder = activity?.let { it ->
-                                    NotificationCompat.Builder(it.application, CHANNELID)
-                                        .setSmallIcon(R.mipmap.ic_launcher)
-                                        .setContentTitle(this.myUserName)
-                                        .setContentText(messageToSave.message)
-                                        .setLargeIcon(bitmap)
-                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                }
 
-                                with(activity?.let { NotificationManagerCompat.from(it.application) }) {
-                                    if (builder != null) {
-                                        this?.notify(notificationId, builder.build())
-                                    }
-                                }
+                        val builder = activity?.let { it ->
+                            //navigering til message fragment
+                            val pendingNotification = context?.let { it1 ->
+                                NavDeepLinkBuilder(it1)
+                                    .setComponentName(MainActivity::class.java)
+                                    .setGraph(R.navigation.nav_graph)
+                                    .setDestination(R.id.messageFragment)
+                                    .createPendingIntent()
+                            }
+
+                            //sender melding
+                            //problem brukerene som sender får notifikasjon og ikke bruker som mottar mld
+                            NotificationCompat.Builder(it.application, CHANNELID)
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setContentTitle(this.myUserName)
+                                .setContentText(messageToSave.message)
+                                .setAutoCancel(true)
+                                .setContentIntent(pendingNotification)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+                        }
+
+                        with(activity?.let { NotificationManagerCompat.from(it.application) }) {
+                            if (builder != null) {
+                                this?.notify(notificationId, builder.build())
                             }
                         }
 

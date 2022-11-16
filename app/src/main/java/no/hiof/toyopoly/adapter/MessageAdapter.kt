@@ -22,18 +22,18 @@ class MessageAdapter(
     // Called when there's a need for a new ViewHolder (a new item in the list/grid)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == MY_MESSAGE_TYPE) {
-            myMessagesViewHolder(
+            MyMessagesViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.my_message_item, parent, false)
             )
-        } else otherMessagesViewHolder(
+        } else OtherMessagesViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.other_message_item, parent, false)
         )
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (messageList[position].messageType === MY_MESSAGE_TYPE) {
-            (holder as myMessagesViewHolder).bind(messageList[position])
+            (holder as MyMessagesViewHolder).bind(messageList[position])
         } else {
-            (holder as otherMessagesViewHolder).bind(messageList[position])
+            (holder as OtherMessagesViewHolder).bind(messageList[position])
         }
     }
 
@@ -62,7 +62,7 @@ class MessageAdapter(
 //        }
 //    }
 
-    inner class myMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    inner class MyMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
         private val message : TextView = view.findViewById(R.id.myMessage_message)
         private val date : TextView = view.findViewById(R.id.myMessage_date)
         private val time : TextView = view.findViewById(R.id.myMessage_timestamp)
@@ -74,7 +74,7 @@ class MessageAdapter(
         }
     }
 
-    inner class otherMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    inner class OtherMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
         private val message : TextView = view.findViewById(R.id.otherMessage_message)
         private val date : TextView = view.findViewById(R.id.otherMessage_date)
         private val time : TextView = view.findViewById(R.id.otherMessage_timestamp)
