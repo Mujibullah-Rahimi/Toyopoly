@@ -54,15 +54,16 @@ class AdapterAds(
             }
             Log.v("PHOTO", ad.imageUri!!)
             title.text = ad.title
-            var x = ad.sold
-            if(x == true){
+            val x = ad.sold
+            if(x){
                 price.text = context.getString(R.string.Sold)
-                tokenImage.setVisibility(View.GONE)
+                tokenImage.visibility = View.GONE
             }else {
                 price.text = ad.token.toString()
             }
             Log.d(TAG, x.toString() + ad.title + ad.price)
             setOnClickListener{ listener(ad) }
         }
+
     }
 }

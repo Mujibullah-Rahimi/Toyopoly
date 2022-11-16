@@ -1,8 +1,12 @@
 package no.hiof.toyopoly.ad
 
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +16,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -26,6 +33,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import no.hiof.toyopoly.MainActivity
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.ChatChannelModel
 import no.hiof.toyopoly.util.RandomId
@@ -40,7 +48,8 @@ class AdDetailFragment : Fragment() {
     val user = Firebase.auth.currentUser
     private lateinit var binding: AdDetailFragment
     private lateinit var supportMapFragment: SupportMapFragment
-
+    private var CHANNELID = "notificationChannel"
+    private val notificationId = 101
 
     private val currentUser = auth.currentUser!!.uid
     private lateinit var otherUser : String
@@ -62,7 +71,8 @@ class AdDetailFragment : Fragment() {
         getAd()
         getImage()
         getOtherUserId()
-        val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
+
+        val buyItemBtn = view.findViewById<Button>(R.id.buyBtn)
         val contactSellerButton = view.findViewById<Button>(R.id.contactSellerButton)
         db.collection("Ads").document(args.adId).get().addOnSuccessListener {
             if (it.getString("userId") == currentUser){
@@ -95,15 +105,29 @@ class AdDetailFragment : Fragment() {
             builder.setNegativeButton("Cancel"){dialogInterface, which ->
                 val action = AdDetailFragmentDirections.actionAdDetailFragmentSelf(args.adId)
 
-                val navController = view?.findNavController()
+                val navController = view.findNavController()
 
-                navController?.navigate(action)
+                navController.navigate(action)
             }
             builder.show()
         }
+
+        createNotificationChannel()
+
     }
 
-
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification Title"
+            val descriptionText = "Notification Description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNELID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 
     private fun getAd(){
         val buyItemBtn = view?.findViewById<Button>(R.id.buyBtn)
@@ -253,13 +277,44 @@ class AdDetailFragment : Fragment() {
 
 
     private fun getTokenAmount() {
-
         db.collection("Ads").document(args.adId)
             .get()
             .addOnSuccessListener { document ->
                 Log.d("currentToken", "Snapshot: ${document.data}")
                 tokenValue = document.getLong("token")!!
+
             }
+    }
+
+    private fun itemSoldNotification() {
+        val builder = activity?.let { it ->
+            val pendingNotification = context?.let { it1 ->
+                NavDeepLinkBuilder(it1)
+                    .setComponentName(MainActivity::class.java)
+                    .setGraph(R.navigation.nav_graph)
+                    .setDestination(R.id.myPageFragment)
+                    .createPendingIntent()
+            }
+
+            NotificationCompat.Builder(it.application, CHANNELID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("item sold")
+                .setContentText("yey u got 2 tokens")
+                .setAutoCancel(true)
+                .setContentIntent(pendingNotification)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        }
+
+        with(activity?.let { NotificationManagerCompat.from(it.application) }) {
+            if (builder != null) {
+                this?.notify(notificationId, builder.build())
+            }
+        }
+    }
+
+    fun itemIsSold() {
+
     }
 
     fun buyItem(){
@@ -274,7 +329,7 @@ class AdDetailFragment : Fragment() {
                 }else{
                     docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
 
-                    docRefUsers.document(otherUser).update("token", FieldValue.increment(tokenValue))
+                    docRefUsers.document(this.otherUser).update("token", FieldValue.increment(tokenValue))
 
                     docRefAds.document(args.adId).update("sold", true)
                 }
@@ -282,5 +337,7 @@ class AdDetailFragment : Fragment() {
         }
 
     }
+
+
 
 }
