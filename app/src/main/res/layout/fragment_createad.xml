@@ -90,9 +90,11 @@
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/price"
+        android:text="0"
         android:inputType="number"
         android:minHeight="48dp"
         android:textColorHint="#757575"
+        
         app:layout_constraintEnd_toEndOf="@+id/address_createAd"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/address_createAd"

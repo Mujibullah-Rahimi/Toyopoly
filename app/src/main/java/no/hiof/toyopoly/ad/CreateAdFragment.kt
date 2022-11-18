@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -106,36 +107,84 @@ class CreateAdFragment : Fragment() {
         val price_txt = view.findViewById<TextView>(R.id.price_createad_txt)
         val cat_txt = view.findViewById<TextView>(R.id.cat_createad_txt)
         val card_view = view.findViewById<CardView>(R.id.cardView3)
+        val price = prices.text.toString()
 
 
         val saveButton = view.findViewById<Button>(R.id.createAd)
+
+//        when(!prices.nonEmpty()){
+//            true -> {
+//                saveButton.alpha = 0.5f
+//                saveButton.isClickable = false
+//            }
+//            false ->
+//        }
         saveButton.setOnClickListener { v ->
             val progressBar = view.findViewById<ProgressBar>(R.id.progressBar_creatad)
-            progressBar.isVisible = true
-            title.isVisible = false
-            title_txt.isVisible = false
-            desc.isVisible = false
-            desc_txt.isVisible = false
-            addr_txt.isVisible = false
-            addr.isVisible = false
-            price_txt.isVisible = false
-            prices.isVisible = false
-            cat_txt.isVisible = false
-            card_view.isVisible = false
-            galleryBtn.isVisible = false
-            photoBtn.isVisible = false
-            spinner.isVisible = false
-            saveButton.isVisible = false
+            if (
+                !title!!.nonEmpty() ||
+                !desc!!.nonEmpty() ||
+                !addr!!.nonEmpty() ||
+                !prices!!.nonEmpty()
+            ) {
+                Toast.makeText(
+                    activity,
+                    "All fields needs to be filled",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if (!title.maxLength(20)) {
+                Toast.makeText(
+                    activity,
+                    "Title is too long",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if (!desc.minLength(16)) {
+                Toast.makeText(
+                    activity,
+                    "Description is too short",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if (!prices.onlyNumbers() || !prices.maxLength(5)) {
+                Toast.makeText(
+                    activity,
+                    "Price can only consist of numbers and can only be 999999",
+                    Toast.LENGTH_LONG
+                ).show()
+            }else if (!addr.minLength(0)) {
+                Toast.makeText(
+                    activity,
+                    "address must be at least 8 chars long",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
 
+                progressBar.isVisible = true
+                title.isVisible = false
+                title_txt.isVisible = false
+                desc.isVisible = false
+                desc_txt.isVisible = false
+                addr_txt.isVisible = false
+                addr.isVisible = false
+                price_txt.isVisible = false
+                prices.isVisible = false
+                cat_txt.isVisible = false
+                card_view.isVisible = false
+                galleryBtn.isVisible = false
+                photoBtn.isVisible = false
+                spinner.isVisible = false
+                saveButton.isVisible = false
+            }
             Thread(Runnable {
-                    try {
-                        saveAd(RandomId.randomID())
-                    }catch (e: InterruptedException){
-                        e.printStackTrace()
-                    }
+                try {
+                    Looper.prepare()
+                    saveAd(RandomId.randomID())
+                }catch (e: InterruptedException){
+                    e.printStackTrace()
+                }
 
             }).start()
         }
+
 /*
         if (!title!!.nonEmpty() ||
             !desc!!.nonEmpty() ||
@@ -249,7 +298,7 @@ class CreateAdFragment : Fragment() {
         val price2 = Integer.parseInt(price1)
         var token = 0
 
-    if(price1 != "") {
+    if(price1.nonEmpty()) {
         if (price2 <= 100) {
             tokenValue = 1
         } else if (price2 <= 200) {
@@ -287,50 +336,14 @@ class CreateAdFragment : Fragment() {
         val addr = view?.findViewById<EditText>(R.id.address_createAd)
         val addrFire = addr?.text.toString()
         val prices = view?.findViewById<EditText>(R.id.price_createAd)
-        val priceFire = prices?.text.toString()
+        val priceFire = prices!!.text.toString()
         val price1 = Integer.parseInt(priceFire)
         var price2 = price1.toString()
         val spinner = view?.findViewById<Spinner>(R.id.spinner_category)
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
 
-        setTokens()
-        //changes the price input to a static value in line with the token system
-        if(price1 <= 100){
-            price2 = "100"
-        }else if(price1 <= 200){
-            price2 = "200"
-        }else if(price1 <= 500){
-            price2 = "500"
-        }else if(price1 <= 800){
-            price2 = "800"
-        }else if(price1 <= 1000){
-            price2 = "1000"
-        }else if(price1 <= 1500){
-            price2 = "1500"
-        }else if(price1 <= 2000){
-            price2 = "2000"
-        }else if(price1 <= 2500){
-            price2 = "2500"
-        }
-        else if(price1 <= 10000){
-            price2 = "10000"
-        }else if(price1 <= 99999){
-            tokenValue = 99999
-        }
 
-        val adToSave = AdModel(
-            adId = documentId,
-            title = title?.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(
-                Locale.ROOT) else it.toString() },
-            description = desc?.text.toString(),
-            address = addr?.text.toString(),
-            price = price2,
-            category = spinner?.selectedItem.toString(),
-            userId = user!!.uid,
-            token = tokenValue,
-            timestamp = Timestamp.now()
-        )
 
         if (
             !title!!.nonEmpty() ||
@@ -368,6 +381,42 @@ class CreateAdFragment : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
         } else {
+            setTokens()
+            //changes the price input to a static value in line with the token system
+            if (price1 <= 100) {
+                price2 = "100"
+            } else if (price1 <= 200) {
+                price2 = "200"
+            } else if (price1 <= 500) {
+                price2 = "500"
+            } else if (price1 <= 800) {
+                price2 = "800"
+            } else if (price1 <= 1000) {
+                price2 = "1000"
+            } else if (price1 <= 1500) {
+                price2 = "1500"
+            } else if (price1 <= 2000) {
+                price2 = "2000"
+            } else if (price1 <= 2500) {
+                price2 = "2500"
+            } else if (price1 <= 10000) {
+                price2 = "10000"
+            } else if (price1 <= 99999) {
+                tokenValue = 99999
+            }
+
+            val adToSave = AdModel(
+                adId = documentId,
+                title = title?.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(
+                    Locale.ROOT) else it.toString() },
+                description = desc?.text.toString(),
+                address = addr?.text.toString(),
+                price = price2,
+                category = spinner?.selectedItem.toString(),
+                userId = user!!.uid,
+                token = tokenValue,
+                timestamp = Timestamp.now()
+            )
             db.collection("Ads").document(documentId)
                 .set(adToSave)
                 .addOnSuccessListener {
