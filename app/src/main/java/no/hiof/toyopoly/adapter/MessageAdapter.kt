@@ -33,7 +33,7 @@ class MessageAdapter(
         )
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (messageList[position].senderId === currentUser) {
+        if (messageList[position].senderId == currentUser) {
             (holder as myMessagesViewHolder).bind(messageList[position])
         }else {
             (holder as otherMessagesViewHolder).bind(messageList[position])
