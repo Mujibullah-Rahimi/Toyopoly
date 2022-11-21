@@ -2,10 +2,7 @@ package no.hiof.toyopoly.chat
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context.NOTIFICATION_SERVICE
-import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,16 +12,13 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig.Flag
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
@@ -83,7 +77,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
         if (messageList.size > 1){
             messagesRecyclerView.smoothScrollToPosition(messageList.size - 1)
         }
-        messageAdapter = MessageAdapter(messageList){}
+        messageAdapter = MessageAdapter(messageList, auth.currentUser?.uid.toString()){}
         messagesRecyclerView.adapter = messageAdapter
 
         getMessages()
@@ -217,6 +211,9 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
                     for ( dc : DocumentChange in value?.documentChanges!!) {
                         if (dc.type == DocumentChange.Type.ADDED){
                             messageList.add(dc.document.toObject(MessageModel::class.java))
+                            messageList.sortBy {
+                                it.timestamp
+                            }
                             Log.v("GETMESSAGES", messageList.lastIndex.toString())
                         }
                     }

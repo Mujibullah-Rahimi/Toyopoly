@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.MessageModel
 import java.text.DateFormat
@@ -13,18 +12,13 @@ import java.text.DateFormat
 
 class MessageAdapter(
     private val messageList: ArrayList<MessageModel>,
+    private val currentUser : String,
     private val listener : (MessageModel) -> Unit)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
-    companion object{
-        private var currentUser = FirebaseAuth.getInstance().currentUser?.uid
-        var MY_MESSAGE_TYPE = 1
-        var OTHER_MESSAGE_TYPE = 2
-    }
     // Called when there's a need for a new ViewHolder (a new item in the list/grid)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == MY_MESSAGE_TYPE) {
+        return if (viewType == 1) {
             myMessagesViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.my_message_item, parent, false)
             )
