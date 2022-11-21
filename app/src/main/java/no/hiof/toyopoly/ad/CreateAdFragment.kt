@@ -128,11 +128,11 @@ class CreateAdFragment : Fragment() {
             saveButton.isVisible = false
 
             Thread(Runnable {
-                    try {
-                        saveAd(RandomId.randomID())
-                    }catch (e: InterruptedException){
-                        e.printStackTrace()
-                    }
+                try {
+                    saveAd(RandomId.randomID())
+                }catch (e: InterruptedException){
+                    e.printStackTrace()
+                }
 
             }).start()
         }
@@ -155,8 +155,8 @@ class CreateAdFragment : Fragment() {
             openGallery()
         }else{
             requestGalleryPermissionsLauncher.launch(arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ))
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ))
         }
     }
 
@@ -249,31 +249,31 @@ class CreateAdFragment : Fragment() {
         val price2 = Integer.parseInt(price1)
         var token = 0
 
-    if(price1 != "") {
-        if (price2 <= 100) {
-            tokenValue = 1
-        } else if (price2 <= 200) {
-            tokenValue = 2
-        } else if (price2 <= 500) {
-            tokenValue = 5
-        } else if (price2 <= 800) {
-            tokenValue = 8
-        } else if (price2 <= 1000) {
-            tokenValue = 10
-        } else if (price2 <= 1500) {
-            tokenValue = 15
-        } else if (price2 <= 2000) {
-            tokenValue = 20
-        } else if (price2 <= 2500) {
-            tokenValue = 25
-        } else if (price2 <= 10000) {
-            tokenValue = 100
-        } else if (price2 <= 99999) {
-            tokenValue = 999
+        if(price1 != "") {
+            if (price2 <= 100) {
+                tokenValue = 1
+            } else if (price2 <= 200) {
+                tokenValue = 2
+            } else if (price2 <= 500) {
+                tokenValue = 5
+            } else if (price2 <= 800) {
+                tokenValue = 8
+            } else if (price2 <= 1000) {
+                tokenValue = 10
+            } else if (price2 <= 1500) {
+                tokenValue = 15
+            } else if (price2 <= 2000) {
+                tokenValue = 20
+            } else if (price2 <= 2500) {
+                tokenValue = 25
+            } else if (price2 <= 10000) {
+                tokenValue = 100
+            } else if (price2 <= 99999) {
+                tokenValue = 999
+            }
+        }else{
+            Toast.makeText(activity, "Fill out every field", Toast.LENGTH_LONG).show()
         }
-    }else{
-        Toast.makeText(activity, "Fill out every field", Toast.LENGTH_LONG).show()
-    }
 
         Log.d(TAG, "${token}")
     }
@@ -391,11 +391,11 @@ class CreateAdFragment : Fragment() {
                                 val navController = view?.findNavController()
                                 navController?.navigate(action)
                             }
-                        }else{
-                            val navController = view?.findNavController()
-                            navController?.navigate(action)
-                        }
+                    }else{
+                        val navController = view?.findNavController()
+                        navController?.navigate(action)
                     }
+                }
                 .addOnFailureListener {
                     Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
                         .show()

@@ -122,7 +122,7 @@ class RegisterFragment : Fragment(), NoCopySpan{
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener((requireActivity()), OnCompleteListener { task ->
                         if (task.isSuccessful) {
-
+                
                             val userToSave = UserModel(
                                 firstName.replaceFirstChar {if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()},
                                 lastName.replaceFirstChar {if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()},

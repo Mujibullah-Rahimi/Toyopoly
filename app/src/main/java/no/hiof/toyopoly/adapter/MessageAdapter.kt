@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import no.hiof.toyopoly.R
 import no.hiof.toyopoly.models.MessageModel
 import java.text.DateFormat
@@ -15,7 +16,9 @@ class MessageAdapter(
     private val listener : (MessageModel) -> Unit)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+
     companion object{
+        private var currentUser = FirebaseAuth.getInstance().currentUser?.uid
         var MY_MESSAGE_TYPE = 1
         var OTHER_MESSAGE_TYPE = 2
     }
@@ -30,9 +33,9 @@ class MessageAdapter(
         )
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (messageList[position].messageType === MY_MESSAGE_TYPE) {
+        if (messageList[position].senderId === currentUser) {
             (holder as myMessagesViewHolder).bind(messageList[position])
-        } else {
+        }else {
             (holder as otherMessagesViewHolder).bind(messageList[position])
         }
     }
@@ -42,25 +45,16 @@ class MessageAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return messageList[position].messageType
+        var itemViewType = 0
+        itemViewType = if (messageList[position].senderId == currentUser){
+            1
+        }else{
+            2
+        }
+        return itemViewType
+
     }
 
-//    inner class ChatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-//        private val message : TextView = view.findViewById(R.id.message_message)
-//        private val date : TextView = view.findViewById(R.id.message_date)
-//        private val time : TextView = view.findViewById(R.id.message_timestamp)
-//
-//        fun bind(item: MessageModel) = with(itemView){
-//            message.text = item.message
-//            date.text = DateFormat.getDateInstance().format(item.timestamp.toDate())
-//            time.text =  DateFormat.getTimeInstance().format(item.timestamp.toDate())
-//
-//            if (item.senderId == FirebaseAuth.getInstance().currentUser?.uid){
-//
-//            }
-//            setOnClickListener{listener(item)}
-//        }
-//    }
 
     inner class myMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
         private val message : TextView = view.findViewById(R.id.myMessage_message)
