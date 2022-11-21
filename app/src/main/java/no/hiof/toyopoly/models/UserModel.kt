@@ -7,7 +7,8 @@ data class UserModel(
     val address:String,
     val email:String,
     val imageUri : String? = "/images/users/default.png",
+    val token: Int = 0
 ){
     constructor(firstName: String, lastName: String, email: String)
-            : this(firstName, lastName, "", "" , email, "/images/users/default.png")
+            : this(firstName, lastName, "", "" , email, "/images/users/default.png", token = 0)
 }
