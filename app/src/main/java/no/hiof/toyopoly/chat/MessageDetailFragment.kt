@@ -200,6 +200,10 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
     fun getMessages(){
         Log.v("GETMESSAGES", "get messages has been called")
+        if (messageList.size > 1){
+            messagesRecyclerView.smoothScrollToPosition(messageList.size - 1)
+            
+        }
 //        Users/FaTMSJiGPGQVKgHtFl34w3lk3pJ3/engagedChats/2FBGPPtWDrQVENG3A7t50XMz9Yk2/messages
         db.collection("ChatChannels/${chatChannelId}/messages")
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
@@ -214,7 +218,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
                             messageList.sortBy {
                                 it.timestamp
                             }
-                            Log.v("GETMESSAGES", messageList.lastIndex.toString())
+
                         }
                     }
                     messageAdapter.notifyDataSetChanged()

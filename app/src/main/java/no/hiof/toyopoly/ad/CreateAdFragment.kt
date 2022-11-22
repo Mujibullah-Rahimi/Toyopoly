@@ -337,8 +337,7 @@ class CreateAdFragment : Fragment() {
         val addrFire = addr?.text.toString()
         val prices = view?.findViewById<EditText>(R.id.price_createAd)
         val priceFire = prices!!.text.toString()
-        val price1 = Integer.parseInt(priceFire)
-        var price2 = price1.toString()
+
         val spinner = view?.findViewById<Spinner>(R.id.spinner_category)
         val spinnerFire = spinner?.selectedItem.toString()
         val userUID = user!!.uid
@@ -383,27 +382,6 @@ class CreateAdFragment : Fragment() {
         } else {
             setTokens()
             //changes the price input to a static value in line with the token system
-            if (price1 <= 100) {
-                price2 = "100"
-            } else if (price1 <= 200) {
-                price2 = "200"
-            } else if (price1 <= 500) {
-                price2 = "500"
-            } else if (price1 <= 800) {
-                price2 = "800"
-            } else if (price1 <= 1000) {
-                price2 = "1000"
-            } else if (price1 <= 1500) {
-                price2 = "1500"
-            } else if (price1 <= 2000) {
-                price2 = "2000"
-            } else if (price1 <= 2500) {
-                price2 = "2500"
-            } else if (price1 <= 10000) {
-                price2 = "10000"
-            } else if (price1 <= 99999) {
-                tokenValue = 99999
-            }
 
             val adToSave = AdModel(
                 adId = documentId,
@@ -411,7 +389,7 @@ class CreateAdFragment : Fragment() {
                     Locale.ROOT) else it.toString() },
                 description = desc?.text.toString(),
                 address = addr?.text.toString(),
-                price = price2,
+                price = priceFire,
                 category = spinner?.selectedItem.toString(),
                 userId = user!!.uid,
                 token = tokenValue,
