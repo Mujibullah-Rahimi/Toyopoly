@@ -36,21 +36,16 @@ class AdapterAds(
         var price: TextView = itemView.findViewById(R.id.PriceAd)
         var adImage: ImageView = itemView.findViewById(R.id.adPresentationImage)
         var tokenImage: ImageView = itemView.findViewById(R.id.tokenImageInAd)
-//      val userImage : ImageView = itemView.findViewById(R.id.profilePicImageView)
 
 
         fun bindItems(ad : AdModel) = with(itemView){
             if (ad.imageUri?.isNotEmpty() == true){
                 val adImageReference = Firebase.storage.getReference(ad.imageUri!!)
-//                val userImageReference = Firebase.storage.getReference(FirebaseAuth.getInstance().currentUser!!.uid)
+
 
                 Glide.with(this)
                     .load(adImageReference)
                     .into(adImage)
-
-//                Glide.with(this)
-//                    .load(userImageReference)
-//                    .into(userImage)
             }
             Log.v("PHOTO", ad.imageUri!!)
             title.text = ad.title

@@ -58,7 +58,7 @@ class CategoryFragment : Fragment() {
         getAds()
     }
 
-    fun getAds(){
+    private fun getAds(){
         db = FirebaseFirestore.getInstance()
         db.collection("Ads")
             .whereEqualTo("category", args.category)

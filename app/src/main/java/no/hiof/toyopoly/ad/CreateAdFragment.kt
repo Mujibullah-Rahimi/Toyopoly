@@ -44,13 +44,10 @@ import java.util.*
 class CreateAdFragment : Fragment() {
 
     // objects and lists
-    private var adImages: ArrayList<ImageView> = ArrayList<ImageView>()
     private val user = Firebase.auth.currentUser
     private lateinit var ad: AdModel
     private lateinit var adapterCat: AdapterCat
     private lateinit var catArrayList : ArrayList<CategoryModel>
-    private var progressBarStatus = 0
-    var progress:Int = 0
 
     // database instances and references
     private val db = Firebase.firestore
@@ -61,8 +58,6 @@ class CreateAdFragment : Fragment() {
     private lateinit var adImage: ImageView
     private var imageURI: Uri? = null
 
-    //private lateInit var viewModel : AdsViewModel
-    //private lateInit var _binding :
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +69,6 @@ class CreateAdFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //viewModel = ViewModelProvider.get(AdsViewModel::class.java)
         adImage = view.findViewById(R.id.adImageView)
         val galleryBtn = view.findViewById<Button>(R.id.galleryBtn)
         galleryBtn.setOnClickListener {
@@ -107,18 +101,10 @@ class CreateAdFragment : Fragment() {
         val price_txt = view.findViewById<TextView>(R.id.price_createad_txt)
         val cat_txt = view.findViewById<TextView>(R.id.cat_createad_txt)
         val card_view = view.findViewById<CardView>(R.id.cardView3)
-        val price = prices.text.toString()
+
 
 
         val saveButton = view.findViewById<Button>(R.id.createAd)
-
-//        when(!prices.nonEmpty()){
-//            true -> {
-//                saveButton.alpha = 0.5f
-//                saveButton.isClickable = false
-//            }
-//            false ->
-//        }
         saveButton.setOnClickListener { v ->
             val progressBar = view.findViewById<ProgressBar>(R.id.progressBar_creatad)
             if (
@@ -185,18 +171,6 @@ class CreateAdFragment : Fragment() {
             }).start()
         }
 
-/*
-        if (!title!!.nonEmpty() ||
-            !desc!!.nonEmpty() ||
-            !addr!!.nonEmpty() ||
-            !prices!!.nonEmpty()){
-            saveButton.alpha = 0.5f
-            saveButton.isClickable = false
-        }else{
-            saveButton.alpha = 1f
-            saveButton.isClickable = true
-        }
-        */
     }
 
     private fun invokeGallery(){
@@ -296,7 +270,7 @@ class CreateAdFragment : Fragment() {
         val price = view?.findViewById<EditText>(R.id.price_createAd)
         val price1 = price?.text.toString()
         val price2 = Integer.parseInt(price1)
-        var token = 0
+        val token = 0
 
     if(price1.nonEmpty()) {
         if (price2 <= 100) {
@@ -324,23 +298,18 @@ class CreateAdFragment : Fragment() {
         Toast.makeText(activity, "Fill out every field", Toast.LENGTH_LONG).show()
     }
 
-        Log.d(TAG, "${token}")
+        Log.d(TAG, "$token")
     }
     var tokenValue = 0
 
-    fun saveAd(documentId: String) {
+    private fun saveAd(documentId: String) {
         val title = view?.findViewById<EditText>(R.id.title_create_ad)
-        val titleFire = title?.text.toString()
         val desc = view?.findViewById<EditText>(R.id.desc_createAd)
-        val descFire = desc?.text.toString()
         val addr = view?.findViewById<EditText>(R.id.address_createAd)
-        val addrFire = addr?.text.toString()
         val prices = view?.findViewById<EditText>(R.id.price_createAd)
         val priceFire = prices!!.text.toString()
-
         val spinner = view?.findViewById<Spinner>(R.id.spinner_category)
-        val spinnerFire = spinner?.selectedItem.toString()
-        val userUID = user!!.uid
+
 
 
 
@@ -348,7 +317,7 @@ class CreateAdFragment : Fragment() {
             !title!!.nonEmpty() ||
             !desc!!.nonEmpty() ||
             !addr!!.nonEmpty() ||
-            !prices!!.nonEmpty()
+            !prices.nonEmpty()
         ) {
             Toast.makeText(
                 activity,
@@ -385,10 +354,10 @@ class CreateAdFragment : Fragment() {
 
             val adToSave = AdModel(
                 adId = documentId,
-                title = title?.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(
+                title = title.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(
                     Locale.ROOT) else it.toString() },
-                description = desc?.text.toString(),
-                address = addr?.text.toString(),
+                description = desc.text.toString(),
+                address = addr.text.toString(),
                 price = priceFire,
                 category = spinner?.selectedItem.toString(),
                 userId = user!!.uid,
@@ -446,13 +415,13 @@ class CreateAdFragment : Fragment() {
                 }
             })
     }
-    fun hasExternalReadStoragePermission() = this.activity?.let {
+    private fun hasExternalReadStoragePermission() = this.activity?.let {
         ContextCompat.checkSelfPermission(
             it,
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
     }
-    fun hasCameraPermission() = this.activity?.let {
+    private fun hasCameraPermission() = this.activity?.let {
         ContextCompat.checkSelfPermission(
             it,
             Manifest.permission.CAMERA

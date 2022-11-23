@@ -4,13 +4,13 @@
     <string name="see_more">Se mer</string>
     <string name="cars">Toy-car</string>
     <string name="dolls">Doll</string>
-    <string name="searchLabel">Søk</string>
+    <string name="searchLabel">Search</string>
     <string name="createAds">Create ads</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="toyCategory">
         <item>Cars</item>
         <item>Cards</item>
-        <item>Doll</item>
+        <item>Dolls</item>
         <item>Electric</item>
         <item>Kitchen and Food</item>
         <item>Learning</item>
@@ -25,7 +25,7 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password must be more than 5 letters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="e_mail">Email</string>
     <string name="password">Password</string>
@@ -53,12 +53,12 @@
     <string name="all_toys">All toys</string>
     <string name="web_client_id">108228096973-aj8ki5ukd13hefadigjl53co5vpf3d59.apps.googleusercontent.com</string>
     <string name="loginGoogle">login Google</string>
-    <string name="Move_to">Gå til</string>
-    <string name="Delete">Slett</string>
-    <string name="dialogTitle">"Velg "</string>
-    <string name="dialogMessage">Gå til eller slett</string>
-    <string name="dialogTitleToken">"Velg "</string>
-    <string name="dialogMessageToken">Kjøp en token eller gå tilbake</string>
+    <string name="Move_to">Go To</string>
+    <string name="Delete">Delete</string>
+    <string name="dialogTitle">"Choose "</string>
+    <string name="dialogMessage">Go to or delete</string>
+    <string name="dialogTitleToken">"Choose "</string>
+    <string name="dialogMessageToken">Buy a token or go back</string>
     <string name="dialogMessageBuy">Are you sure you want to buy the item</string>
     <string name="my_page">My Page</string>
     <string name="test">test</string>
@@ -70,14 +70,14 @@
     <string name="change_picture">change picture</string>
     <string name="cancel">Cancel</string>
     <string name="contact_seller">Contact seller</string>
-    <string name="se_alle">Se alle</string>
+    <string name="se_all">See All</string>
     <string name="time">10:00</string>
     <string name="date">June 10</string>
-    <string name="clicktobuy">Klikk for å kjøpe</string>
+    <string name="clicktobuy">Click to buy</string>
     <string name="buy">Buy</string>
     <string name="Sold">Sold</string>
     <string name="noInternet">Connect to the internet to login</string>
     <string name="buy_tokens">Buy Tokens</string>
-    <string name="se_adresse_i_kart">Se adresse i kart</string>
+    <string name="se_adresse_i_kart">See in map</string>
 
 </resources>

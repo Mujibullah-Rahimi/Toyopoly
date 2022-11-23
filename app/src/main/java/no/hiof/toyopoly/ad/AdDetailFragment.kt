@@ -320,10 +320,10 @@ class AdDetailFragment : Fragment() {
             if (it != null){
                 val myTokens = it.getLong("token")
                 if (myTokens == null){
-                    Toast.makeText(activity, "Du har ingen tokens, kjøp tokens på din side.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, "You have no tokens, buy tokens on your page", Toast.LENGTH_LONG).show()
                 }
                 else if (myTokens.toInt() < tokenValue.toInt()){
-                    Toast.makeText(activity, "Du har ikke nok tokens, kjøp tokens på din side.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, "Not enough tokens, buy more on your page.", Toast.LENGTH_LONG).show()
                 }else{
                     docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
 

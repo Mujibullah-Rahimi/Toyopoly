@@ -79,7 +79,7 @@ class AllToysFragment : Fragment() {
         getAds()
     }
 
-    fun getAds(){
+    private fun getAds(){
         db.collection("Ads")
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
@@ -97,7 +97,7 @@ class AllToysFragment : Fragment() {
                 }
             })
     }
-    fun getCategories(){
+    private fun getCategories(){
         db.collection("Category")
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {

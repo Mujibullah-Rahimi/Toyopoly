@@ -22,7 +22,7 @@ import kotlin.properties.Delegates
 import kotlin.text.replaceFirstChar as replaceFirstChar1
 
 
-class HomeFragment : Fragment(), View.OnClickListener{
+class HomeFragment : Fragment(){
     private lateinit var recyclerView: RecyclerView
     private lateinit var adsArrayList: ArrayList<AdModel>
     private lateinit var adapterAds: AdapterAds
@@ -125,7 +125,7 @@ class HomeFragment : Fragment(), View.OnClickListener{
 
     }
 
-    fun getSearchResultCat(){
+    private fun getSearchResultCat(){
         val searchBox = view?.findViewById<EditText>(R.id.searchBar)
         val getSearch = searchBox?.text.toString().replaceFirstChar1(Char::titlecase)
         db.collection("Ads").whereGreaterThanOrEqualTo("category", getSearch)
@@ -149,13 +149,6 @@ class HomeFragment : Fragment(), View.OnClickListener{
             })
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id){
-//            R.id.messageActivityBtn -> {
-//                val intent = Intent(activity, MessageActivity::class.java)
-//                startActivity(intent)
-//            }
-        }
-    }
+
 
 }

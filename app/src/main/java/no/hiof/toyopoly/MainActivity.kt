@@ -13,8 +13,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -42,8 +40,6 @@ class MainActivity : AppCompatActivity(){
     private lateinit var auth: FirebaseAuth
     private lateinit var navView : NavigationView
     private val db = FirebaseFirestore.getInstance()
-    private var user = Firebase.auth.currentUser
-    private lateinit var homeFragment: HomeFragment
     private var currentUser : FirebaseUser? = null
     private var storageRef = FirebaseStorage.getInstance().reference
     private lateinit var authStateListener : FirebaseAuth.AuthStateListener
@@ -139,42 +135,6 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-
-    fun test(){
-        authStateListener = FirebaseAuth.AuthStateListener {
-            val firebaseUser = auth.currentUser
-            if (firebaseUser != null){
-                val header = navView.getHeaderView(0)
-                val headerUserImage = header.findViewById<ImageView>(R.id.drawerHeaderImageView)
-                val headerUserName = header.findViewById<TextView>(R.id.drawerHeaderUserName)
-                val headerEmail = header.findViewById<TextView>(R.id.drawerHeaderUserEmail)
-                var imageUri = ""
-                val docRef = db.collection("Users").document(firebaseUser.uid)
-                docRef
-                    .get()
-                    .addOnSuccessListener { document ->
-                        if (document != null) {
-                            Log.d("isHere", "Snapshot: ${document.data}")
-                            headerEmail?.text = document.getString("email")
-                            headerUserName?.text = document.getString("firstName")+ " " + document.getString("lastName")
-                            imageUri = document.getString("imageUri").toString()
-
-                            val pictureReference = storageRef.storage.getReference(imageUri)
-                            Glide.with(this)
-                                .load(pictureReference)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .into(headerUserImage)
-                        } else {
-                            Log.d("isNotHere", "The document snapshot doesn't exist")
-                        }
-                    }
-                    .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
-            }
-        }
-    }
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.ad_action, menu)
         return true
@@ -201,43 +161,6 @@ class MainActivity : AppCompatActivity(){
 
     }
 
-    fun getUser() {
-        val header = navView.getHeaderView(0)
-        val headerUserImage = header.findViewById<ImageView>(R.id.drawerHeaderImageView)
-        val headerUserName = header.findViewById<TextView>(R.id.drawerHeaderUserName)
-        val headerEmail = header.findViewById<TextView>(R.id.drawerHeaderUserEmail)
-        val userUID = user!!.uid
-
-        // reset
-        headerUserImage.setImageURI(null)
-        headerUserName.text = ""
-        headerEmail.text = ""
-
-        val docRef = db.collection("Users").document(userUID)
-        docRef
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    Log.d("isHere", "Snapshot: ${document.data}")
-                    headerEmail?.text = document.getString("email")
-                    headerUserName?.text = document.getString("firstName")+ " " + document.getString("lastName")
-                    //time_ad?.text = document.getDate("timestamp").toString()
-                } else {
-                    Log.d("isNotHere", "The document snapshot doesn't exist")
-                }
-            }
-            .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
-
-        val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
-        val defaultReference = storageRef.storage.getReference("images/users/default.png")
-        Log.v("defaultpic", defaultReference.toString())
-        Glide.with(this)
-            .load(pictureReference)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .into(headerUserImage)
-
-    }
     override fun onResume() {
         super.onResume()
 

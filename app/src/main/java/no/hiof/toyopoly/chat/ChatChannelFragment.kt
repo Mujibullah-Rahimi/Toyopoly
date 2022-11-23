@@ -70,7 +70,6 @@ class ChatChannelFragment : Fragment(), View.OnClickListener {
 
     private fun getMyChatChannels(){
         db.collection("Users").document(auth.currentUser!!.uid).collection("engagedChats")
-//        whereArrayContains(auth.currentUser!!.uid)
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                     if(error != null){

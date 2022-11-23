@@ -52,7 +52,7 @@ class TokenDialog : DialogFragment() {
 
              builder.setPositiveButton("Buy Token"){dialogInterface, which ->
 
-                 UpdateToken()
+                 updateToken()
 
                  Log.d(TAG, "clicked")
 
@@ -105,9 +105,9 @@ class TokenDialog : DialogFragment() {
                  })
     }
 
-    val userUID = user!!.uid
+    private val userUID = user!!.uid
 
-    private fun UpdateToken() {
+    private fun updateToken() {
        db.collection("Users").document(userUID).update("token",FieldValue.increment(tokenValue) )
     }
 

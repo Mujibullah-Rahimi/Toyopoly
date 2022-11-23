@@ -131,8 +131,7 @@ class MyPageFragment : Fragment(){
     }
 
     //permission handling
-
-    fun openGallery() {
+    private fun openGallery() {
         ImagePicker.with(requireActivity())
             .galleryOnly()
             .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional)
@@ -170,16 +169,16 @@ class MyPageFragment : Fragment(){
             }
         }
 
-    fun hasExternalReadStoragePermission() = this.activity?.let {
+    private fun hasExternalReadStoragePermission() = this.activity?.let {
         ContextCompat.checkSelfPermission(
             it,
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
     }
 
-    val userUID = user!!.uid
+    private val userUID = user!!.uid
 
-    fun getAds(){
+    private fun getAds(){
         db.collection("Ads")
             .whereEqualTo("userId", userUID)
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
@@ -198,7 +197,7 @@ class MyPageFragment : Fragment(){
             })
     }
 
-    fun getUser() {
+    private fun getUser() {
         val getName = view?.findViewById<TextView>(R.id.nameUserPage)
         val getEmail = view?.findViewById<TextView>(R.id.emailUserPage)
         val getTokens = view?.findViewById<TextView>(R.id.userTokens)
@@ -217,7 +216,6 @@ class MyPageFragment : Fragment(){
                     getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
                     getTokens?.text = document.getLong("token").toString()
                     getAddress?.text = document.getString("address")
-                    //time_ad?.text = document.getDate("timestamp").toString()
                 } else {
                     Log.d("isNotHere", "The document snapshot doesn't exist")
                 }
@@ -226,17 +224,15 @@ class MyPageFragment : Fragment(){
 
         val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
 
-        Glide.with(requireView())
+        Glide.with(this)
             .load(pictureReference)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
             .into(userImage)
-    }
-
-    fun updateImage(){
 
     }
-    fun deleteAd(documentId: String) {
+
+    private fun deleteAd(documentId: String) {
 
         db.collection("Ads").document(documentId)
             .delete()
