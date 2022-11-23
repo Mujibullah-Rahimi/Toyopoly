@@ -52,14 +52,14 @@ class LoginFragment : Fragment(), View.OnClickListener {
         val registerButton = view.findViewById<Button>(R.id.registerButton)
         registerButton.setOnClickListener(this)
 
-        val logintext = view.findViewById<TextView>(R.id.loginTextView)
+        val loginText = view.findViewById<TextView>(R.id.loginTextView)
 
         if(this.activity?.let { isOnline(it) } == false){
             loginButton.alpha = .5f
             registerButton.alpha = .5f
             loginButton.isClickable = false
             registerButton.isClickable = false
-            logintext.text = getString(R.string.noInternet)
+            loginText.text = getString(R.string.noInternet)
         }
     }
 
@@ -121,22 +121,19 @@ class LoginFragment : Fragment(), View.OnClickListener {
         (activity as MainActivity?)!!.enableDrawer()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun isOnline(context: Context) : Boolean{
+    private fun isOnline(context: Context) : Boolean{
         val connectionManger = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManagerInternet
-        if(connectionManger != null){
-            val capabilities = connectionManger.getNetworkCapabilities(connectionManger.activeNetwork)
-            if(capabilities != null){
-                //checks for cellular network
-                if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
-                    Log.i("hasInternet", "Cellular is on")
-                    return true
-                }
-                //checks for Wi-FI
-                else if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)){
-                    Log.i("hasInternet", "Wi-Fi is on")
-                    return true
-                }
+        val capabilities = connectionManger.getNetworkCapabilities(connectionManger.activeNetwork)
+        if(capabilities != null){
+            //checks for cellular network
+            if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
+                Log.i("hasInternet", "Cellular is on")
+                return true
+            }
+            //checks for Wi-FI
+            else if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)){
+                Log.i("hasInternet", "Wi-Fi is on")
+                return true
             }
         }
         return false

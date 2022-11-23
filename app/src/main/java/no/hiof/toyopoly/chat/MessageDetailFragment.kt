@@ -44,12 +44,9 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
     private var messageType = 0
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
-
-    val TAG = "MESSAGE"
+    private val TAG = "MESSAGE"
     private lateinit var otherUserId : String
     private var chatChannelId = ""
-    private var CHANNELID = "notificationChannel"
-    private val notificationId = 101
     private var myUserName : String = ""
 
 
@@ -88,7 +85,6 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
         getMessages()
         getOtherUserName()
-        createNotificationChannel()
         myUserName()
     }
 
@@ -113,19 +109,6 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
         }
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val name = "Notification Title"
-            val descriptionText = "Notification Description"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNELID, name, importance).apply {
-                description = descriptionText
-            }
-            val notificationManager: NotificationManager = context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
 //    private fun setChatChannelId(){
 //        db.collection("Users").document(auth.currentUser!!.uid)
 //            .collection("engagedChats").document(otherUserId)
@@ -140,7 +123,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 //            }
 //    }
 
-    fun saveMsg(){
+    private fun saveMsg(){
         val messageInput = view?.findViewById<EditText>(R.id.editText_message)
         val sendMsgButton = view?.findViewById<ImageButton>(R.id.sendMessageButton)
         val message = messageInput?.text.toString()
@@ -175,7 +158,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
     }
 
-    fun getMessages(){
+    private fun getMessages(){
         Log.v("GETMESSAGES", "get messages has been called")
 //        Users/FaTMSJiGPGQVKgHtFl34w3lk3pJ3/engagedChats/2FBGPPtWDrQVENG3A7t50XMz9Yk2/messages
         db.collection("ChatChannels/${chatChannelId}/messages")

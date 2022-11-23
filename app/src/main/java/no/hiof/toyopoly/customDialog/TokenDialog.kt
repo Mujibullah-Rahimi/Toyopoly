@@ -24,7 +24,7 @@ class TokenDialog : DialogFragment() {
     private lateinit var tokenArrayList: ArrayList<TokenModel>
     private lateinit var adapterToken: AdapterToken
     private val db = FirebaseFirestore.getInstance()
-    val user = Firebase.auth.currentUser
+    private val user = Firebase.auth.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater,

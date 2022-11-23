@@ -63,6 +63,11 @@ class AdDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
+        getUser()
+        getAd()
+        getImage()
+        getOtherUserId()
+
         val buyItemBtn = view.findViewById<Button>(R.id.buyBtn)
         val contactSellerButton = view.findViewById<Button>(R.id.contactSellerButton)
         db.collection("Ads").document(args.adId).get().addOnSuccessListener {
@@ -104,10 +109,7 @@ class AdDetailFragment : Fragment() {
         }
 
 
-        getUser()
-        getAd()
-        getImage()
-        getOtherUserId()
+
         isSold()
     }
 

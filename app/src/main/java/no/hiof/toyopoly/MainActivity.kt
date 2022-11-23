@@ -258,11 +258,11 @@ class MainActivity : AppCompatActivity(){
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
-    fun deleteCache(context: Context) {
+    private fun deleteCache(context: Context) {
         try {
             val dir: File = context.cacheDir
             deleteDir(dir)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
     }
 
