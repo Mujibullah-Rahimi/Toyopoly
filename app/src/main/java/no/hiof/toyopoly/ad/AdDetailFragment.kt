@@ -282,8 +282,7 @@ class AdDetailFragment : Fragment() {
 
             NotificationCompat.Builder(it.application, CHANNELID)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("item sold")
-                .setContentText("your item has sold")
+                .setContentTitle("this item is sold")
                 .setAutoCancel(true)
                 .setContentIntent(pendingNotification)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -306,7 +305,7 @@ class AdDetailFragment : Fragment() {
                     Log.d("isHere", "Snapshot: ${document.data}")
                     val sold = document.getBoolean("sold")!!
                     if(sold){
-                        itemSoldNotification()
+                        //itemSoldNotification()
                     }
                 }
             }
