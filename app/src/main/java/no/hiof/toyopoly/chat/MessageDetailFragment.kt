@@ -147,8 +147,8 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
         db.collection("ChatChannels").document(args.chatChannelId).get().addOnSuccessListener {
             if (it.exists()){
-                var userIds : MutableList<String> = it.get("userIds") as MutableList<String>
-                var index = userIds.indexOf(auth.currentUser?.uid)
+                val userIds : MutableList<String> = it.get("userIds") as MutableList<String>
+                val index = userIds.indexOf(auth.currentUser?.uid)
                 this.messageType = index + 1
             }
             val messageToSave = MessageModel(RandomId.randomID(),message, Timestamp.now(), auth.currentUser!!.uid, this.messageType)
@@ -163,35 +163,6 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
                         messageInput!!.text.clear()
                         messagesRecyclerView.smoothScrollToPosition(messageList.size - 1)
 
-
-
-                        val builder = activity?.let { it ->
-                            //navigering til message fragment
-                            val pendingNotification = context?.let { it1 ->
-                                NavDeepLinkBuilder(it1)
-                                    .setComponentName(MainActivity::class.java)
-                                    .setGraph(R.navigation.nav_graph)
-                                    .setDestination(R.id.messageFragment)
-                                    .createPendingIntent()
-                            }
-
-                            //sender melding
-                            //problem brukerene som sender får notifikasjon og ikke bruker som mottar mld
-                            NotificationCompat.Builder(it.application, CHANNELID)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle(this.myUserName)
-                                .setContentText(messageToSave.message)
-                                .setAutoCancel(true)
-                                .setContentIntent(pendingNotification)
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-                        }
-
-                        with(activity?.let { NotificationManagerCompat.from(it.application) }) {
-                            if (builder != null) {
-                                this?.notify(notificationId, builder.build())
-                            }
-                        }
 
                     }
                     .addOnFailureListener{

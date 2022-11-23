@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(){
     private var currentUser : FirebaseUser? = null
     private var storageRef = FirebaseStorage.getInstance().reference
     private lateinit var authStateListener : FirebaseAuth.AuthStateListener
+    private var CHANNELID = "notificationChannel"
 
 
     @SuppressLint("RestrictedApi")
@@ -122,10 +123,21 @@ class MainActivity : AppCompatActivity(){
 
         binding.navView.setupWithNavController(navHostFragment.navController)
 
-
+        createNotificationChannel()
     }
 
-
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification Title"
+            val descriptionText = "Notification Description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNELID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 
 
     fun test(){
@@ -219,17 +231,11 @@ class MainActivity : AppCompatActivity(){
         val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
         val defaultReference = storageRef.storage.getReference("images/users/default.png")
         Log.v("defaultpic", defaultReference.toString())
-        if (pictureReference == null){
-            Glide.with(this)
-                .load(defaultReference)
-                .into(headerUserImage)
-        }else{
-            Glide.with(this)
-                .load(pictureReference)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(headerUserImage)
-        }
+        Glide.with(this)
+            .load(pictureReference)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(headerUserImage)
 
     }
     override fun onResume() {
@@ -262,7 +268,7 @@ class MainActivity : AppCompatActivity(){
 
     private fun deleteDir(dir: File?): Boolean {
         return if (dir != null && dir.isDirectory) {
-            val children: Array<String> = dir.list()
+            val children: Array<String> = dir.list() as Array<String>
             for (i in children.indices) {
                 val success = deleteDir(File(dir, children[i]))
                 if (!success) {
