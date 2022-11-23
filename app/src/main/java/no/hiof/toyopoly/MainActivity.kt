@@ -110,8 +110,6 @@ class MainActivity : AppCompatActivity(){
                         }
                     }
                     .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
-
-
             }
         }
         setupActionBarWithNavController(navController, appBarConfiguration)

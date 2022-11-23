@@ -202,6 +202,7 @@ class MyPageFragment : Fragment(){
         val getEmail = view?.findViewById<TextView>(R.id.emailUserPage)
         val getTokens = view?.findViewById<TextView>(R.id.userTokens)
         val getAddress = view?.findViewById<TextView>(R.id.addressUserPage)
+        var imageUri = ""
 
         userImage.setImageURI(null)
         getName?.text =""
@@ -216,19 +217,20 @@ class MyPageFragment : Fragment(){
                     getName?.text = document.getString("firstName")+ " " + document.getString("lastName")
                     getTokens?.text = document.getLong("token").toString()
                     getAddress?.text = document.getString("address")
+                    imageUri = document.getString("imageUri").toString()
+
+                    val pictureReference = storageRef.storage.getReference(imageUri)
+
+                    Glide.with(this)
+                        .load(pictureReference)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(userImage)
                 } else {
                     Log.d("isNotHere", "The document snapshot doesn't exist")
                 }
             }
             .addOnFailureListener { e -> Log.d("Error", "Fail at: ", e) }
-
-        val pictureReference = storageRef.storage.getReference("images/users/${user!!.uid}")
-
-        Glide.with(this)
-            .load(pictureReference)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .into(userImage)
 
     }
 
