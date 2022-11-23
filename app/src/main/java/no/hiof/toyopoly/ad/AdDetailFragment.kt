@@ -1,12 +1,8 @@
 package no.hiof.toyopoly.ad
 
 import android.app.AlertDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,7 +41,7 @@ class AdDetailFragment : Fragment() {
     private lateinit var docSnap: DocumentSnapshot
     private val args: AdDetailFragmentArgs by navArgs()
     private lateinit var navController : NavController
-    val user = Firebase.auth.currentUser
+    private val user = Firebase.auth.currentUser
     private lateinit var binding: AdDetailFragment
     private lateinit var supportMapFragment: SupportMapFragment
     private var CHANNELID = "notificationChannel"
@@ -112,21 +108,9 @@ class AdDetailFragment : Fragment() {
             builder.show()
         }
 
-        createNotificationChannel()
 
-    }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val name = "Notification Title"
-            val descriptionText = "Notification Description"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNELID, name, importance).apply {
-                description = descriptionText
-            }
-            val notificationManager: NotificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+        isSold()
     }
 
     private fun getAd(){
@@ -149,7 +133,7 @@ class AdDetailFragment : Fragment() {
                     addr_ad?.text = document.getString("address")
                     token_ad?.text = document.getLong("token").toString() + " Tokens"
                     val sold = document.getBoolean("sold")!!
-                    if(sold == true){
+                    if(sold){
                         buyItemBtn?.text = context?.getText(R.string.Sold)
                         buyItemBtn?.isClickable = false
                         buyItemBtn?.alpha = .5f
@@ -172,12 +156,12 @@ class AdDetailFragment : Fragment() {
         }
     }
 
-    fun getImage(){
+    private fun getImage(){
         val adImage = view?.findViewById<ImageView>(R.id.imageViewAdDetail)
 
         val adRef = db.collection("Ads").document(args.adId)
         adRef.get().addOnSuccessListener {
-            var imageUri = it.getString("imageUri")
+            val imageUri = it.getString("imageUri")
             if (imageUri!!.isNotEmpty()){
                 val storageReference = Firebase.storage.getReference(imageUri)
 
@@ -193,7 +177,7 @@ class AdDetailFragment : Fragment() {
         val chatChannelToSave = ChatChannelModel(chatChannelId,userIds)
 
         // get users documentReference
-        var userDocRef = db.collection("Users").document(currentUser).collection("engagedChats").document(otherUser)
+        val userDocRef = db.collection("Users").document(currentUser).collection("engagedChats").document(otherUser)
 
         userDocRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -244,7 +228,7 @@ class AdDetailFragment : Fragment() {
         }
     }
 
-    val userUID = user!!.uid
+    private val userUID = user!!.uid
 
     private fun getUser() {
         val docRef = db.collection("Users").document(userUID)
@@ -299,8 +283,7 @@ class AdDetailFragment : Fragment() {
 
             NotificationCompat.Builder(it.application, CHANNELID)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("item sold")
-                .setContentText("yey u got 2 tokens")
+                .setContentTitle("this item is sold")
                 .setAutoCancel(true)
                 .setContentIntent(pendingNotification)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -314,7 +297,22 @@ class AdDetailFragment : Fragment() {
         }
     }
 
-    fun buyItem(){
+    private fun isSold() {
+        val docRef = db.collection("Ads").document(args.adId)
+        docRef
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d("isHere", "Snapshot: ${document.data}")
+                    val sold = document.getBoolean("sold")!!
+                    if(sold){
+                        //itemSoldNotification()
+                    }
+                }
+            }
+    }
+
+    private fun buyItem(){
         val docRefUsers = db.collection("Users")
         val docRefAds = db.collection("Ads")
 
@@ -330,7 +328,7 @@ class AdDetailFragment : Fragment() {
                     docRefUsers.document(userUID).update("token", FieldValue.increment(-tokenValue))
 
                     docRefUsers.document(this.otherUser).update("token", FieldValue.increment(tokenValue))
-                    itemSoldNotification()
+
                     docRefAds.document(args.adId).update("sold", true)
                 }
             }

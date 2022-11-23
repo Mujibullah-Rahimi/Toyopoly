@@ -38,12 +38,9 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
     private var messageType = 0
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
-
-    val TAG = "MESSAGE"
+    private val TAG = "MESSAGE"
     private lateinit var otherUserId : String
     private var chatChannelId = ""
-    private var CHANNELID = "notificationChannel"
-    private val notificationId = 101
     private var myUserName : String = ""
 
 
@@ -82,7 +79,6 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
         getMessages()
         getOtherUserName()
-        createNotificationChannel()
         myUserName()
     }
 
@@ -107,19 +103,6 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
         }
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val name = "Notification Title"
-            val descriptionText = "Notification Description"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNELID, name, importance).apply {
-                description = descriptionText
-            }
-            val notificationManager: NotificationManager = context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
 //    private fun setChatChannelId(){
 //        db.collection("Users").document(auth.currentUser!!.uid)
 //            .collection("engagedChats").document(otherUserId)
@@ -134,15 +117,15 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 //            }
 //    }
 
-    fun saveMsg(){
+    private fun saveMsg(){
         val messageInput = view?.findViewById<EditText>(R.id.editText_message)
         val sendMsgButton = view?.findViewById<ImageButton>(R.id.sendMessageButton)
         val message = messageInput?.text.toString()
 
         db.collection("ChatChannels").document(args.chatChannelId).get().addOnSuccessListener {
             if (it.exists()){
-                var userIds : MutableList<String> = it.get("userIds") as MutableList<String>
-                var index = userIds.indexOf(auth.currentUser?.uid)
+                val userIds : MutableList<String> = it.get("userIds") as MutableList<String>
+                val index = userIds.indexOf(auth.currentUser?.uid)
                 this.messageType = index + 1
             }
             val messageToSave = MessageModel(RandomId.randomID(),message, Timestamp.now(), auth.currentUser!!.uid, this.messageType)
@@ -158,35 +141,6 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
                         messagesRecyclerView.smoothScrollToPosition(messageList.size - 1)
 
 
-
-                        val builder = activity?.let { it ->
-                            //navigering til message fragment
-                            val pendingNotification = context?.let { it1 ->
-                                NavDeepLinkBuilder(it1)
-                                    .setComponentName(MainActivity::class.java)
-                                    .setGraph(R.navigation.nav_graph)
-                                    .setDestination(R.id.messageFragment)
-                                    .createPendingIntent()
-                            }
-
-                            //sender melding
-                            //problem brukerene som sender får notifikasjon og ikke bruker som mottar mld
-                            NotificationCompat.Builder(it.application, CHANNELID)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle(this.myUserName)
-                                .setContentText(messageToSave.message)
-                                .setAutoCancel(true)
-                                .setContentIntent(pendingNotification)
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-                        }
-
-                        with(activity?.let { NotificationManagerCompat.from(it.application) }) {
-                            if (builder != null) {
-                                this?.notify(notificationId, builder.build())
-                            }
-                        }
-
                     }
                     .addOnFailureListener{
                         Toast.makeText(activity, it.message, Toast.LENGTH_LONG)
@@ -198,7 +152,7 @@ class MessageDetailFragment : Fragment(), View.OnClickListener  {
 
     }
 
-    fun getMessages(){
+    private fun getMessages(){
         Log.v("GETMESSAGES", "get messages has been called")
         if (messageList.size > 1){
             messagesRecyclerView.smoothScrollToPosition(messageList.size - 1)
